@@ -22,6 +22,7 @@ namespace CodeWars
 
         static string FromIntToString(IEnumerable<int> input)
         {
+            //return input.Select(n => n.ToString()).Aggregate((a, b) => a + b); //aggregate is cool
             StringBuilder sb = new StringBuilder();
             foreach (var i in input)
             {
