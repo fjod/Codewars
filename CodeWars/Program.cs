@@ -11,7 +11,10 @@ namespace CodeWars
 
             var morseTest = MorseCode.Convert(".... . -.--   .--- ..- -.. .");
             Console.Write(morseTest);
-            Console.ReadKey();
+
+            var wubTest = Wub.Remove("WUBWUBABCWUB");
+            Console.Write(wubTest);
+            
         }
     }
 }
