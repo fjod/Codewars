@@ -20,6 +20,7 @@ let kataFunc (n:int) =
            let prevList = getDigitsListForRow input thisStart
            prevEnd <- List.last prevList
            sum <- List.sum prevList
+           //sum <- sum + List.sum prevList  - will hold sum for all tree
            ()      
        
     [1..n] |> List.iter  calcAndSave
