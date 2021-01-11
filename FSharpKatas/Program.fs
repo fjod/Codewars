@@ -2,34 +2,45 @@
 
 open System
 
-//I misunderstood the task; this is written to calc sum for all tree; while we need the sum for only one row :/
-let kataFunc (n:int) =
-    let mutable sum = 0
-    let mutable prevEnd = 0
-    let getDigitsListForRow (row:int) (start:int) =
-        match row with 
-            | 1 -> [1]
-            | _ -> [start..2..start+2*(row-1)]
-            
-    let calcAndSave (input:int) : unit =       
-        if input.Equals 1 then
-            sum <- 1
-            prevEnd <- 1
-        else
-           let thisStart = prevEnd + 2
-           let prevList = getDigitsListForRow input thisStart
-           prevEnd <- List.last prevList
-           sum <- List.sum prevList
-           //sum <- sum + List.sum prevList  - will hold sum for all tree
-           ()      
-       
-    [1..n] |> List.iter  calcAndSave
-    sum
+
+let kataFunc (n:int) =   
+   
+   let isMultipleBy (value_3_5:int) (inputNumberToCheck:int) =
+     let q = inputNumberToCheck % value_3_5
+     q.Equals 0
+     
+   let isMultipleBy3 i = isMultipleBy 3 i
+   let isMultipleBy5 i = isMultipleBy 5 i
+   let calculator(acc:int) (value:int)  =
+      if value.Equals 0
+      then 0
+      else
+         let is3 = isMultipleBy3 value
+         let is5 = isMultipleBy5 value
+         match (is3,is5) with
+         |true,false -> value+acc
+         |false,true -> value+acc
+         |true,true -> value+acc
+         | _ -> acc
+      
+   List.fold calculator 0 [0..n-1]
     
 
 [<EntryPoint>]
 let main argv =
    
-   kataFunc 3 |> printfn "%i" 
+   kataFunc 10 |> printfn "%i" 
    
    0 // return an integer exit code
+   
+//how it should be solved:
+//let solve n = 
+//    [3..3..n-1]
+//    |> List.append [5..5..n-1]
+//    |> Set.ofList
+//    |> Set.fold (+) 0
+
+//let solve n = 
+//    Seq.init n id
+//    |> Seq.filter (fun x -> x%3 = 0 || x%5 = 0)
+//    |> Seq.sum
