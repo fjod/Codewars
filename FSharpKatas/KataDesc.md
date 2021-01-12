@@ -1,9 +1,19 @@
-﻿Multiples of 3 or 5
+﻿Count the number of Duplicates
 
-If we list all the natural numbers below 10 that are multiples of 3 or 5, we get 3, 5, 6 and 9. The sum of these multiples is 23.
+Write a function that will return the count of distinct case-insensitive alphabetic characters and numeric digits that occur more than once in the input string. The input string can be assumed to contain only alphabets (both uppercase and lowercase) and numeric digits.
 
-Finish the solution so that it returns the sum of all the multiples of 3 or 5 below the number passed in.
+Example
 
-Note: If the number is a multiple of both 3 and 5, only count it once. Also, if a number is negative, return 0(for languages that do have them)
+"abcde" -> 0 # no characters repeats more than once
 
-Courtesy of projecteuler.net
+"aabbcde" -> 2 # 'a' and 'b'
+
+"aabBcde" -> 2 # 'a' occurs twice and 'b' twice (`b` and `B`)
+
+"indivisibility" -> 1 # 'i' occurs six times
+
+"Indivisibilities" -> 2 # 'i' occurs seven times and 's' occurs twice
+
+"aA11" -> 2 # 'a' and '1'
+
+"ABBA" -> 2 # 'A' and 'B' each occur twice
