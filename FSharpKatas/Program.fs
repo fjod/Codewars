@@ -4,13 +4,25 @@ open System
 let highAndLow (str : string)  =
     let test = str.Split " " |> Array.map (Int32.Parse)    
     (Array.max test).ToString() + " " + (Array.min test).ToString() 
-   
+  
 
+let rec factorialTCO (n:int) (acc:int) =
+    if n <= 1 then acc
+    else factorialTCO (n-1) (acc*n)
 
+let factorial n = factorialTCO n 1
+
+let rec factorialBad x =
+    if x <= 1 then
+        1
+    else
+        x * factorialBad (x - 1)
 [<EntryPoint>]
 let main argv =
     
-   highAndLow "1 9 -3 4 -5" |> printfn "%s"
+   //highAndLow "1 9 -3 4 -5" |> printfn "%s"
+   factorialBad 10 |> printfn "%i"
+   factorial 10 |> printfn "%i"
    0 // return an integer exit code
    
    // I could change parsing to just "int" and it works the same
@@ -20,3 +32,4 @@ let main argv =
 //    |> Array.sortBy int
 //    |> (fun a -> a |> Array.last, a |> Array.head)
 //    ||> sprintf "%s %s"
+
