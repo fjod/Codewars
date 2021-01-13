@@ -1,30 +1,22 @@
 ﻿// Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
 
-
-
-let duplicateCount (text : string) : int =
-    let dict = System.Collections.Generic.Dictionary<char,int>()
-    let checkChar c =       
-        if (dict.ContainsKey c)
-            then
-            dict.[c] <- dict.[c] + 1            
-            else
-            dict.Add(c,1)          
-     
-    text.ToUpperInvariant() |> Seq.iter checkChar 
-    dict |> Seq.fold (fun acc v-> if (v.Value>1) then acc+1 else acc) 0
-    
+open System
+let highAndLow (str : string)  =
+    let test = str.Split " " |> Array.map (Int32.Parse)    
+    (Array.max test).ToString() + " " + (Array.min test).ToString() 
    
 
 
 [<EntryPoint>]
 let main argv =
     
-   duplicateCount "aabbcde"|> printfn "%i" 
+   highAndLow "1 9 -3 4 -5" |> printfn "%s"
    0 // return an integer exit code
    
-//let duplicateCount (text : string) : int =
-//    text.ToLower()
-//    |> Seq.countBy id
-//    |> Seq.filter (fun (_, count) -> count > 1)
-//    |> Seq.length   
+   // I could change parsing to just "int" and it works the same
+   
+//let highAndLow (str : string) =
+//    str.Split()
+//    |> Array.sortBy int
+//    |> (fun a -> a |> Array.last, a |> Array.head)
+//    ||> sprintf "%s %s"

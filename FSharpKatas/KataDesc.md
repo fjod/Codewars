@@ -1,19 +1,15 @@
-﻿Count the number of Duplicates
+﻿In this little assignment you are given a string of space separated numbers, and have to return the highest and lowest number.
 
-Write a function that will return the count of distinct case-insensitive alphabetic characters and numeric digits that occur more than once in the input string. The input string can be assumed to contain only alphabets (both uppercase and lowercase) and numeric digits.
+Example:
 
-Example
+highAndLow "1 2 3 4 5"  // return "5 1"
 
-"abcde" -> 0 # no characters repeats more than once
+highAndLow "1 2 -3 4 5" // return "5 -3"
 
-"aabbcde" -> 2 # 'a' and 'b'
+highAndLow "1 9 3 4 -5" // return "9 -5"
 
-"aabBcde" -> 2 # 'a' occurs twice and 'b' twice (`b` and `B`)
+Notes:
 
-"indivisibility" -> 1 # 'i' occurs six times
-
-"Indivisibilities" -> 2 # 'i' occurs seven times and 's' occurs twice
-
-"aA11" -> 2 # 'a' and '1'
-
-"ABBA" -> 2 # 'A' and 'B' each occur twice
+All numbers are valid Int32, no need to validate them.
+There will always be at least one number in the input string.
+Output string must be two numbers separated by a single space, and highest number is first.
