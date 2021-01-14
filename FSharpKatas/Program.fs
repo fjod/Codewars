@@ -1,35 +1,30 @@
 ﻿// Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
 
 open System
-let highAndLow (str : string)  =
-    let test = str.Split " " |> Array.map (Int32.Parse)    
-    (Array.max test).ToString() + " " + (Array.min test).ToString() 
+let findNb(input: uint64): int =
+       
+   let mutable acc:uint64 = 0UL
+   let mutable index = 0
+   let incrementAcc i =
+       acc <- acc + pown (uint64 i) 3
+       acc
+   let inf = Seq.initInfinite (incrementAcc)
+                                        |> Seq.takeWhile (fun i ->
+                                            index <- index + 1
+                                            i <= input)
+   if (Seq.last inf).Equals input then index-2
+   else -1  
   
 
-let rec factorialTCO (n:int) (acc:int) =
-    if n <= 1 then acc
-    else factorialTCO (n-1) (acc*n)
-
-let factorial n = factorialTCO n 1
-
-let rec factorialBad x =
-    if x <= 1 then
-        1
-    else
-        x * factorialBad (x - 1)
 [<EntryPoint>]
 let main argv =
-    
-   //highAndLow "1 9 -3 4 -5" |> printfn "%s"
-   factorialBad 10 |> printfn "%i"
-   factorial 10 |> printfn "%i"
+  
+
+   findNb(1071225UL)  |> printfn "%i"
+   
    0 // return an integer exit code
    
    // I could change parsing to just "int" and it works the same
    
-//let highAndLow (str : string) =
-//    str.Split()
-//    |> Array.sortBy int
-//    |> (fun a -> a |> Array.last, a |> Array.head)
-//    ||> sprintf "%s %s"
+
 

@@ -4,8 +4,34 @@ namespace CodeWars
 {
     class Program
     {
+        class Holder
+        {
+            public int Value;
+        }
+
+        static void Test1(Holder h)
+        {
+            h = new Holder() {Value = 111}; //wont work
+            //h.Value = 555; //will work
+        }
+        static void Test1(ref Holder h)
+        {
+            h = new Holder() {Value = 111}; //will work
+        }
+        static void Test2(in int h)
+        {
+            Console.WriteLine(h.ToString());
+        }
         static void Main(string[] args)
         {
+            int h = 50;
+            Test2(in h);
+            Holder a = new Holder() {Value = 10};
+            Console.WriteLine(a.Value);
+            Test1(a);
+            Console.WriteLine(a.Value);
+            Test1(ref a);
+            Console.WriteLine(a.Value);
             var megalist = new ArrayWrappingList<MutableStruc>();
 
             megalist.Add(new MutableStruc {X = 123});
