@@ -8,6 +8,7 @@
     <ItemGroup>
         <Compile Include="Program.fs" />
         <Content Include="KataDesc.md" />
+        <None Include="test.fsx" />
     </ItemGroup>
 
 </Project>
