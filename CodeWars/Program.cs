@@ -1,52 +1,67 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 
 namespace CodeWars
 {
     class Program
     {
-        class Holder
+        private static bool _returnCompletedTask;
+
+        private class MyAwaitable
         {
-            public int Value;
+            public MyAwaiter GetAwaiter() => new MyAwaiter();
         }
 
-        static void Test1(Holder h)
+        private class MyAwaiter : INotifyCompletion
         {
-            h = new Holder() {Value = 111}; //wont work
-            //h.Value = 555; //will work
+            public bool IsCompleted
+            {
+                get
+                {
+                    Console.WriteLine("IsCompleted called.");
+                    return _returnCompletedTask;
+                }
+            }
+            public int GetResult()
+            {
+                Console.WriteLine("GetResult called.");
+                return 5;
+            }
+            public void OnCompleted(Action continuation)
+            {
+                Console.WriteLine("OnCompleted called.");
+                continuation();
+            }
         }
-        static void Test1(ref Holder h)
-        {
-            h = new Holder() {Value = 111}; //will work
-        }
-        static void Test2(in int h)
-        {
-            Console.WriteLine(h.ToString());
-        }
-        static void Main(string[] args)
-        {
-            int h = 50;
-            Test2(in h);
-            Holder a = new Holder() {Value = 10};
-            Console.WriteLine(a.Value);
-            Test1(a);
-            Console.WriteLine(a.Value);
-            Test1(ref a);
-            Console.WriteLine(a.Value);
-            var megalist = new ArrayWrappingList<MutableStruc>();
 
-            megalist.Add(new MutableStruc {X = 123});
-            Console.WriteLine(megalist[0].X); // => 123
+        class test
+        {
+            public event Action<int,string> InputReceived;
+        }
+       
+        static async Task Main(string[] args)
+        {
+            test source = new test();
+            Task<string> WaitInput()
+            {
+                var tcs = new TaskCompletionSource<string>();
+                source.InputReceived += (o, args) => tcs.SetResult(args);
+                return tcs.Task;
+            }
 
-            ref var  reference = ref megalist[0];
-            reference.X = 50;
-            Console.WriteLine(megalist[0].X);
-            megalist.Add(new MutableStruc {X = 345});
-            //reference.X = 124;
-            reference.X = 500;
-            Console.WriteLine(megalist[0].X);
+            var q = await WaitInput();
+            Console.WriteLine("Before first await");
+            _returnCompletedTask = true;
+            var res1 = await new MyAwaitable();
+            Console.WriteLine(res1);
+        
+            Console.WriteLine("Before second await");
+            _returnCompletedTask = false;
+            var res2 = await new MyAwaitable();
+            Console.WriteLine(res2);
             
-            Console.WriteLine(megalist[0].X); // => 123, not 124
-            Console.WriteLine(megalist[1].X); // => 345
+            
 
             Console.WriteLine("Hello World!");
 
@@ -59,24 +74,5 @@ namespace CodeWars
         }
     }
 
-    struct MutableStruc
-    {
-        public int X;
-    }
-
-    class ArrayWrappingList<T>
-    {
-        private T[] _storage = Array.Empty<T>();
-
-        public void Add(T item)
-        {
-            //This method allocates a new array with the specified size, copies elements from the old array to the new one,
-            //and then replaces the old array with the new one. array must be a one-dimensional array.
-            var newIdx = _storage.Length;
-            Array.Resize(ref _storage, _storage.Length + 1);
-            _storage[newIdx] = item;
-        }
-
-        public ref T this[int idx] => ref _storage[idx];
-    }
+   
 }

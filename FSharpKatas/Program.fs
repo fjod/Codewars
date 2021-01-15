@@ -1,30 +1,29 @@
 ﻿// Learn more about F# at http://docs.microsoft.com/dotnet/fsharp
 
 open System
-let findNb(input: uint64): int =
-       
-   let mutable acc:uint64 = 0UL
-   let mutable index = 0
-   let incrementAcc i =
-       acc <- acc + pown (uint64 i) 3
-       acc
-   let inf = Seq.initInfinite (incrementAcc)
-                                        |> Seq.takeWhile (fun i ->
-                                            index <- index + 1
-                                            i <= input)
-   if (Seq.last inf).Equals input then index-2
-   else -1  
-  
-
+let inline findOdd (numbers: int list) =
+   let isEven x = (x % 2) = 0
+   let isOdd x = isEven x = false
+   numbers
+           |> Seq.groupBy id
+           |> Seq.map (fun n -> (fst n, Seq.length (snd n)))
+           |> Seq.find (fun m -> isOdd (snd m))
+           |> fst
+ 
+    
 [<EntryPoint>]
 let main argv =
   
 
-   findNb(1071225UL)  |> printfn "%i"
+   [20; 1; -1; 2; -2; 3; 3; 5; 5; 1; 2; 4; 20; 4; -1; -2; 5] |> findOdd |> printfn "%i"
    
    0 // return an integer exit code
    
-   // I could change parsing to just "int" and it works the same
-   
+//  let inline findOdd numbers = 
+//  numbers
+//  |> Seq.countBy id
+//  |> Seq.find (fun (_, count) -> count % 2 = 1)
+//  |> fst
+//   
 
 
