@@ -1,13 +1,25 @@
-﻿Digital root is the recursive sum of all the digits in a number.
+﻿Two tortoises named A and B must run a race. A starts with an average speed of 720 feet per hour. Young B knows she runs faster than A, and furthermore has not finished her cabbage.
 
-Given n, take the sum of the digits of n. If that value has more than one digit, continue reducing in this way until a single-digit number is produced. The input will be a non-negative integer.
+When she starts, at last, she can see that A has a 70 feet lead but B's speed is 850 feet per hour. How long will it take B to catch A?
 
-Examples
+More generally: given two speeds v1 (A's speed, integer > 0) and v2 (B's speed, integer > 0) and a lead g (integer > 0) how long will it take B to catch A?
 
-16  -->  1 + 6 = 7
+The result will be an array [hour, min, sec] which is the time needed in hours, minutes and seconds (round down to the nearest second) or a string in some languages.
 
-942  -->  9 + 4 + 2 = 15  -->  1 + 5 = 6
+If v1 >= v2 then return nil, nothing, null, None or {-1, -1, -1} for C++, C, Go, Nim, Pascal,[] for Kotlin or "-1 -1 -1".
 
-132189  -->  1 + 3 + 2 + 1 + 8 + 9 = 24  -->  2 + 4 = 6
+Examples:
+(form of the result depends on the language)
 
-493193  -->  4 + 9 + 3 + 1 + 9 + 3 = 29  -->  2 + 9 = 11  -->  1 + 1 = 2
+race(720, 850, 70) => [0, 32, 18] or "0 32 18"
+race(80, 91, 37)   => [3, 21, 49] or "3 21 49"
+Note:
+See other examples in "Your test cases".
+
+In Fortran - as in any other language - the returned string is not permitted to contain any redundant trailing whitespace: you can use dynamically allocated character strings.
+
+** Hints for people who don't know how to convert to hours, minutes, seconds:
+
+Tortoises don't care about fractions of seconds
+Think of calculation by hand using only integers (in your code use or simulate integer division)
+or Google: "convert decimal time to hours minutes seconds"  -->  9 + 4 + 2 = 15  -->  1 + 5 = 6
