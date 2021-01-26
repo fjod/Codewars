@@ -1,12 +1,7 @@
-﻿The rgb function is incomplete. Complete it so that passing in RGB decimal values will result in a hexadecimal representation being returned. Valid decimal values for RGB are 0 - 255. Any values that fall out of that range must be rounded to the closest valid value.
+﻿Task
+Given a list lst and a number N, create a new list that contains each number of lst at most N times without reordering. For example if N = 2, and the input is [1,2,3,1,2,1,2,3], you take [1,2,3,1,2], drop the next [1,2] since this would lead to 1 and 2 being in the result 3 times, and then take 3, which leads to [1,2,3,1,2,3].
 
-Note: Your answer should always be 6 characters long, the shorthand with 3 will not work here.
+Example
+deleteNth [20;37;20;21] 1 // return [20;37;21]
 
-The following are examples of expected output values:
-
-rgb 255  255  255 // returns FFFFFF
-
-rgb 255  255  300 // returns FFFFFF
-rgb 0 0 0 // returns 000000
-
-rgb 148  0  211 // returns 9400D3
+deleteNth [1;1;3;3;7;2;2;2;2] 3 // return [1;1;3;3;7;2;2;2]

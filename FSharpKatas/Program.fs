@@ -1,25 +1,26 @@
-﻿
-open System
-open System.Text
+﻿let deleteNth order max_e =
+    let howManyTimesThisNumIsInList (l:int list) (num:int) =
+        l |> List.where (fun i -> System.Math.Abs(i - num) < 1) |> List.length
+    let mutable retList = List.empty
+    order |> List.iter (fun i ->
+        let gotItAlready = howManyTimesThisNumIsInList retList i
+        if (gotItAlready < max_e) then retList <- retList @ [i]        
+        )
+    retList
+    // TODO
 
-let rgb (r:int) (g:int) (b:int) =
-    let hex = new StringBuilder()
-    [r;g;b] |> Seq.map (fun i ->
-        match i with
-        | (b) when (b >= 0) && (b <= 255) -> byte b
-        | (b) when (b > 255) -> byte 255
-        | (b) when (b < 0) -> byte 0
-        | _ -> byte b
-        ) |> Seq.toArray
-        |> Seq.iter (fun b -> hex.AppendFormat ("{0:x2}",b)|> ignore)  
-    
-         
-    hex.ToString().ToUpperInvariant()
-
-     
 [<EntryPoint>]
-let main argv =    
-    rgb 148  0  211 |> printfn "%s"
+let main argv =
+    deleteNth [1;1;3;3;7;2;2;2;2] 3 |> List.iter (fun i-> printfn "%i" i)
     0
    
-// let getRgbValue = max 0 >> min 255
+//let deleteNth order max_e =
+//    let res = new ResizeArray<int>()
+//    for i in order do
+//        let itemCounts =
+//            res
+//            |> Seq.filter ((=) i)
+//            |> Seq.length
+//        if itemCounts < max_e then
+//            res.Add i
+//    Seq.toList res
