@@ -1,7 +1,16 @@
-﻿Task
-Given a list lst and a number N, create a new list that contains each number of lst at most N times without reordering. For example if N = 2, and the input is [1,2,3,1,2,1,2,3], you take [1,2,3,1,2], drop the next [1,2] since this would lead to 1 and 2 being in the result 3 times, and then take 3, which leads to [1,2,3,1,2,3].
+﻿The drawing shows 6 squares the sides of which have a length of 1, 1, 2, 3, 5, 8. It's easy to see that the sum of the perimeters of these squares is : 4 * (1 + 1 + 2 + 3 + 5 + 8) = 4 * 20 = 80
 
-Example
-deleteNth [20;37;20;21] 1 // return [20;37;21]
+Could you give the sum of the perimeters of all the squares in a rectangle when there are n + 1 squares disposed in the same manner as in the drawing:
 
-deleteNth [1;1;3;3;7;2;2;2;2] 3 // return [1;1;3;3;7;2;2;2]
+alternative text
+
+Hint:
+See Fibonacci sequence
+
+Ref:
+http://oeis.org/A000045
+
+The function perimeter has for parameter n where n + 1 is the number of squares (they are numbered from 0 to n) and returns the total perimeter of all the squares.
+
+perimeter(5)  should return 80
+perimeter(7)  should return 216
