@@ -1,49 +1,30 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Runtime.CompilerServices;
-using System.Threading.Tasks;
+
 
 namespace CodeWars
 {
-    
- 
-
     class Program
+    
     {
+        
+        public static int[] TwoSum(int[] nums, int target) {
+            Dictionary<int,int> map = new Dictionary<int,int>();
+            for (int i = 0; i < nums.Length; i++) {
+                int complement = target - nums[i];
+                if (map.ContainsKey(complement)) {
+                    return new int[] { map[complement], i };
+                }
+                map.Add(nums[i],i);
+            }
 
-        static  void T1(IEnumerable<object> objects)
-        {
-            
+            throw new Exception();
         }
-
-        static void T2(IComparable<string> objects)
+        
+        static void Main(string[] args)
         {
-            
-        }
-        public Task<string> GetStringAsync() 
-        {
-            return Task.FromResult(new object());
-        }
-       
-        async ITask<List<int>> MyMethodAsync() {
-            await Task.Delay(1000);
-            return new[] {
-                2,
-                3,
-                4,
-            }.ToList();
-        }
-        static async Task Main(string[] args)
-        {
-            List<string> a = new List<string>();
-            T1(a);
-            List<object> b = new List<object>();
-            T2(b);
-            
+            var q = TwoSum(new[] {2, 7, 11, 15}, 9);
             Console.ReadKey();
         }
     }
-
-   
 }
