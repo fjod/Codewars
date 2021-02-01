@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 
 namespace CodeWars
@@ -8,22 +10,34 @@ namespace CodeWars
     
     {
         
-        public static int[] TwoSum(int[] nums, int target) {
-            Dictionary<int,int> map = new Dictionary<int,int>();
-            for (int i = 0; i < nums.Length; i++) {
-                int complement = target - nums[i];
-                if (map.ContainsKey(complement)) {
-                    return new int[] { map[complement], i };
-                }
-                map.Add(nums[i],i);
+        public static int Reverse(int x) {
+            bool isNegative = x < 0;
+            
+            var s = x.ToString().Replace('-',' ').Reverse();
+            StringBuilder sb = new StringBuilder();
+            foreach (var VARIABLE in s)
+            {
+                sb.Append(VARIABLE);
             }
 
-            throw new Exception();
+            try
+            {
+                int res1 = Int32.Parse(sb.ToString());
+                if (isNegative) return -1 * res1;
+            
+                return res1;
+            }
+            catch (OverflowException e)
+            {
+                return 0;
+            }
+          
+           
         }
         
         static void Main(string[] args)
         {
-            var q = TwoSum(new[] {2, 7, 11, 15}, 9);
+            var q = Reverse(-2147483648);
             Console.ReadKey();
         }
     }
