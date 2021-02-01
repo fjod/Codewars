@@ -10,29 +10,15 @@ namespace CodeWars
     
     {
         
-        public static int Reverse(int x) {
-            bool isNegative = x < 0;
-            
-            var s = x.ToString().Replace('-',' ').Reverse();
+        public bool IsPalindrome(int x) {
+            var s = x.ToString().Reverse();
             StringBuilder sb = new StringBuilder();
             foreach (var VARIABLE in s)
             {
                 sb.Append(VARIABLE);
             }
-
-            try
-            {
-                int res1 = Int32.Parse(sb.ToString());
-                if (isNegative) return -1 * res1;
-            
-                return res1;
-            }
-            catch (OverflowException e)
-            {
-                return 0;
-            }
-          
-           
+            var ret = sb.ToString() == x.ToString();
+            return ret;
         }
         
         static void Main(string[] args)
