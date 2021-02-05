@@ -6,59 +6,49 @@ using System.Text;
 
 namespace CodeWars
 {
+    public class ListNode {
+         public int val;
+         public ListNode next;
+         public ListNode(int val=0, ListNode next=null) {
+             this.val = val;
+             this.next = next;
+         }
+    }
     class Program
-    
     {
-        
-        public static string LongestCommonPrefix(string[] strs)
+        private static bool IsPalindrome(ListNode head)
         {
-            if (!strs.Any()) return "";
-            StringBuilder[] arr = new StringBuilder[strs.Length];
-            for (var i = 0; i < arr.Length; i++)
-            {
-                arr[i] = new StringBuilder();
-            }
-            int counter = 0;
-            int maxLen = strs.Max(l => l.Length);
-            bool prevStringsEqual = false;
+            if (head == null) return true;
+            List<ListNode> nodes = new List<ListNode>();
+            ListNode current = head;
             do
             {
-                prevStringsEqual = false;
-                var firstString = arr.First().ToString();
-                if (arr.First().Length > 0)
-                {
-                    prevStringsEqual = arr.All(sb => sb.ToString() == firstString);
-                    if (prevStringsEqual == false) return "";
-                }
-                for (int i = 0; i < strs.Length; i++)
-                {
-                    if ( counter<strs[i].Length )
-                        arr[i].Append(strs[i][counter]);
-                }
-                var nextString = arr.First().ToString();
-                
-                    if (arr.Any(sb => sb.ToString() != nextString))
-                    {
-                        if (counter > 0)
-                            return firstString;
-                    }
-                    counter++;
+                nodes.Add(current);
+                current = current.next;
+            } while (current != null);
 
-            } while (counter < maxLen+1);
-            if (prevStringsEqual) return arr.First().ToString();
-            return "";
+            if (nodes.Count <= 1) return true;
+            //enumerated all nodes
+            bool CheckTwoNodes(ListNode left, ListNode right)
+            {
+                if ((left == null) || (right == null)) return false;
+                return left.val == right.val;
+            }
+
+            for (int i = 0; i < nodes.Count/2; i++)
+            {
+                var check = CheckTwoNodes(nodes[i], nodes[nodes.Count-i-1]);
+                if (!check) return false;
+            }
+
+            return true;
         }
         
         static void Main(string[] args)
         {
-            string[] strs = { "a"};
-            Console.WriteLine(LongestCommonPrefix(strs));
+            ListNode one = new ListNode(1, new ListNode(2, new ListNode(2, new ListNode(1))));
+            var ret = IsPalindrome(one);
             Console.ReadKey();
         }
     }
 }
-
-//I used "vertical scanning" approach, which is pretty good
-//The only problem is that I used it like an idiot
-//There is no need to save strings in StringBuilders and compare contents
-//I can compare chars and in successful case return part of any string from start to current index 

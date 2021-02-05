@@ -1,15 +1,13 @@
-﻿Write a function to find the longest common prefix string amongst an array of strings.
-
-If there is no common prefix, return an empty string "".
-
-
+﻿Given a singly linked list, determine if it is a palindrome.
 
 Example 1:
 
-Input: strs = ["flower","flow","flight"]
-Output: "fl"
+Input: 1->2
+
+Output: false
+
 Example 2:
 
-Input: strs = ["dog","racecar","car"]
-Output: ""
-Explanation: There is no common prefix among the input strings.
+Input: 1->2->2->1
+
+Output: true
