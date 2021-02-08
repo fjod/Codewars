@@ -6,49 +6,43 @@ using System.Text;
 
 namespace CodeWars
 {
-    public class ListNode {
+    public class TreeNode {
          public int val;
-         public ListNode next;
-         public ListNode(int val=0, ListNode next=null) {
-             this.val = val;
-             this.next = next;
-         }
-    }
+         public TreeNode left;
+         public TreeNode right;
+         public TreeNode(int x) { val = x; }
+     }
+
     class Program
     {
-        private static bool IsPalindrome(ListNode head)
+        public TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
         {
-            if (head == null) return true;
-            List<ListNode> nodes = new List<ListNode>();
-            ListNode current = head;
-            do
-            {
-                nodes.Add(current);
-                current = current.next;
-            } while (current != null);
-
-            if (nodes.Count <= 1) return true;
-            //enumerated all nodes
-            bool CheckTwoNodes(ListNode left, ListNode right)
-            {
-                if ((left == null) || (right == null)) return false;
-                return left.val == right.val;
-            }
-
-            for (int i = 0; i < nodes.Count/2; i++)
-            {
-                var check = CheckTwoNodes(nodes[i], nodes[nodes.Count-i-1]);
-                if (!check) return false;
-            }
-
-            return true;
+            while (root != null)  
+            {  
+                // If both n1 and n2 are smaller than 
+                // root, then LCA lies in left  
+                if (root.val > p.val && root.val > q.val)  
+                    root = root.left;  
+   
+                // If both n1 and n2 are greater than  
+                // root, then LCA lies in right  
+                else if (root.val < p.val && root.val < q.val)  
+                    root = root.right;  
+   
+                else break;  
+            }  
+            return root;  
         }
         
         static void Main(string[] args)
         {
-            ListNode one = new ListNode(1, new ListNode(2, new ListNode(2, new ListNode(1))));
-            var ret = IsPalindrome(one);
+          
             Console.ReadKey();
         }
     }
 }
+
+//235. Lowest Common Ancestor of a Binary Search Tree
+//I had to google solution because I did not know that in BST all left right values are less than all right
+// left branches has smaller values that right branches from the top!
+//the solution is trivial
