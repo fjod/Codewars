@@ -1,5 +1,6 @@
 ﻿using System;
-
+using System.Collections.Generic;
+using System.Linq;
 
 
 namespace CodeWars
@@ -11,24 +12,7 @@ namespace CodeWars
         
         static public int[] SortArrayByParity(int[] A)
         {
-            int[] ret = new int[A.Length];
-            int backCounter = 0;
-            int forwardCounter = A.Length-1;
-            for (int i = 0; i < A.Length; i++)
-            {
-                if (A[i] % 2 == 0)
-                {
-                    ret[backCounter] = A[i];
-                    backCounter++;
-                }
-                else
-                {
-                    ret[forwardCounter] = A[i];
-                    forwardCounter--;
-                }
-            }
-
-            return ret;
+            return (A.Where(i => i % 2 == 0)).Concat((A.Where(i => i % 2 != 0))).ToArray();
         }
         static void Main(string[] args)
         {
