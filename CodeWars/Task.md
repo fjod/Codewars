@@ -1,31 +1,17 @@
-﻿Given a binary search tree (BST), find the lowest common ancestor (LCA) of two given nodes in the BST.
+﻿Given an array A of non-negative integers, return an array consisting of all the even elements of A, followed by all the odd elements of A.
 
-According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+You may return any answer array that satisfies this condition.
 
 
 
 Example 1:
 
-
-Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 8
-Output: 6
-Explanation: The LCA of nodes 2 and 8 is 6.
-Example 2:
+Input: [3,1,2,4]
+Output: [2,4,3,1]
+The outputs [4,2,3,1], [2,4,1,3], and [4,2,1,3] would also be accepted.
 
 
-Input: root = [6,2,8,0,4,7,9,null,null,3,5], p = 2, q = 4
-Output: 2
-Explanation: The LCA of nodes 2 and 4 is 2, since a node can be a descendant of itself according to the LCA definition.
-Example 3:
+Note:
 
-Input: root = [2,1], p = 2, q = 1
-Output: 2
-
-
-Constraints:
-
-The number of nodes in the tree is in the range [2, 105].
--109 <= Node.val <= 109
-All Node.val are unique.
-p != q
-p and q will exist in the BST.
+1 <= A.length <= 5000
+0 <= A[i] <= 5000
