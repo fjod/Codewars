@@ -10,15 +10,18 @@ namespace CodeWars
     class Program
     {
         
-        static public int[] SortArrayByParity(int[] A)
+        public static int SmallestRangeI(int[] A, int K)
         {
-            return (A.Where(i => i % 2 == 0)).Concat((A.Where(i => i % 2 != 0))).ToArray();
+            if (A.Length <= 1) return 0;
+            var sorted = A.ToList().OrderBy(i => i);
+            return Math.Max(sorted.Max() - K*2 - sorted.Min(),0);
         }
         static void Main(string[] args)
         {
-            var e = SortArrayByParity(new[] {3, 1, 2, 4});
+            var q = SmallestRangeI(new[] {1, 3,6}, 3);
             Console.ReadKey();
         }
     }
 }
 
+//I am too stupid to understand math solution, so here is mine 
