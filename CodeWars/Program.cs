@@ -10,72 +10,52 @@ namespace CodeWars
     class Program
     {
         
-        public static bool HasGroupsSizeX(int[] deck)
+        public static bool IsLongPressedName(string name, string typed)
         {
-            if (deck.Length <= 1) return false;
-            var q = deck.GroupBy(i => i);
-            if (q.Count() == 1) return true;
-            int? minCount = null;
-            foreach (var group in q)
+            if (name == typed) return true;
+            bool foundAtLeastOneLongPressed = false;
+            int typedCurrentCharPos = 0;
+            for (int i = 0; i < name.Length; i++)
             {
-                var currentCount = group.Count();
-                if (minCount.HasValue)
+                var current = name[i];
+                int foundCharPos = 0;
+                for (int j = typedCurrentCharPos; j < typed.Length; j++) //look for same char
                 {
-                    if (currentCount < minCount)
+                    if (current == typed[j])
                     {
-                        //found new minimalCount
-                        minCount = currentCount;
+                        foundCharPos = j;
+                        break;
                     }
-                    
+
+                    return false;
                 }
-                else
-                    minCount = currentCount;
-            }
 
-            if (minCount == 1) return false;
-
-            int GCD(int a, int b)
-            {
-                return b == 0 ? a : GCD(b, a % b);
-            }
-
-            
-            List<int> gdcs = new List<int>();
-            foreach (var group in q)
-            {
-                var currentCount = group.Count();
-                if (currentCount % minCount != 0)
+                int lenOfCurrentLongPressed = 0;
+                int counter = foundCharPos;
+                int adder = 0;
+                while (current == typed[counter])
                 {
-                    int bigCount = Math.Max(currentCount, minCount.Value);
-                    int smallCount = Math.Min(currentCount, minCount.Value);
-                    var gcd = GCD(bigCount, smallCount);
-                    if (gcd > 1)
-                        gdcs.Add(gcd);
+                    lenOfCurrentLongPressed++;
+                    counter++;
+                    adder++;
+                    if (counter >= typed.Length) break;
                 }
-                else
-                {
-                    gdcs.Add(minCount.Value);
-                }
-                
+
+                typedCurrentCharPos = foundCharPos + adder;
+                if (lenOfCurrentLongPressed > 1) foundAtLeastOneLongPressed = true;
             }
-            //code fails for [1,1,1,1,2,2,2,2,2,2]
-            if (gdcs.Count() < 2) return false;
-           
-                var first = gdcs.First();
-                var allTheSame = gdcs.All(i => i == first);
-                return allTheSame;
-            
-       
+
+            return foundAtLeastOneLongPressed;
         }
         static void Main(string[] args)
         {
-            var q = HasGroupsSizeX(new[] {1,1,1,1,2,2,2,2,2,2});
+           
+            
+            var t = IsLongPressedName( "leelee", "lleeelee");
             Console.ReadKey();
         }
     }
 }
 
-//914. X of a Kind in a Deck of Cards
-//it's too hard :(
-//  return deck.GroupBy(e => e).Select(I => I.Count()).Aggregate(GCD) >= 2;
-//I did not manage to think of to Aggregate func; but was on right track
+//925. Long Pressed Name
+//fails on edge case where it's not clear whether user long pressed one button 2 or 3 times

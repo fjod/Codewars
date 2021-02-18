@@ -1,39 +1,32 @@
-﻿In a deck of cards, each card has an integer written on it.
+﻿Your friend is typing his name into a keyboard. Sometimes, when typing a character c, the key might get long pressed, and the character will be typed 1 or more times.
 
-Return true if and only if you can choose X >= 2 such that it is possible to split the entire deck into 1 or more groups of cards, where:
+You examine the typed characters of the keyboard. Return True if it is possible that it was your friends name, with some characters (possibly none) being long pressed.
 
-Each group has exactly X cards.
-All the cards in each group have the same integer.
 
 
 Example 1:
 
-Input: deck = [1,2,3,4,4,3,2,1]
+Input: name = "alex", typed = "aaleex"
 Output: true
-Explanation: Possible partition [1,1],[2,2],[3,3],[4,4].
+Explanation: 'a' and 'e' in 'alex' were long pressed.
 Example 2:
 
-Input: deck = [1,1,1,2,2,2,3,3]
-Output: false´
-Explanation: No possible partition.
+Input: name = "saeed", typed = "ssaaedd"
+Output: false
+Explanation: 'e' must have been pressed twice, but it wasn't in the typed output.
 Example 3:
 
-Input: deck = [1]
-Output: false
-Explanation: No possible partition.
+Input: name = "leelee", typed = "lleeelee"
+Output: true
 Example 4:
 
-Input: deck = [1,1]
+Input: name = "laiden", typed = "laiden"
 Output: true
-Explanation: Possible partition [1,1].
-Example 5:
-
-Input: deck = [1,1,2,2,2,2]
-Output: true
-Explanation: Possible partition [1,1],[2,2],[2,2].
+Explanation: It's not necessary to long press any character.
 
 
 Constraints:
 
-1 <= deck.length <= 10^4
-0 <= deck[i] < 10^4
+1 <= name.length <= 1000
+1 <= typed.length <= 1000
+name and typed contain only lowercase English letters.
