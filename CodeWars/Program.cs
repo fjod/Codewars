@@ -10,52 +10,35 @@ namespace CodeWars
     class Program
     {
         
-        public static bool IsLongPressedName(string name, string typed)
+        public static int RemoveDuplicates(int[] nums)
         {
-            if (name == typed) return true;
-            bool foundAtLeastOneLongPressed = false;
-            int typedCurrentCharPos = 0;
-            for (int i = 0; i < name.Length; i++)
+           // Input: nums = [0,0,1,1,1,2,2,3,3,4]
+           // Output: 5, nums = [0,1,2,3,4]
+            int newCount = nums.Length;
+            for (int i = 1; i < newCount; i++)
             {
-                var current = name[i];
-                int foundCharPos = 0;
-                for (int j = typedCurrentCharPos; j < typed.Length; j++) //look for same char
+                if (nums[i] == nums[i-1])
                 {
-                    if (current == typed[j])
+                    //shift array 1 left
+                  
+                    for (int j = i; j < newCount-1; j++)
                     {
-                        foundCharPos = j;
-                        break;
+                        nums[j] = nums[j + 1];
                     }
-
-                    return false;
+                    newCount--;
+                    i--;
                 }
-
-                int lenOfCurrentLongPressed = 0;
-                int counter = foundCharPos;
-                int adder = 0;
-                while (current == typed[counter])
-                {
-                    lenOfCurrentLongPressed++;
-                    counter++;
-                    adder++;
-                    if (counter >= typed.Length) break;
-                }
-
-                typedCurrentCharPos = foundCharPos + adder;
-                if (lenOfCurrentLongPressed > 1) foundAtLeastOneLongPressed = true;
             }
 
-            return foundAtLeastOneLongPressed;
+            return newCount;
         }
         static void Main(string[] args)
         {
-           
-            
-            var t = IsLongPressedName( "leelee", "lleeelee");
+
+            var q = RemoveDuplicates(new[] {0, 0, 1, 1, 1, 2, 2, 3, 3, 4});
+          
             Console.ReadKey();
         }
     }
 }
-
-//925. Long Pressed Name
-//fails on edge case where it's not clear whether user long pressed one button 2 or 3 times
+//26. Remove Duplicates from Sorted Array
