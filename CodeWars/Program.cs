@@ -1,44 +1,32 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 
 
 namespace CodeWars
 {
-  
-
+   
     class Program
     {
-        
-        public static int RemoveDuplicates(int[] nums)
+        public static int ProjectionArea(int[][] grid)
         {
-           // Input: nums = [0,0,1,1,1,2,2,3,3,4]
-           // Output: 5, nums = [0,1,2,3,4]
-            int newCount = nums.Length;
-            for (int i = 1; i < newCount; i++)
+            var bottom = grid.Sum(m=>m.Count(i => i >0));
+            var leftSide = 0;
+            var rightSide = 0;
+            for (int i = 0; i < grid.Length; i++)
             {
-                if (nums[i] == nums[i-1])
-                {
-                    //shift array 1 left
-                  
-                    for (int j = i; j < newCount-1; j++)
-                    {
-                        nums[j] = nums[j + 1];
-                    }
-                    newCount--;
-                    i--;
-                }
+                leftSide+=grid.Max(g => g[i]);
+                rightSide += grid[i].Max();
             }
-
-            return newCount;
+            return bottom + leftSide + rightSide;
         }
         static void Main(string[] args)
         {
+            var a1 = new[] {1, 0};
+            var a2 = new[] {0, 2};
+            var ret = ProjectionArea(new[] {a1, a2});
 
-            var q = RemoveDuplicates(new[] {0, 0, 1, 1, 1, 2, 2, 3, 3, 4});
-          
             Console.ReadKey();
         }
     }
 }
-//26. Remove Duplicates from Sorted Array
+//883. Projection Area of 3D Shapes
