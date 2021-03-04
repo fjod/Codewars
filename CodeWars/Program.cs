@@ -7,23 +7,23 @@ namespace CodeWars
    
     class Program
     {
-        public static int ProjectionArea(int[][] grid)
-        {
-            var bottom = grid.Sum(m=>m.Count(i => i >0));
-            var leftSide = 0;
-            var rightSide = 0;
-            for (int i = 0; i < grid.Length; i++)
+        public static int SearchInsert(int[] nums, int target) {
+
+            for (int i = 0; i < nums.Length; i++)
             {
-                leftSide+=grid.Max(g => g[i]);
-                rightSide += grid[i].Max();
+                if (nums[i] == target) return i;
+                if (nums[i] > target)
+                {
+                    return i + 1;
+                }
             }
-            return bottom + leftSide + rightSide;
+
+            if (target > nums[^1]) return nums.Length;
+            return 0;
         }
         static void Main(string[] args)
         {
-            var a1 = new[] {1, 0};
-            var a2 = new[] {0, 2};
-            var ret = ProjectionArea(new[] {a1, a2});
+            
 
             Console.ReadKey();
         }

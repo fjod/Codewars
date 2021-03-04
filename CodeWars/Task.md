@@ -1,19 +1,24 @@
-﻿883. Projection Area of 3D Shapes
-     Easy
+﻿Given a sorted array of distinct integers and a target value, return the index if the target is found. If not, return the index where it would be if it were inserted in order.
 
-293
 
-944
 
-Add to List
+Example 1:
 
-Share
-You are given an n x n grid where we place some 1 x 1 x 1 cubes that are axis-aligned with the x, y, and z axes.
+Input: nums = [1,3,5,6], target = 5
+Output: 2
+Example 2:
 
-Each value v = grid[i][j] represents a tower of v cubes placed on top of the cell (i, j).
+Input: nums = [1,3,5,6], target = 2
+Output: 1
+Example 3:
 
-We view the projection of these cubes onto the xy, yz, and zx planes.
+Input: nums = [1,3,5,6], target = 7
+Output: 4
+Example 4:
 
-A projection is like a shadow, that maps our 3-dimensional figure to a 2-dimensional plane. We are viewing the "shadow" when looking at the cubes from the top, the front, and the side.
+Input: nums = [1,3,5,6], target = 0
+Output: 0
+Example 5:
 
-Return the total area of all three projections.
+Input: nums = [1], target = 0
+Output: 0
