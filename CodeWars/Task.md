@@ -1,36 +1,30 @@
-﻿1491. Average Salary Excluding the Minimum and Maximum Salary
+﻿1492. The kth Factor of n
 
-Given an array of unique integers salary where salary[i] is the salary of the employee i.
+Given two positive integers n and k.
 
-Return the average salary of employees excluding the minimum and maximum salary.
+A factor of an integer n is defined as an integer i where n % i == 0.
+
+Consider a list of all factors of n sorted in ascending order, return the kth factor in this list or return -1 if n has less than k factors.
 
 
 
 Example 1:
 
-Input: salary = [4000,3000,1000,2000]
-Output: 2500.00000
-Explanation: Minimum salary and maximum salary are 1000 and 4000 respectively.
-Average salary excluding minimum and maximum salary is (2000+3000)/2= 2500
+Input: n = 12, k = 3
+Output: 3
+Explanation: Factors list is [1, 2, 3, 4, 6, 12], the 3rd factor is 3.
 Example 2:
 
-Input: salary = [1000,2000,3000]
-Output: 2000.00000
-Explanation: Minimum salary and maximum salary are 1000 and 3000 respectively.
-Average salary excluding minimum and maximum salary is (2000)/1= 2000
+Input: n = 7, k = 2
+Output: 7
+Explanation: Factors list is [1, 7], the 2nd factor is 7.
 Example 3:
 
-Input: salary = [6000,5000,4000,3000,2000,1000]
-Output: 3500.00000
+Input: n = 4, k = 4
+Output: -1
+Explanation: Factors list is [1, 2, 4], there is only 3 factors. We should return -1.
 Example 4:
 
-Input: salary = [8000,9000,2000,3000,6000,1000]
-Output: 4750.00000
-
-
-Constraints:
-
-3 <= salary.length <= 100
-10^3 <= salary[i] <= 10^6
-salary[i] is unique.
-Answers within 10^-5 of the actual value will be accepted as correct.
+Input: n = 1, k = 1
+Output: 1
+Explanation: Factors list is [1], the 1st factor is 1.

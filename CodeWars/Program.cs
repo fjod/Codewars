@@ -9,12 +9,27 @@ namespace CodeWars
    
     class Program
     {
-        public double Average(int[] salary)
+        static IEnumerable<int> CalcFactorsForNumber(int i)
         {
-            return salary.OrderBy(m => m).Skip(1).Take(salary.Length - 2).Average();
+            for (int j = 1; j <= i; j++)
+            {
+                if (i % j == 0) yield return j;
+            }
+        }
+        static int KthFactor(int n, int k)
+        {
+            int count = 1;
+            foreach (var VARIABLE in CalcFactorsForNumber(n))
+            {
+                if (count == k) return VARIABLE;
+                count++;
+            }
+
+            return -1;
         }
         static void Main(string[] args)
         {
+            var q = KthFactor(4, 4);
             Console.ReadKey();
         }
     }
