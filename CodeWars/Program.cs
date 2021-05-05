@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using System.Text;
 
 
 namespace CodeWars
@@ -9,27 +10,40 @@ namespace CodeWars
    
     class Program
     {
-        static IEnumerable<int> CalcFactorsForNumber(int i)
+        
+        static string ReorderSpaces(string text)
         {
-            for (int j = 1; j <= i; j++)
-            {
-                if (i % j == 0) yield return j;
-            }
-        }
-        static int KthFactor(int n, int k)
-        {
-            int count = 1;
-            foreach (var VARIABLE in CalcFactorsForNumber(n))
-            {
-                if (count == k) return VARIABLE;
-                count++;
-            }
+            double spacesCount = text.Count(c => c == ' ');
+            var splittedWords = text.Split(" ").Where(s => !String.IsNullOrWhiteSpace(s));
+            var wordsCount = splittedWords.Count();
+            var maximizedCount = (int)(spacesCount / (wordsCount-1));
+            if (wordsCount == 1)
+                maximizedCount = 0;
+            StringBuilder sb = new StringBuilder();
 
-            return -1;
+            int counter = 0;
+            foreach (var word in splittedWords)
+            {
+                sb.Append(word);
+                if (counter < wordsCount-1)
+                    for (int i = 0; i < maximizedCount; i++)
+                    {
+                        sb.Append(' ');
+                    }
+                counter++;
+            }
+            var leftSpacesAmount = spacesCount % (wordsCount - 1);
+            if (wordsCount == 1)
+                leftSpacesAmount = spacesCount;
+            for (int i = 0; i < leftSpacesAmount; i++)
+            {
+                sb.Append(' ');
+            }
+            return sb.ToString();
         }
         static void Main(string[] args)
         {
-            var q = KthFactor(4, 4);
+            var a = ReorderSpaces("  hello");
             Console.ReadKey();
         }
     }
