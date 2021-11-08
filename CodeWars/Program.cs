@@ -1,49 +1,36 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Cryptography;
-using System.Text;
-
 
 namespace CodeWars
 {
-   
     class Program
     {
-        
-        static string ReorderSpaces(string text)
+        static int maxNumber(int[] nums)
         {
-            double spacesCount = text.Count(c => c == ' ');
-            var splittedWords = text.Split(" ").Where(s => !String.IsNullOrWhiteSpace(s));
-            var wordsCount = splittedWords.Count();
-            var maximizedCount = (int)(spacesCount / (wordsCount-1));
-            if (wordsCount == 1)
-                maximizedCount = 0;
-            StringBuilder sb = new StringBuilder();
-
+            if (nums.Length == 1)
+            {
+                return nums[0];
+            }
             int counter = 0;
-            foreach (var word in splittedWords)
+            int max = 0;
+            for (int i = 0; i < nums.Length; i++)
             {
-                sb.Append(word);
-                if (counter < wordsCount-1)
-                    for (int i = 0; i < maximizedCount; i++)
-                    {
-                        sb.Append(' ');
-                    }
-                counter++;
+                if (nums[i] == 1)
+                {
+                    counter++;
+                    if (counter > max)
+                        max = counter;
+                }
+                else
+                {
+                    counter = 0;
+                }
             }
-            var leftSpacesAmount = spacesCount % (wordsCount - 1);
-            if (wordsCount == 1)
-                leftSpacesAmount = spacesCount;
-            for (int i = 0; i < leftSpacesAmount; i++)
-            {
-                sb.Append(' ');
-            }
-            return sb.ToString();
+
+            return max;
         }
         static void Main(string[] args)
         {
-            var a = ReorderSpaces("  hello");
+            var i = maxNumber(new[] {1,0,1,1,0,1});
             Console.ReadKey();
         }
     }
