@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace CodeWars
 {
@@ -6,31 +7,11 @@ namespace CodeWars
     {
         static int maxNumber(int[] nums)
         {
-            if (nums.Length == 1)
-            {
-                return nums[0];
-            }
-            int counter = 0;
-            int max = 0;
-            for (int i = 0; i < nums.Length; i++)
-            {
-                if (nums[i] == 1)
-                {
-                    counter++;
-                    if (counter > max)
-                        max = counter;
-                }
-                else
-                {
-                    counter = 0;
-                }
-            }
-
-            return max;
+            return nums.OrderBy(i => i).Count(i => i is > 9 and < 100 or > 999 and < 10000 or > 99999 and < 1000000);
         }
         static void Main(string[] args)
         {
-            var i = maxNumber(new[] {1,0,1,1,0,1});
+            var i = maxNumber(new[] {12,345,2,6,7896});
             Console.ReadKey();
         }
     }
