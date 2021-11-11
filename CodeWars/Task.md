@@ -1,15 +1,22 @@
-﻿Given an integer array nums sorted in non-decreasing order, return an array of the squares of each number sorted in non-decreasing order.
+﻿Given a fixed-length integer array arr, duplicate each occurrence of zero, shifting the remaining elements to the right.
+
+Note that elements beyond the length of the original array are not written. Do the above modifications to the input array in place and do not return anything.
 
 
 
 Example 1:
 
-Input: nums = [-4,-1,0,3,10]
-Output: [0,1,9,16,100]
-Explanation: After squaring, the array becomes [16,1,0,9,100].
-After sorting, it becomes [0,1,9,16,100].
+Input: arr = [1,0,2,3,0,4,5,0]
+Output: [1,0,0,2,3,0,0,4]
+Explanation: After calling your function, the input array is modified to: [1,0,0,2,3,0,0,4]
 Example 2:
 
-Input: nums = [-7,-3,2,3,11]
-Output: [4,9,9,49,121]
- 
+Input: arr = [1,2,3]
+Output: [1,2,3]
+Explanation: After calling your function, the input array is modified to: [1,2,3]
+
+
+Constraints:
+
+1 <= arr.length <= 104
+0 <= arr[i] <= 9
