@@ -5,19 +5,31 @@ namespace CodeWars
 {
     class Program
     {
-        static int FindNumbers(int[] nums) => nums.Count(evenNumOfDigits);
-    
-        static bool evenNumOfDigits(int n) {
-            int count = 0;
-            while(0 < n) {
-                n /= 10;
-                ++count;
+        public static int[] SortedSquares(int[] nums)
+        {
+            int leftIndex = 0;
+            int rightIndex = nums.Length - 1;
+            int[] ret = new int[nums.Length];
+            for (int i = nums.Length-1; i >= 0; i--)
+            {
+                var leftIsBigger = Math.Abs(nums[leftIndex]) >= Math.Abs(nums[rightIndex]);
+                if (leftIsBigger)
+                {
+                    ret[i] = nums[leftIndex] * nums[leftIndex];
+                    leftIndex++;
+                }
+                else
+                {
+                    ret[i] = nums[rightIndex] * nums[rightIndex];
+                    rightIndex--;
+                }
             }
-            return count % 2 == 0;
+
+            return ret;
         }
         static void Main(string[] args)
         {
-            var i = FindNumbers(new[] {12,345,2,6,7896});
+            var i = SortedSquares(new[] {-7,-3,2,3,11});
             Console.ReadKey();
         }
     }
