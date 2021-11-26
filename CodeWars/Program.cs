@@ -6,42 +6,48 @@ namespace CodeWars
 {
     class Program
     {
-        public static int RemoveDuplicates(int[] nums)
+        public static bool CheckIfExist(int[] arr)
         {
-            if (nums.Length == 1)
-                return 1;
-            if (nums.Length == 0)
-                return 0;
+            if (arr.Length < 2) return false;
             
-            int current = 1;
-            int duplicate = 1;
-            for (int i = 0; i < nums.Length-1; i++)
+            bool foundEntry(int search, int shift)
             {
-                if (nums[i] == nums[i+1])
+                for (int i = shift; i < arr.Length; i++)
                 {
-                    duplicate = i+1;
+                    if (arr[i] == search) return true;
+                }
+
+                return false;
+            }
+            for (int i = 0; i < arr.Length; i++)
+            {
+                if (arr[i] % 2 == 0)
+                {
+                    var currrentDouble2 = arr[i] * 2;
+                    var currentDivide2 = arr[i] / 2;
+                    var foundDouble2 = foundEntry(currrentDouble2,i+1);
+                    var foundDiv2 = foundEntry(currentDivide2,i+1);
+                    if (foundDiv2 || foundDouble2) return true;
                 }
                 else
                 {
-                    nums[current] = nums[duplicate+1];
-                    current++;
+                    var currrentDouble2 = arr[i] * 2;
+                    var foundDouble2 = foundEntry(currrentDouble2,i+1);
+                    if (foundDouble2) return true;
                 }
+               
             }
 
-            return current;
+            return false;
         }
 
         static void Main(string[] args)
         {
-            //var test = new[] {3, 2, 2, 3};
-           // var ret = RemoveElement(test, 3);
-            
-           var test = new[] {0,0,1,1,1,2,2,3,3,4};
-           var  ret = RemoveDuplicates(test); //[0,1,2,3,4,_,_,_,_,_] 5
-           test = new[] {1,2};
-            ret = RemoveDuplicates(test); //[0,1,2,3,4,_,_,_,_,_] 5
-           Console.ReadKey();
+            var test = new[] {10, 2, 5, 3};
+            var ret = CheckIfExist(test); //[0,1,2,3,4,_,_,_,_,_] 5
+            test = new[] {3,1,7,11};
+            ret = CheckIfExist(test); //[0,1,2,3,4,_,_,_,_,_] 5
+            Console.ReadKey();
         }
     }
 }
-
