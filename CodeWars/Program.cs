@@ -6,26 +6,29 @@ namespace CodeWars
 {
     class Program
     {
-        public static int RemoveElement(int[] nums, int val)
+        public static int RemoveDuplicates(int[] nums)
         {
-            int counter = 0;
-            int dups = 0;
-            for (int i = 0; i < nums.Length- dups; i++)
+            if (nums.Length == 1)
+                return 1;
+            if (nums.Length == 0)
+                return 0;
+            
+            int current = 1;
+            int duplicate = 1;
+            for (int i = 0; i < nums.Length-1; i++)
             {
-                if (nums[i] == val)
+                if (nums[i] == nums[i+1])
                 {
-                    for (int k = i; k < nums.Length-1; k++) //сдвинуть остаток влево
-                    {
-                        nums[k] = nums[k + 1];
-                    }
-
-                    i--;
-                    dups++;
+                    duplicate = i+1;
                 }
-                counter++;
+                else
+                {
+                    nums[current] = nums[duplicate+1];
+                    current++;
+                }
             }
 
-            return counter-dups;
+            return current;
         }
 
         static void Main(string[] args)
@@ -33,9 +36,11 @@ namespace CodeWars
             //var test = new[] {3, 2, 2, 3};
            // var ret = RemoveElement(test, 3);
             
-           var test = new[] {0,1,2,2,3,0,4,2};
-           var  ret = RemoveElement(test, 2); //[0,1,4,0,3,_,_,_] 5
-            Console.ReadKey();
+           var test = new[] {0,0,1,1,1,2,2,3,3,4};
+           var  ret = RemoveDuplicates(test); //[0,1,2,3,4,_,_,_,_,_] 5
+           test = new[] {1,2};
+            ret = RemoveDuplicates(test); //[0,1,2,3,4,_,_,_,_,_] 5
+           Console.ReadKey();
         }
     }
 }
