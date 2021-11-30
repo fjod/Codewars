@@ -1,25 +1,29 @@
-﻿Given an array arr of integers, check if there exists two integers N and M such that N is the double of M ( i.e. N = 2 * M).
+﻿Given an array of integers arr, return true if and only if it is a valid mountain array.
 
-More formally check if there exists two indices i and j such that :
+Recall that arr is a mountain array if and only if:
 
-i != j
-0 <= i, j < arr.length
-arr[i] == 2 * arr[j]
+arr.length >= 3
+There exists some i with 0 < i < arr.length - 1 such that:
+arr[0] < arr[1] < ... < arr[i - 1] < arr[i]
+arr[i] > arr[i + 1] > ... > arr[arr.length - 1]
+
 
 
 Example 1:
 
-Input: arr = [10,2,5,3]
-Output: true
-Explanation: N = 10 is the double of M = 5,that is, 10 = 2 * 5.
+Input: arr = [2,1]
+Output: false
 Example 2:
 
-Input: arr = [7,1,14,11]
-Output: true
-Explanation: N = 14 is the double of M = 7,that is, 14 = 2 * 7.
+Input: arr = [3,5,5]
+Output: false
 Example 3:
 
-Input: arr = [3,1,7,11]
-Output: false
-Explanation: In this case does not exist N and M, such that N = 2 * M.
- 
+Input: arr = [0,3,2,1]
+Output: true
+
+
+Constraints:
+
+1 <= arr.length <= 104
+0 <= arr[i] <= 104
