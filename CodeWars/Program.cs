@@ -10,27 +10,15 @@ namespace CodeWars
     {
         public static int[] ReplaceElements(int[] arr)
         {
-            if (arr.Length == 1)
-            {
-                arr[^1] = -1;
-                return arr;
-            }
-            int max(Span<int> span)
-            {
-                int sum = 0;
-                foreach (var value in span)
-                    if (value > sum)
-                        sum = value;
-
-                return sum;
-            }
-            for (int i = 0; i < arr.Length-1; i++)
-            {
-                var nextItems = arr.AsSpan(i + 1);
-                arr[i] = max(nextItems);
+            var max = -1;
+            for (var i = arr.Length - 1; i >= 0; i--) {
+                var tmp = arr[i];
+                arr[i] = max;
+                if (tmp > max) {
+                    max = tmp;
+                }
             }
 
-            arr[^1] = -1;
             return arr;
         }
 
