@@ -8,40 +8,36 @@ namespace CodeWars
 {
     class Program
     {
-        public static bool ValidMountainArray(int[] arr)
+        public static int[] ReplaceElements(int[] arr)
         {
-            if (arr.Length <= 2)
+            if (arr.Length == 1)
             {
-                return false;
+                arr[^1] = -1;
+                return arr;
             }
-            if (arr.Length == 3)
+            int max(Span<int> span)
             {
-                return arr[0] < arr[1] && arr[1] > arr[2];
+                int sum = 0;
+                foreach (var value in span)
+                    if (value > sum)
+                        sum = value;
+
+                return sum;
             }
-            int start = 0;
-            int stop = arr.Length-1;
-            int? startEnd = null;
-            int? stopEnd = null;
-            while (true)
+            for (int i = 0; i < arr.Length-1; i++)
             {
-                if (startEnd != null && stopEnd != null)
-                {
-                    return startEnd == stopEnd;
-                }
-                int startNext = start + 1;
-                int stopPrev = stop - 1;
-                if (startNext == arr.Length) startEnd = arr.Length - 1;
-                if (stopPrev < 0) stopEnd = 0;
-                if (startEnd == null) if (arr[startNext] <= arr[start]) startEnd = start;
-                if (stopEnd == null) if (arr[stopPrev] <= arr[stop]) stopEnd = stop;
-                start++;
-                stop--;
+                var nextItems = arr.AsSpan(i + 1);
+                arr[i] = max(nextItems);
             }
+
+            arr[^1] = -1;
+            return arr;
         }
 
         static void Main(string[] args)
         {
-            var test = ValidMountainArray(new[] {0,1,2,1,2});
+            var test = ReplaceElements(new[] {17,18,5,4,6,1});
+            
             Console.ReadKey();
         }
     }
