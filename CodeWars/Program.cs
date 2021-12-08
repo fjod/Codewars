@@ -8,23 +8,34 @@ namespace CodeWars
 {
     class Program
     {
-        public static int[] ReplaceElements(int[] arr)
+        public static int RemoveDuplicates(int[] nums)
         {
-            var max = -1;
-            for (var i = arr.Length - 1; i >= 0; i--) {
-                var tmp = arr[i];
-                arr[i] = max;
-                if (tmp > max) {
-                    max = tmp;
+            if (nums.Length == 1) return 1;
+            if (nums.Length == 0) return 0;
+            if (nums.Length == 2 && nums[0] != nums[1]) return 2;
+            int duplicate = 0;
+            int start = 1;
+            for (int i = 0; i < nums.Length-1; i++)
+            {
+                var next = nums[i + 1];
+                if (nums[i] == next)
+                {
+                    duplicate++;
+                }
+                else
+                {
+                    nums[start] = nums[i + 1];
+                    start++;
                 }
             }
 
-            return arr;
+            return duplicate;
         }
 
         static void Main(string[] args)
         {
-            var test = ReplaceElements(new[] {17,18,5,4,6,1});
+            var a = new[] {1, 1, 2};
+            var test = RemoveDuplicates(a);
             
             Console.ReadKey();
         }
