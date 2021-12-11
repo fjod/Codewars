@@ -44,7 +44,7 @@ namespace CodeWars
       
         static void Main(string[] args)
         {
-            var a = new[] {3,1,2,4}; // [2,4,3,1]
+            var a = new[] {3,1,2,4}; 
             a = SortArrayByParity(a);
             
             Console.ReadKey();
