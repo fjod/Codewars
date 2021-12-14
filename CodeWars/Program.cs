@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 
 namespace CodeWars
@@ -6,46 +7,24 @@ namespace CodeWars
    
     class Program
     {
-        public static int[] SortArrayByParity(int[] nums)
+        public static int HeightChecker(int[] heights)
         {
 
-            if (nums.Length <= 1) return nums;
-            int findEvenFromStartIndex(int start)
+            var sorted = heights.OrderBy(s=>s).ToArray();
+            var counter = 0;
+            for (int i = 0; i < heights.Length; i++)
             {
-                for (int i = start; i < nums.Length; i++)
-                {
-                    if (nums[i] % 2 != 0) return i;
-                }
-
-                return nums.Length;
-            }
-            
-            int findOddFromEndIndex(int end)
-            {
-                for (int i = end; i > 0; i--)
-                {
-                    if (nums[i] % 2 == 0) return i;
-                }
-
-                return 0;
+                if (sorted[i] != heights[i]) counter++;
             }
 
-            int start = findEvenFromStartIndex(0);
-            int end = findOddFromEndIndex(nums.Length - 1);
-            while (true)
-            {
-                if (start >= end) return nums;
-                (nums[end], nums[start]) = (nums[start], nums[end]);
-                start = findEvenFromStartIndex(start);
-                end = findOddFromEndIndex(end);
-            }
+            return counter;
         }
 
       
         static void Main(string[] args)
         {
-            var a = new[] {3,1,2,4}; 
-            a = SortArrayByParity(a);
+            var a = new[] {5,1,2,3,4}; 
+            var b = HeightChecker(a);
             
             Console.ReadKey();
         }
