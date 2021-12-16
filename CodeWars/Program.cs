@@ -7,24 +7,31 @@ namespace CodeWars
    
     class Program
     {
-        public static int HeightChecker(int[] heights)
+        public static int FindMaxConsecutiveOnes(int[] nums)
         {
-
-            var sorted = heights.OrderBy(s=>s).ToArray();
-            var counter = 0;
-            for (int i = 0; i < heights.Length; i++)
-            {
-                if (sorted[i] != heights[i]) counter++;
+            int currentOneCount = 0;
+            int consecutiveOneCount = 0;
+            int maxOneCount = 0;
+            for (int i = 0; i < nums.Length; i++) {
+                if (nums[i] == 1) {
+                    currentOneCount++;
+                    consecutiveOneCount++;
+                } else {
+                    currentOneCount = consecutiveOneCount;
+                    currentOneCount++;
+                    consecutiveOneCount = 0;
+                }
+                if (currentOneCount > maxOneCount)
+                    maxOneCount = currentOneCount;
             }
-
-            return counter;
+            return maxOneCount;
         }
 
       
         static void Main(string[] args)
         {
-            var a = new[] {5,1,2,3,4}; 
-            var b = HeightChecker(a);
+            var a = new[] {0,1,0,0,1}; 
+            var b = FindMaxConsecutiveOnes(a);
             
             Console.ReadKey();
         }
