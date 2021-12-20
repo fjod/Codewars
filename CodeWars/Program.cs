@@ -7,31 +7,82 @@ namespace CodeWars
    
     class Program
     {
-        public static int FindMaxConsecutiveOnes(int[] nums)
+        public static int ThirdMax(int[] nums)
         {
-            int currentOneCount = 0;
-            int consecutiveOneCount = 0;
-            int maxOneCount = 0;
-            for (int i = 0; i < nums.Length; i++) {
-                if (nums[i] == 1) {
-                    currentOneCount++;
-                    consecutiveOneCount++;
-                } else {
-                    currentOneCount = consecutiveOneCount;
-                    currentOneCount++;
-                    consecutiveOneCount = 0;
+            int? firstMax = null;
+            int? secondMax = null;
+            int? thirdMax = null;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (firstMax == null)
+                {
+                    firstMax = nums[i];
+                    continue;
                 }
-                if (currentOneCount > maxOneCount)
-                    maxOneCount = currentOneCount;
+
+                if (firstMax.Value == nums[i]) continue;
+                
+                if (secondMax == null)
+                {
+                    if (nums[i] > firstMax)
+                    {
+                        secondMax = firstMax;
+                        firstMax = nums[i];
+                        continue;
+                    }
+                    if (nums[i] <= firstMax)
+                    {
+                        secondMax = nums[i];
+                        continue;
+                    }
+                }
+                
+                if (secondMax.Value == nums[i]) continue;
+                
+                if (thirdMax == null)
+                {
+                    if (nums[i] > firstMax)
+                    {
+                        thirdMax = secondMax;
+                        secondMax = firstMax;
+                        firstMax = nums[i];
+                        continue;
+                    }
+                    if (nums[i] > secondMax)
+                    {
+                        thirdMax = secondMax;
+                        secondMax = nums[i];
+                        continue;
+                    }
+                    thirdMax = nums[i];
+                    continue;
+                }
+                if (nums[i] > firstMax)
+                {
+                    thirdMax = secondMax;
+                    secondMax = firstMax;
+                    firstMax = nums[i];
+                    continue;
+                }
+                if (nums[i] > secondMax)
+                {
+                    thirdMax = secondMax;
+                    secondMax = nums[i];
+                    continue;
+                }
+                if (nums[i] > thirdMax) thirdMax = nums[i];
             }
-            return maxOneCount;
+
+            if (thirdMax != null) return thirdMax.Value;
+            if (firstMax!= null && secondMax!= null) return Math.Max(firstMax.Value, secondMax.Value);
+            return firstMax.Value;
         }
 
       
         static void Main(string[] args)
         {
-            var a = new[] {0,1,0,0,1}; 
-            var b = FindMaxConsecutiveOnes(a);
+            var a = new[] {1,2}; 
+            var b = ThirdMax(a);
             
             Console.ReadKey();
         }
