@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
@@ -7,82 +8,38 @@ namespace CodeWars
    
     class Program
     {
-        public static int ThirdMax(int[] nums)
+        
+        public static IList<int> FindDisappearedNumbers(int[] nums)
         {
-            int? firstMax = null;
-            int? secondMax = null;
-            int? thirdMax = null;
-            for (int i = 0; i < nums.Length; i++)
-            {
-                if (firstMax == null)
-                {
-                    firstMax = nums[i];
-                    continue;
-                }
+            List<int> ret = new List<int>();
 
-                if (firstMax.Value == nums[i]) continue;
-                
-                if (secondMax == null)
+            int i = 0;
+            nums = nums.OrderBy(i1 => i1).ToArray();
+            foreach (var v in  Enumerable.Range(1, nums.Length))
+            {
+                bool found = false;
+                while (true)
                 {
-                    if (nums[i] > firstMax)
-                    {
-                        secondMax = firstMax;
-                        firstMax = nums[i];
-                        continue;
-                    }
-                    if (nums[i] <= firstMax)
-                    {
-                        secondMax = nums[i];
-                        continue;
-                    }
+                    if (i < nums.Length)
+                        if (nums[i] == v)
+                        {
+                            found = true;
+                            i++;
+                        }
+                        else break;
+                    else break;
                 }
-                
-                if (secondMax.Value == nums[i]) continue;
-                
-                if (thirdMax == null)
-                {
-                    if (nums[i] > firstMax)
-                    {
-                        thirdMax = secondMax;
-                        secondMax = firstMax;
-                        firstMax = nums[i];
-                        continue;
-                    }
-                    if (nums[i] > secondMax)
-                    {
-                        thirdMax = secondMax;
-                        secondMax = nums[i];
-                        continue;
-                    }
-                    thirdMax = nums[i];
-                    continue;
-                }
-                if (nums[i] > firstMax)
-                {
-                    thirdMax = secondMax;
-                    secondMax = firstMax;
-                    firstMax = nums[i];
-                    continue;
-                }
-                if (nums[i] > secondMax)
-                {
-                    thirdMax = secondMax;
-                    secondMax = nums[i];
-                    continue;
-                }
-                if (nums[i] > thirdMax) thirdMax = nums[i];
+                if (!found) ret.Add(v);
             }
 
-            if (thirdMax != null) return thirdMax.Value;
-            if (firstMax!= null && secondMax!= null) return Math.Max(firstMax.Value, secondMax.Value);
-            return firstMax.Value;
+            return ret;
         }
 
       
         static void Main(string[] args)
         {
-            var a = new[] {1,2}; 
-            var b = ThirdMax(a);
+            var a = new[] {4,3,2,7,8,2,3,1}; 
+            var b = FindDisappearedNumbers(a);
             
             Console.ReadKey();
         }
