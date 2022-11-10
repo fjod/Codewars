@@ -1,19 +1,5 @@
-﻿Given an array nums of n integers where nums[i] is in the range [1, n], return an array of all the integers in the range [1, n] that do not appear in nums.
+﻿You are a product manager and currently leading a team to develop a new product. Unfortunately, the latest version of your product fails the quality check. Since each version is developed based on the previous version, all the versions after a bad version are also bad.
 
+Suppose you have n versions [1, 2, ..., n] and you want to find out the first bad one, which causes all the following ones to be bad.
 
-
-Example 1:
-
-Input: nums = [4,3,2,7,8,2,3,1]
-Output: [5,6]
-Example 2:
-
-Input: nums = [1,1]
-Output: [2]
-
-
-Constraints:
-
-n == nums.length
-1 <= n <= 105
-1 <= nums[i] <= n
+You are given an API bool isBadVersion(version) which returns whether version is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
