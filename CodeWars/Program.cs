@@ -1,58 +1,42 @@
-﻿namespace CodeWars
+﻿using System;
+
+namespace CodeWars
 {
    
     class Program
     {
-        static bool IsBadVersion(int i)
+     // https://www.youtube.com/watch?v=g9YQyYi4IQQ   
+        public static double MyPow(double x, int n)
         {
-            return i == 4;
-        }
-        
-        public static int FirstBadVersion(int n)
-        {
-            if (n == 0) return 0;
-            if (n == 1)
+            if (x == 0) return 0;
+            if (n == 0) return 1;
+            if (n == 1) return x;
+            if (n == 2) return x * x;
+            if (n > 0)
             {
-                if (IsBadVersion(1)) return 1;
-                return 0;
-            };
-
-            int left = 0;
-            int right = n;
-            while (left < right)
+                var div = n / 2; // 7/2 = 3
+                double left = 1;
+                if (n % 2 != 0) left = x;
+                var calc = MyPow(x, div);
+                return left * calc * calc;
+            }
+            else
             {
-                int mid = left + (right - left) / 2;
-                var isCurrentBad = IsBadVersion(mid);
-                var isNextBad = IsBadVersion(mid + 1);
-
-                if (isCurrentBad == false && isNextBad == false)
-                {
-                    left = mid;
-                    continue;
-                }
-                if (isCurrentBad == true && isNextBad == true)
-                {
-                    right = mid;
-                    continue;
-                }
-                
-                if (isCurrentBad == false && isNextBad == true)
-                {
-                    return mid+1;
-                }
+                var positiveN = n * -1;
+                var div =positiveN / 2; // 7/2 = 3
+                double left = 1;
+                if (positiveN % 2 != 0) left = x;
+                var calc = MyPow(x, div);
+                var negRet =  1 / (left * calc * calc);
+                if (double.IsInfinity(negRet))
+                    return 0;
+                return negRet;
             }
 
-            if (IsBadVersion(left) && !IsBadVersion(right))
-            {
-                return left;
-            }
-
-            return 0;
         }
-        
         static void Main(string[] args)
         {
-            var q = FirstBadVersion(5);
+            var q = MyPow(2, -2);
         }
     }
 }
