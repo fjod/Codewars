@@ -5,38 +5,38 @@ namespace CodeWars
    
     class Program
     {
-     // https://www.youtube.com/watch?v=g9YQyYi4IQQ   
-        public static double MyPow(double x, int n)
+        public static bool IsPerfectSquare(int num)
         {
-            if (x == 0) return 0;
-            if (n == 0) return 1;
-            if (n == 1) return x;
-            if (n == 2) return x * x;
-            if (n > 0)
+
+            if (num == 1) return true;
+            
+            int left = 1;
+            int right = num / 2;
+            while (left <= right)
             {
-                var div = n / 2; // 7/2 = 3
-                double left = 1;
-                if (n % 2 != 0) left = x;
-                var calc = MyPow(x, div);
-                return left * calc * calc;
-            }
-            else
-            {
-                var positiveN = n * -1;
-                var div =positiveN / 2; // 7/2 = 3
-                double left = 1;
-                if (positiveN % 2 != 0) left = x;
-                var calc = MyPow(x, div);
-                var negRet =  1 / (left * calc * calc);
-                if (double.IsInfinity(negRet))
-                    return 0;
-                return negRet;
+                var mid = left + (right - left) / 2;
+                long dMid = (long)mid * (long)mid;
+                if ((int)dMid == num) return true;
+                if (dMid > num || dMid < 0)
+                {
+                    var temp = right;
+                    right = right - (right - mid) / 2;
+                    if (right == temp) right -= 1;
+                }
+                else
+                {
+                    var temp = left;
+                    left = left + (mid - left) / 2;
+                    if (left == temp) left += 1;
+                   
+                }
             }
 
+            return false;
         }
         static void Main(string[] args)
         {
-            var q = MyPow(2, -2);
+            var q = IsPerfectSquare(2147395600);
         }
     }
 }
