@@ -1,42 +1,53 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.IO.Enumeration;
 
 namespace CodeWars
 {
-   
+    
+    
     class Program
     {
-        public static bool IsPerfectSquare(int num)
-        {
-
-            if (num == 1) return true;
-            
-            int left = 1;
-            int right = num / 2;
-            while (left <= right)
+        public static int FindCircleNum(int[][] isConnected) {
+        
+            var set = new DisjointSet(isConnected.Length);
+            for (int i = 0; i < isConnected.Length; i++)
             {
-                var mid = left + (right - left) / 2;
-                long dMid = (long)mid * (long)mid;
-                if ((int)dMid == num) return true;
-                if (dMid > num || dMid < 0)
+                for (int j = 0; j < isConnected[i].Length; j++)
                 {
-                    var temp = right;
-                    right = right - (right - mid) / 2;
-                    if (right == temp) right -= 1;
-                }
-                else
-                {
-                    var temp = left;
-                    left = left + (mid - left) / 2;
-                    if (left == temp) left += 1;
-                   
+                    var rowValue = isConnected[i][j];
+                    if (rowValue == 1 && i != j)
+                    {
+                        set.union(i, j);
+                    }
                 }
             }
 
-            return false;
+            List<int> count = new List<int>();
+            for (int i = 0; i < isConnected.Length; i++)
+            {
+                var current = set.GetArrayValue(i);
+                if (!count.Contains(current))
+                    count.Add(current);
+            }
+
+            return count.Count;
         }
+        
         static void Main(string[] args)
         {
-            var q = IsPerfectSquare(2147395600);
+            var set = new DisjointSet(10);
+            set.union(0, 1);
+            set.union(2, 0);
+            set.union(3, 1);
+            set.union(4, 8);
+            set.union(5, 7);
+            set.union(5, 6);
+            var q = set.findRoot(0);
+            q = set.findRoot(1);
+            q = set.findRoot(2);
+            q = set.findRoot(3);
+
         }
     }
 }
