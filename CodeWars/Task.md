@@ -1,7 +1,7 @@
-﻿There are n cities. Some of them are connected, while some are not. If city a is connected directly with city b, and city b is connected directly with city c, then city a is connected indirectly with city c.
+﻿1971. Find if Path Exists in Graph
 
-A province is a group of directly or indirectly connected cities and no other cities outside of the group.
+There is a bi-directional graph with n vertices, where each vertex is labeled from 0 to n - 1 (inclusive). The edges in the graph are represented as a 2D integer array edges, where each edges[i] = [ui, vi] denotes a bi-directional edge between vertex ui and vertex vi. Every vertex pair is connected by at most one edge, and no vertex has an edge to itself.
 
-You are given an n x n matrix isConnected where isConnected[i][j] = 1 if the ith city and the jth city are directly connected, and isConnected[i][j] = 0 otherwise.
+You want to determine if there is a valid path that exists from vertex source to vertex destination.
 
-Return the total number of provinces.
+Given edges and the integers n, source, and destination, return true if there is a valid path from source to destination, or false otherwise.
