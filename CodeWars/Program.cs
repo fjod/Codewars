@@ -1,39 +1,58 @@
-﻿namespace CodeWars
+﻿using System.Linq;
+
+namespace CodeWars
 {
     class Program
     {
-        public class TreeNode
+        public static System.Collections.Generic.IList<System.Collections.Generic.IList<int>> AllPathsSourceTarget(int[][] graph)
         {
-            public int val;
-            public TreeNode left;
-            public TreeNode right;
+            int source = 0;
+            int target = graph.Length - 1;
+            System.Collections.Generic.List<System.Collections.Generic.List<int>> ret =
+                new System.Collections.Generic.List<System.Collections.Generic.List<int>>();
+            System.Collections.Generic.Stack<System.Collections.Generic.List<int>> stack =
+                new System.Collections.Generic.Stack<System.Collections.Generic.List<int>>();
 
-            public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
+            foreach (var i in graph[source])
             {
-                this.val = val;
-                this.left = left;
-                this.right = right;
+                stack.Push(new System.Collections.Generic.List<int> {source, i});
             }
-        }
 
-        private static bool IsMirror(TreeNode left, TreeNode right)
-        {
-            if (left == null && right == null) return true;// both null - no children, ok
-            if (left == null || right == null) return false; // one is null - no symmetry
-            return (left.val == right.val && //values are equal  
-                    IsMirror(left.left, right.right) && // outer children values are ok
-                    IsMirror(left.right, right.left) // outer children values are ok
-                );
-        }
+            while (stack.Count > 0)
+            {
+                var currentPaths = stack.Pop();
+                var lastVertex = currentPaths.Last();
+                if (lastVertex == target)
+                {
+                    ret.Add(currentPaths);
+                    continue;
+                }
 
-        public static bool IsSymmetric(TreeNode root)
-        {
-            if (root == null) return true;
-            return IsMirror(root.left, root.right);
+
+                var lastVertexPaths = graph[lastVertex];
+                for (int i = 0; i < lastVertexPaths.Length; i++)
+                {
+                    var updated = new System.Collections.Generic.List<int>();
+                    updated.AddRange(currentPaths);
+                    updated.Add(lastVertexPaths[i]);
+                    stack.Push(updated);
+                }
+            }
+
+            System.Collections.Generic.List<System.Collections.Generic.IList<int>> rret =
+                new System.Collections.Generic.List<System.Collections.Generic.IList<int>>();
+            rret.AddRange(ret);
+            return rret;
         }
 
         static void Main(string[] args)
         {
+            //                      0 -> (1,2)    1 -> (3)   1 -> (3)     (3) no connections
+            // int[][] graph = new[] {new[] {1, 2}, new[] {3}, new[] {3}, System.Array.Empty<int>() };
+            // var q = AllPathsSourceTarget(graph);
+
+            int[][] graph = new[] {new[] {4, 3, 1}, new[] {3, 2, 4}, new[] {3}, new[] {4}, System.Array.Empty<int>()};
+            var q = AllPathsSourceTarget(graph);
         }
     }
 }
