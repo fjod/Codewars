@@ -2,70 +2,38 @@
 {
     class Program
     {
-        public static bool ValidPath(int n, int[][] edges, int source, int destination)
+        public class TreeNode
         {
-            if (source == destination) return true;
-            var adjList = new System.Collections.Generic.List<System.Collections.Generic.List<int>>(n);
-            for (int i = 0; i < n; i++)
+            public int val;
+            public TreeNode left;
+            public TreeNode right;
+
+            public TreeNode(int val = 0, TreeNode left = null, TreeNode right = null)
             {
-                adjList.Add(new System.Collections.Generic.List<int>());
+                this.val = val;
+                this.left = left;
+                this.right = right;
             }
+        }
 
-            for (int i = 0; i < edges.Length; i++)
-            {
-                var src = edges[i][0];
-                var dest = edges[i][1];
-                adjList[src].Add(dest);
-                adjList[dest].Add(src);
-            }
+        private static bool IsMirror(TreeNode left, TreeNode right)
+        {
+            if (left == null && right == null) return true;// both null - no children, ok
+            if (left == null || right == null) return false; // one is null - no symmetry
+            return (left.val == right.val && //values are equal  
+                    IsMirror(left.left, right.right) && // outer children values are ok
+                    IsMirror(left.right, right.left) // outer children values are ok
+                );
+        }
 
-            System.Collections.Generic.Stack<int> stack = new System.Collections.Generic.Stack<int>();
-            stack.Push(source);
-
-            System.Collections.Generic.List<int> processed = new System.Collections.Generic.List<int>();
-
-            // start from source element
-            var currentElement = stack.Pop();
-            var fromAdjList = adjList[currentElement];
-            fromAdjList.ForEach(e => stack.Push(e));
-            
-            processed.Add(currentElement);
-            while (true)
-            {
-                if (stack.Count == 0) return false;
-
-                currentElement = stack.Pop();
-                if (currentElement == destination)
-                {
-                    return true;
-                }
-
-                if (!processed.Contains(currentElement))
-                {
-                    fromAdjList = adjList[currentElement];
-                    fromAdjList.ForEach(e => stack.Push(e));
-                    processed.Add(currentElement);
-                }
-            }
+        public static bool IsSymmetric(TreeNode root)
+        {
+            if (root == null) return true;
+            return IsMirror(root.left, root.right);
         }
 
         static void Main(string[] args)
         {
-            int[][] input = new[]
-            {
-                new int[] {0, 7},
-                new int[] {0, 8},
-                new int[] {6, 1},
-                new int[] {2, 0},
-                new int[] {0, 4},
-                new int[] {5, 8},
-                new int[] {4, 7},
-                new int[] {1, 3},
-                new int[] {3, 5},
-                new int[] {6, 5}
-            };
-
-            var q = ValidPath(10, input, 7, 5);
         }
     }
 }
