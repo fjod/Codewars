@@ -1,5 +1,17 @@
-﻿797. All Paths From Source to Target
+﻿22. Generate Parentheses
 
-Given a directed acyclic graph (DAG) of n nodes labeled from 0 to n - 1, find all possible paths from node 0 to node n - 1 and return them in any order.
+Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
 
-The graph is given as follows: graph[i] is a list of all nodes you can visit from node i (i.e., there is a directed edge from node i to node graph[i][j]).
+
+
+Example 1:
+
+Input: n = 3
+Output: ["((()))","(()())","(())()","()(())","()()()"]
+
+Example 2:
+
+Input: n = 1
+Output: ["()"]
+
+solved with help of https://youtu.be/RBq75237EvE?t=1424

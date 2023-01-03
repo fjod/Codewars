@@ -1,58 +1,65 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace CodeWars
 {
     class Program
     {
-        public static System.Collections.Generic.IList<System.Collections.Generic.IList<int>> AllPathsSourceTarget(int[][] graph)
+        class Node
         {
-            int source = 0;
-            int target = graph.Length - 1;
-            System.Collections.Generic.List<System.Collections.Generic.List<int>> ret =
-                new System.Collections.Generic.List<System.Collections.Generic.List<int>>();
-            System.Collections.Generic.Stack<System.Collections.Generic.List<int>> stack =
-                new System.Collections.Generic.Stack<System.Collections.Generic.List<int>>();
+            public char Value { get; init; }
+            public int NumOfOpen { get; init; }
 
-            foreach (var i in graph[source])
+            public List<Node> Children { get; } = new List<Node>();
+        }
+        public static IList<string> GenerateParenthesis(int n)
+        {
+            var start = new Node {Value = '0', NumOfOpen = 0};
+            BuildTree(start, 0, n);
+            List<string> ret = new List<string>();
+            StringBuilder sb = new StringBuilder();
+            PrintTree(start, ret, sb);
+            return ret;
+        }
+
+        static void BuildTree(Node start, int current, int max)
+        {
+            if (current + 1 <= max)
             {
-                stack.Push(new System.Collections.Generic.List<int> {source, i});
+                var open = new Node {Value = '(', NumOfOpen = start.NumOfOpen + 1};
+                start.Children.Add(open);
+                BuildTree(open, current + 1, max);
             }
 
-            while (stack.Count > 0)
+            if (start.NumOfOpen > 0)
             {
-                var currentPaths = stack.Pop();
-                var lastVertex = currentPaths.Last();
-                if (lastVertex == target)
-                {
-                    ret.Add(currentPaths);
-                    continue;
-                }
+                var closed = new Node {Value = ')', NumOfOpen = start.NumOfOpen - 1};
+                start.Children.Add(closed);
+                BuildTree(closed, current, max);
+            }
+        }
 
-
-                var lastVertexPaths = graph[lastVertex];
-                for (int i = 0; i < lastVertexPaths.Length; i++)
-                {
-                    var updated = new System.Collections.Generic.List<int>();
-                    updated.AddRange(currentPaths);
-                    updated.Add(lastVertexPaths[i]);
-                    stack.Push(updated);
-                }
+        static void PrintTree(Node start, List<string> ret, StringBuilder sb)
+        {
+            if (start.Value != '0') sb.Append(start.Value);
+            if (start.Children.Count == 0)
+            {
+                ret.Add(sb.ToString());
             }
 
-            System.Collections.Generic.List<System.Collections.Generic.IList<int>> rret =
-                new System.Collections.Generic.List<System.Collections.Generic.IList<int>>();
-            rret.AddRange(ret);
-            return rret;
+            foreach (var node in start.Children)
+            {
+                PrintTree(node, ret, sb);
+            }
+
+            if (start.Value != '0') sb.Remove(sb.Length - 1, 1);
         }
 
         static void Main(string[] args)
         {
-            //                      0 -> (1,2)    1 -> (3)   1 -> (3)     (3) no connections
-            // int[][] graph = new[] {new[] {1, 2}, new[] {3}, new[] {3}, System.Array.Empty<int>() };
-            // var q = AllPathsSourceTarget(graph);
-
-            int[][] graph = new[] {new[] {4, 3, 1}, new[] {3, 2, 4}, new[] {3}, new[] {4}, System.Array.Empty<int>()};
-            var q = AllPathsSourceTarget(graph);
+            var q = GenerateParenthesis(2);
         }
     }
 }
