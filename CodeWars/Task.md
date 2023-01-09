@@ -1,17 +1,6 @@
-﻿22. Generate Parentheses
+﻿344. Reverse String
+Write a function that reverses a string. The input string is given as an array of characters s.
 
-Given n pairs of parentheses, write a function to generate all combinations of well-formed parentheses.
+You must do this by modifying the input array in-place with O(1) extra memory.
 
-
-
-Example 1:
-
-Input: n = 3
-Output: ["((()))","(()())","(())()","()(())","()()()"]
-
-Example 2:
-
-Input: n = 1
-Output: ["()"]
-
-solved with help of https://youtu.be/RBq75237EvE?t=1424
+(I had to use recursion here)
