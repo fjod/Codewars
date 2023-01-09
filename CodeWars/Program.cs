@@ -1,17 +1,21 @@
-﻿namespace CodeWars
+﻿using System;
+
+namespace CodeWars
 {
     class Program
     {
       
-        public static void ReverseString(char[] s) {
-                Reverse(s, 0, s.Length - 1);
+        public static void ReverseString(char[] s)
+        {
+            RevSpan(s);
         }
 
-        static void Reverse(char[] s, int left, int right)
+        public static void RevSpan(Span<char> s)
         {
-            if (left >= right) return;
-            (s[left], s[right]) = (s[right], s[left]);
-            Reverse(s, left+1, right-1);
+            if (s.Length <=1) return;
+            (s[0], s[^1]) = (s[^1 ], s[0]);
+            var span = s.Slice(1, s.Length - 2);
+            RevSpan(span);
         }
    
 
