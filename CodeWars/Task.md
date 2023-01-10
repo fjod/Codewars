@@ -1,8 +1,3 @@
-﻿344. Reverse String
-Write a function that reverses a string. The input string is given as an array of characters s.
+﻿24. Swap Nodes in Pairs
 
-You must do this by modifying the input array in-place with O(1) extra memory.
-
-(I had to use recursion here)
-
-This is amazing because fsharp IL code does not contain recursion at all
+Given a linked list, swap every two adjacent nodes and return its head. You must solve the problem without modifying the values in the list's nodes (i.e., only nodes themselves may be changed.)

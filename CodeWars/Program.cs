@@ -2,30 +2,88 @@
 
 namespace CodeWars
 {
+
+  public class ListNode {
+      public int val;
+      public ListNode next;
+      public ListNode(int val=0, ListNode next=null) {
+          this.val = val;
+          this.next = next;
+      }
+
+      public override string ToString()
+      {
+          return $"{val} + {next == null}";
+      }
+  }
+
     class Program
     {
-      
-        public static void ReverseString(char[] s)
+        private static int _counter = 0;
+        public static ListNode SwapPairs(ListNode head)
         {
-            RevSpan(s);
+            if (head == null)
+            {
+                return null;
+            }
+            if (head.next == null)
+            {
+                return head;
+            }
+
+            Swap(head);
+            return start;
         }
 
-        public static void RevSpan(Span<char> s)
+        private static bool exit = false;
+        private static ListNode prev = null;
+        private static ListNode start = null;
+        private static void Swap(ListNode node)
         {
-            if (s.Length <=1) return;
-            (s[0], s[^1]) = (s[^1 ], s[0]);
-            var span = s.Slice(1, s.Length - 2);
-            RevSpan(span);
-        }
-   
+            if (exit || node == null) return;
+           
+            if (_counter == 0 && node.next != null)
+            {
+                //swap nodes
+                var left = node;
+                var right = node.next;
+                if (prev == null)
+                {
+                    left.next = right.next;
+                    right.next = left;
+                    start = right;
+                }
+                else
+                {
+                    prev.next = right;
+                    var rightNext = right.next;
+                    right.next = left;
+                    left.next = rightNext;
+                }
 
-     
+                _counter = 1;
+                prev = left;
+                Swap(node);
+            }
+
+            if (node == null || node.next == null || exit)
+            {
+                exit = true;
+                return;
+            };
+            _counter--;
+            prev = node;
+            Swap(node.next);
+        }
 
         static void Main(string[] args)
         {
-            var input = new[] {'h', 'e', 'l', 'l', 'o'};
-           ReverseString(input);
-           ReverseString(input);
+            var fourth = new ListNode(4);
+           var third = new ListNode(3, fourth);
+            var second = new ListNode(2, third);
+            //var second = new ListNode(2);
+            var first = new ListNode(1, second);
+            SwapPairs(first);
         }
     }
 }
