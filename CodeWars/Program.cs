@@ -66,7 +66,7 @@ namespace CodeWars
                 Swap(node);
             }
 
-            if (node == null || node.next == null || exit)
+            if (node == null || node.next == null)
             {
                 exit = true;
                 return;

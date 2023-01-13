@@ -6,4 +6,16 @@
         <LangVersion>10</LangVersion>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Compile Remove="ConsoleAppFsharp\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="ConsoleAppFsharp\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="ConsoleAppFsharp\**" />
+    </ItemGroup>
+
 </Project>
