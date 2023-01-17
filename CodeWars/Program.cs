@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.Versioning;
 
 namespace CodeWars
 {
@@ -19,71 +20,46 @@ namespace CodeWars
 
     class Program
     {
-        private static int _counter = 0;
-        public static ListNode SwapPairs(ListNode head)
-        {
-            if (head == null)
-            {
-                return null;
-            }
-            if (head.next == null)
+        public static ListNode ReverseList(ListNode head) {
+            if (head == null || head.next == null)
             {
                 return head;
             }
 
-            Swap(head);
-            return start;
-        }
-
-        private static bool exit = false;
-        private static ListNode prev = null;
-        private static ListNode start = null;
-        private static void Swap(ListNode node)
-        {
-            if (exit || node == null) return;
-           
-            if (_counter == 0 && node.next != null)
+            ListNode prev = null;
+            ListNode current = head;
+            while (current != null)
             {
-                //swap nodes
-                var left = node;
-                var right = node.next;
-                if (prev == null)
-                {
-                    left.next = right.next;
-                    right.next = left;
-                    start = right;
-                }
-                else
-                {
-                    prev.next = right;
-                    var rightNext = right.next;
-                    right.next = left;
-                    left.next = rightNext;
-                }
-
-                _counter = 1;
-                prev = left;
-                Swap(node);
+                ListNode nextForCurrent = current.next;
+                current.next = prev;
+                prev = current;
+                current = nextForCurrent;
             }
 
-            if (node == null || node.next == null)
-            {
-                exit = true;
-                return;
-            };
-            _counter--;
-            prev = node;
-            Swap(node.next);
+            return prev;
         }
+
+        public static ListNode ReverseListRec(ListNode current) {
+            if (current.next == null)
+            {
+                return current;
+            }
+
+            ListNode last = ReverseListRec(current.next);
+            current.next.next = current;
+            current.next = null;
+            return last;
+        }
+ 
+       
 
         static void Main(string[] args)
         {
-            var fourth = new ListNode(4);
-           var third = new ListNode(3, fourth);
+            var third = new ListNode(3);
             var second = new ListNode(2, third);
             //var second = new ListNode(2);
             var first = new ListNode(1, second);
-            SwapPairs(first);
+            ReverseListRec(first);
         }
     }
 }
