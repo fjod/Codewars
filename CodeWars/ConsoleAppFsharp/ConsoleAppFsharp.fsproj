@@ -7,6 +7,7 @@
 
     <ItemGroup>
         <Compile Include="ListNode.fs" />
+        <Compile Include="TreeNode.fs" />
         <Compile Include="Program.fs" />
     </ItemGroup>
 

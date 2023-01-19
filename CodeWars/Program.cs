@@ -1,65 +1,24 @@
-﻿using System;
-using System.Runtime.Versioning;
-
-namespace CodeWars
+﻿namespace CodeWars
 {
-
-  public class ListNode {
-      public int val;
-      public ListNode next;
-      public ListNode(int val=0, ListNode next=null) {
-          this.val = val;
-          this.next = next;
-      }
-
-      public override string ToString()
-      {
-          return $"{val} + {next == null}";
-      }
-  }
-
     class Program
     {
-        public static ListNode ReverseList(ListNode head) {
-            if (head == null || head.next == null)
-            {
-                return head;
-            }
-
-            ListNode prev = null;
-            ListNode current = head;
-            while (current != null)
-            {
-                ListNode nextForCurrent = current.next;
-                current.next = prev;
-                prev = current;
-                current = nextForCurrent;
-            }
-
-            return prev;
+        public static TreeNode SearchBST(TreeNode root, int val) {
+            if (root == null) return null;
+            if (root.val == val) return root;
+            if (val > root.val  && root.right != null) return SearchBST(root.right, val);
+            if (val < root.val && root.left != null) return SearchBST(root.left, val);
+            return null;
         }
 
-        public static ListNode ReverseListRec(ListNode current) {
-            if (current.next == null)
-            {
-                return current;
-            }
-
-            ListNode last = ReverseListRec(current.next);
-            current.next.next = current;
-            current.next = null;
-            return last;
-        }
- 
-       
 
         static void Main(string[] args)
         {
-            var third = new ListNode(3);
-            var second = new ListNode(2, third);
-            //var second = new ListNode(2);
-            var first = new ListNode(1, second);
-            ReverseListRec(first);
+            var node1 = new TreeNode {val = 1};
+            var node3 = new TreeNode {val = 3};
+            var node2 = new TreeNode {val = 2, left = node1, right = node3};
+            var node7 = new TreeNode {val = 7};
+            var node4 = new TreeNode {val = 4, left = node2, right = node7};
+            var ret = SearchBST(node4, 2);
         }
     }
 }

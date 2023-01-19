@@ -1,36 +1,27 @@
-﻿open ListNodeDef
+﻿open TreeNodeDef
 
 module ConsoleAppFsharp =
-    
-    let reverseList(node:Option<ListNode>) : Option<ListNode> =
+
+    let rec SearchBst (node: Option<TreeNode>, target: int) : Option<TreeNode> =
         match node with
         | None -> None
-        | Some listNode ->
-            match listNode.Next with
-            | None -> Some listNode
-            | _ ->
-                let mutable prev = None
-                let mutable current = node
-                while current.IsSome do
-                    let nextForCurrent = current.Value.Next
-                    current.Value.Next <- prev
-                    prev <- current
-                    current <- nextForCurrent
-                prev
-        
-    let rec reverseListRec (current:Option<ListNode>) : Option<ListNode> =
-        match current.Value.Next with
-        | None -> current
-        | Some next ->          
-                let last = reverseListRec (Some next)
-                current.Value.Next.Value.Next <- current
-                current.Value.Next <- None
-                last
+        | Some treeNode ->
+            if (treeNode.V = target) then
+                node
+            else
+                match (treeNode.V, treeNode.Left, treeNode.Right) with
+                | v, Some _, _ when v > target -> SearchBst(treeNode.Left, target)
+                | v, _, Some _ when v < target -> SearchBst(treeNode.Right, target)
+                | _ -> None
 
-   
-    let t3 = ListNode(3)
-    let t2 = ListNode(2, Some t3)
-    let t1 = ListNode(1, Some t2)
 
-    let t = reverseListRec (Some t1)
+
+    let t1 = TreeNode(1)
+    let t3 = TreeNode(3)
+    let t2 = TreeNode(2, t1, t3)
+    let t7 = TreeNode(7)
+    let t4 = TreeNode(4, t2, t7)
+
+    let test = SearchBst(Some t4, 2)
+
     printfn "Hello from F#"
