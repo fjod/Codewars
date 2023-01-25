@@ -4,15 +4,18 @@ open TreeNodeDef
 
 module ConsoleAppFsharp =
 
-    let calcLis(arr: int[]) =
-        let mutable lisValues = Array.init arr.Length (fun _ -> 1)
-        for i in 1..arr.Length-1 do
-            for j in 0..i do
-                if (arr[i] > arr[j] && lisValues[i] < lisValues[j] + 1) // I cant understand this hack
-                    then lisValues[i] <- lisValues[j] + 1
-                    else ()        
-        Array.max lisValues
-        
-    let testLis = [|10; 22; 9; 33|]
-    let z = calcLis testLis
+    let Dict = Dictionary<int,int>()
+    do
+        Dict[0] <- 0
+        Dict[1] <- 1
+        Dict[2] <- 2
+    let rec climbStairs(n:int) =
+       if Dict.ContainsKey(n) then Dict[n]
+       else
+           let step1 = climbStairs(n-1)
+           let step2 = climbStairs(n-2)
+           Dict[n] <- step1+step2
+           Dict[n]        
+ 
+    let z = climbStairs 5
     printfn "Hello from F#1"

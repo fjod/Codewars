@@ -1,20 +1,24 @@
-﻿300. Longest Increasing Subsequence
+﻿70. Climbing Stairs
 
-Given an integer array nums, return the length of the longest strictly increasing subsequence
+
+You are climbing a staircase. It takes n steps to reach the top.
+
+Each time you can either climb 1 or 2 steps. In how many distinct ways can you climb to the top?
+
+
 
 Example 1:
 
-Input: nums = [10,9,2,5,3,7,101,18]
-Output: 4
-Explanation: The longest increasing subsequence is [2,3,7,101], therefore the length is 4.
-Example 2:
+Input: n = 2
+Output: 2
+Explanation: There are two ways to climb to the top.
+1. 1 step + 1 step
+2. 2 steps
+   Example 2:
 
-Input: nums = [0,1,0,3,2,3]
-Output: 4
-Example 3:
-
-Input: nums = [7,7,7,7,7,7,7]
-Output: 1
-
-I was not able to undestand it from the MIT video _16. Dynamic Programming, Part 2: LCS, LIS, Coins_
-so I decided to go through code
+Input: n = 3
+Output: 3
+Explanation: There are three ways to climb to the top.
+1. 1 step + 1 step + 1 step
+2. 1 step + 2 steps
+3. 2 steps + 1 step
