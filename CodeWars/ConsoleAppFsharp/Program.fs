@@ -4,26 +4,15 @@ open TreeNodeDef
 
 module ConsoleAppFsharp =
 
-    let dict = Dictionary<Tuple<int,int>, int>()
-    do
-        dict.Add((0,0), 1)
-        dict.Add((1,0), 1)
-        dict.Add((1,1), 1)
-    let rec calcTriangleValue(v:Tuple<int,int>)=
-        let dictVal = dict.ContainsKey v
-        if dictVal then dict[v]
-        else
-            let left = fst v // row
-            let right = snd v // col
-            match (left, right) with
-                | _, 0 -> 1
-                | _ ,_ when left = right  -> 1
-                | l, r ->
-                    let v = calcTriangleValue((l-1, r-1)) + calcTriangleValue(l-1 ,r)
-                    dict.Add((l,r), v)
-                    v
-    let pascal(row:int) =        
-        [0..row] |> List.map (fun i -> calcTriangleValue(row, i))
+    let calcLis(arr: int[]) =
+        let mutable lisValues = Array.init arr.Length (fun _ -> 1)
+        for i in 1..arr.Length-1 do
+            for j in 0..i do
+                if (arr[i] > arr[j] && lisValues[i] < lisValues[j] + 1) // I cant understand this hack
+                    then lisValues[i] <- lisValues[j] + 1
+                    else ()        
+        Array.max lisValues
         
-    let test = pascal 4
+    let testLis = [|10; 22; 9; 33|]
+    let z = calcLis testLis
     printfn "Hello from F#1"

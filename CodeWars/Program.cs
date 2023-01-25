@@ -6,62 +6,33 @@ namespace CodeWars
 {
     class Program
     {
-        public static IList<int> GetRow(int rowIndex)
+        static int lis(int[] arr)
         {
-            
-            var ret = Init(rowIndex+1);
-            if (rowIndex <= 1)
-            {
-                return ret[rowIndex];
-            }
+            int n = arr.Length;
+            int[] lisValues = new int[n];
+            int i, j, max = 0;
 
-            CalculateTriangles(ret, rowIndex+1);
-            
-            return ret[rowIndex];
-        }
+            /* Initialize LIS values for all indexes */
+            for (i = 0; i < n; i++) lisValues[i] = 1;
 
-        private static void CalculateTriangles(List<List<int>> ret, int rowIndex)
-        {
-            for (int i = 2; i < rowIndex; i++)
-            {
-                var current = ret[i];
-                var prev = ret[i - 1];
-                current[0] = 1;
-                current[i] = 1;
-                for (int j = 1; j < i; j++)
-                {
-                    current[j] = prev[j - 1] + prev[j];
-                }
-            }
-        }
+            /* Compute optimized LIS values in bottom up manner             */
+            for (i = 1; i < n; i++)
+                for (j = 0; j < i; j++)
+                    if (arr[i] > arr[j] && lisValues[i] < lisValues[j] + 1)
+                        lisValues[i] = lisValues[j] + 1;
 
-        private static List<List<int>> Init(int rowIndex)
-        {
-            List<List<int>> ret = new List<List<int>>(rowIndex);
-            for (int i = 0; i < rowIndex; i++)
-            {
-                ret.Add(new List<int>(i+1));
-                for (int j = 0; j < i + 1; j++)
-                {
-                    ret[i].Add(0);
-                }
-                
-            }
+            /* Pick maximum of all LIS values */
+            for (i = 0; i < n; i++)
+                if (max < lisValues[i])  max = lisValues[i];
 
-            ret[0][0] = 1;
-            if (ret.Count > 1)
-            {
-                ret[1][0] = 1;
-                ret[1][1] = 1;
-            }
-
-            return ret;
+            return max;
         }
 
         static void Main(string[] args)
         {
-            var q = GetRow(0);
-            Console.ReadKey();
+            int[] arr = { 10, 22, 9, 33, 21, 50, 41, 60 };
+            int n = lis(arr);
+            Console.WriteLine("Length of lis is ");
         }
     }
 }
