@@ -6,70 +6,47 @@ namespace CodeWars
 {
     class Program
     {
-        public static ListNode MergeTwoLists(ListNode list1, ListNode list2)
+        // top-down (start from goal and recurse down to basecases)
+        public static int Rob(int[] nums)
         {
-            if (list1 == null && list2 == null) return null;
-            if (list1 == null) return list2;
-            if (list2 == null) return list1;
-            return MergeTwoListsInner(list1, list2, null);
+            Dictionary<int, int> robVals = new Dictionary<int, int>();
+            robVals[0] = nums[0];
+            robVals[1] = Math.Max(nums[0], nums[1]);
+
+            calcRob(nums.Length - 1, robVals, nums);
+            return robVals[nums.Length - 1];
         }
 
-        public static ListNode MergeTwoListsInner(ListNode list1, ListNode list2, ListNode ret)
+        private static int calcRob(int house, Dictionary<int, int> robVals, int[] nums)
         {
-            if (list1 == null && list2 == null) return ret;
-            if (ret == null && list1 == null) return ret;
-            if (ret == null && list2 == null) return ret;
-
-            if (ret == null)
-            {
-                if (list1.val < list2.val)
-                {
-                    var r1 = new ListNode(list1.val);
-                    return MergeTwoListsInner(list1.next, list2, r1);
-                }
-
-                var r2 = new ListNode(list2.val);
-                return MergeTwoListsInner(list2.next, list1, r2);
-            }
-
-            var lastNode = GetLastNode(ret);
-            if (list1 == null)
-            {
-                lastNode.next = list2;
-                return ret;
-            }
-            if (list2 == null)
-            {
-                lastNode.next = list1;
-                return ret;
-            }
-            
-            if (list1.val < list2.val)
-            {
-                lastNode.next = new ListNode(list1.val);
-                return MergeTwoListsInner(list1.next, list2, ret);
-            }
-
-            lastNode.next = new ListNode(list2.val);
-            return MergeTwoListsInner(list1, list2.next, ret);
+            if (robVals.ContainsKey(house))
+                return robVals[house];
+            var robPrev = calcRob(house - 1, robVals, nums);
+            var robPrevPrevAndCurrent = calcRob(house - 2, robVals, nums) + nums[house];
+            robVals[house] = Math.Max(robPrev, robPrevPrevAndCurrent);
+            return robVals[house];
         }
-        private static ListNode GetLastNode(ListNode listNode)
+
+        // bottom-up (start from basecases and go upper towards goal)
+        public static int Rob2(int[] nums)
         {
-            if (listNode.next == null) return listNode;
-            return GetLastNode(listNode.next);
+            var robVals = new int[nums.Length];
+            robVals[0] = nums[0];
+            robVals[1] = Math.Max(nums[0], nums[1]);
+            for (int i = 2; i < nums.Length; i++)
+            {
+                var robPrev = robVals[i - 1];
+                var robPrevPrevAndCurrent = robVals[i-2] + nums[i];
+                robVals[i] = Math.Max(robPrev, robPrevPrevAndCurrent);
+            }
+
+            return robVals.Max();
         }
 
         static void Main(string[] args)
         {
-            var node4left = new ListNode(4);
-            var node2left = new ListNode(2, node4left);
-            var node1left = new ListNode(1, node2left);
-            
-            var node4r = new ListNode(4);
-            var node3r = new ListNode(3, node4r);
-            var node1r = new ListNode(1, node3r);
-
-            var q = MergeTwoLists(node1left, node1r);
+            var test = Rob(new[] {1, 2, 3, 1});
+            test = Rob2(new[] {1, 2, 3, 1});
             Console.ReadKey();
         }
     }

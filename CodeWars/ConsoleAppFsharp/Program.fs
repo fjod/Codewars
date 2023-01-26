@@ -6,48 +6,28 @@ open TreeNodeDef
 module ConsoleAppFsharp =
 
     
-    let mutable start: Option<ListNode> = None            
-        
-    let rec innerMerge(list1 : Option<ListNode>, list2 : Option<ListNode>, ret: Option<ListNode>) =         
-         match (list1, list2, ret) with
-            | None, None, _ -> start           
-            | Some l1, Some l2, None when l1.V < l2.V ->
-                start <- Some (ListNode l1.V)
-                innerMerge (l1.Next, list2, start)
-            | Some l1, Some l2, None when l1.V >= l2.V ->
-                start <- Some (ListNode l2.V)
-                innerMerge (list1, l2.Next, start)
-            | None, Some l2, Some ret ->             
-                ret.Next <- Some l2
-                start
-            | Some l1, None, Some ret ->
-                ret.Next <- Some l1
-                start
-            | Some l1, Some l2, Some ret when l1.V < l2.V ->
-                let next = ListNode(l1.V)
-                ret.Next <- Some next
-                innerMerge (l1.Next, list2, ret.Next)
-             | Some l1, Some l2, Some ret when l1.V >= l2.V ->
-                let next = ListNode(l2.V)
-                ret.Next <- Some next
-                innerMerge (list1, l2.Next, ret.Next)     
-             | _ -> start   
-                
-    let mergeLists(list1 : Option<ListNode>, list2 : Option<ListNode>) =
-        match (list1, list2) with
-            | None, None -> None
-            | Some _, None -> list1
-            | None, Some _ -> list2
-            | Some _, Some _ -> innerMerge(list1, list2, None)
-        
-    let node4Left = ListNode 4
-    let node2Left = ListNode (2, Some node4Left)
-    let node1Left = ListNode (1, Some node2Left)
+    let robTopDown(houses: int list) =
+        let dict = new Dictionary<int, int>()
+        dict[0] <- houses[0]
+        dict[1] <- max houses[0] houses[1]
+        0
     
-    let node4r = ListNode 4
-    let node2r = ListNode (3, Some node4r)
-    let node1r = ListNode (1, Some node2r)
-    
-    let test = mergeLists (Some node1Left, Some node1r)
+    let rec rob(house:int, dict: Dictionary<int, int>, houses: int list) =
+        if dict.ContainsKey(house) then dict[house]
+        else
+            let prev = dict[house-1]
+            let prevPrevAndCurrent = dict[house-2] + houses[house]
+            dict[house] <- max prev prevPrevAndCurrent
+            dict[house]
+        
+    let robBotUp(houses: int list) =
+        let robVals = Array.init houses.Length (fun _ -> 0)
+        robVals[0] <- houses[0]
+        robVals[1] <- max houses[0] houses[1]
+        for i in 2..(houses.Length - 1) do
+            let prev = robVals[i-1]
+            let prevPrevAndCurrent = robVals[i-2] + houses[i]
+            robVals[i] <- max prev prevPrevAndCurrent
+        Array.max robVals
     
     printfn "Hello from F#1"
