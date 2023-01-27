@@ -6,24 +6,25 @@ namespace CodeWars
 {
     class Program
     {
-        public static int MinCostClimbingStairs(int[] cost)
+        public static int NTrib(int n)
         {
-            if (cost.Length == 1) return cost[0];
-            if (cost.Length == 2) return Math.Min(cost[0], cost[1]);
-            int[] costs = new int[cost.Length + 1];
-            costs[0] = cost[0];
-            costs[1] = cost[1];
-            for (int i = 2; i < cost.Length; i++)
+            
+            int[] res = new int[n+3];
+            res[0] = 0;
+            res[1] = 1;
+            res[2] = 1;
+            if (n < 3) return res[n];
+            for (int i = 3; i < n+1; i++)
             {
-                costs[i] = cost[i] + Math.Min(costs[i - 1], costs[i - 2]);
+                res[i] = res[i - 1] + res[i - 2] + res[i - 3];
             }
-            return Math.Min(costs[cost.Length-1], costs[cost.Length-2]);
 
+            return res[n];
         }
 
         static void Main(string[] args)
         {
-            var q = MinCostClimbingStairs(new[] {10, 15, 20});
+            var q = NTrib(2);
             Console.ReadKey();
         }
     }
