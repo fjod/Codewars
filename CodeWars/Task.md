@@ -1,25 +1,36 @@
-﻿1137. N-th Tribonacci Number
+﻿740. Delete and Earn
 
-The Tribonacci sequence Tn is defined as follows:
 
-T0 = 0, T1 = 1, T2 = 1, and Tn+3 = Tn + Tn+1 + Tn+2 for n >= 0.
+You are given an integer array nums. You want to maximize the number of points you get by performing the following operation any number of times:
 
-Given n, return the value of Tn.
+Pick any nums[i] and delete it to earn nums[i] points. Afterwards, you must delete every element equal to nums[i] - 1 and every element equal to nums[i] + 1.
+Return the maximum number of points you can earn by applying the above operation some number of times.
+
+
 
 Example 1:
 
-Input: n = 4
-Output: 4
-Explanation:
-T_3 = 0 + 1 + 1 = 2
-T_4 = 1 + 1 + 2 = 4
-Example 2:
+Input: nums = [3,4,2]
+Output: 6
+Explanation: You can perform the following operations:
+- Delete 4 to earn 4 points. Consequently, 3 is also deleted. nums = [2].
+- Delete 2 to earn 2 points. nums = [].
+  You earn a total of 6 points.
+  Example 2:
 
-Input: n = 25
-Output: 1389537
+Input: nums = [2,2,3,3,3,4]
+Output: 9
+Explanation: You can perform the following operations:
+- Delete a 3 to earn 3 points. All 2's and 4's are also deleted. nums = [3,3].
+- Delete a 3 again to earn 3 points. nums = [3].
+- Delete a 3 once more to earn 3 points. nums = [].
+  You earn a total of 9 points.
+
+# Solution
+
+The key to understand is this sentence: 
+Pick any nums[i] and **delete it** to earn nums[i] points.
 
 
-Constraints:
-
-0 <= n <= 37
-The answer is guaranteed to fit within a 32-bit integer, ie. answer <= 2^31 - 1.
+So you can group by value, place their sum into empty array with corresponding index.
+Then it's a house robber task: for each index, you either take current with prevPrev or you take prev (take max).

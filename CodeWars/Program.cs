@@ -1,30 +1,38 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 
 namespace CodeWars
 {
     class Program
     {
-        public static int NTrib(int n)
+        public static int DeleteAndEarn(int[] nums)
         {
-            
-            int[] res = new int[n+3];
-            res[0] = 0;
-            res[1] = 1;
-            res[2] = 1;
-            if (n < 3) return res[n];
-            for (int i = 3; i < n+1; i++)
+            var groups = nums.GroupBy(g => g).ToList();
+            int[] initial = new int[10001];
+            int count = 0;
+            foreach (var grouping in groups)
             {
-                res[i] = res[i - 1] + res[i - 2] + res[i - 3];
+                initial[grouping.Key] = grouping.Sum();
+                count++;
+            }
+            // (0,1,2,3,4,5,6....10000)
+            // (0,0,4,9,4,0,0,0...0)
+            int[] dpVals = new int[10001];
+            dpVals[0] = initial[0];
+            dpVals[1] = initial[1];
+            for (int i = 2; i < initial.Length; i++)
+            {
+                dpVals[i] = Math.Max(dpVals[i - 2] + initial[i], dpVals[i - 1]);
             }
 
-            return res[n];
+            return dpVals.Last();
         }
 
         static void Main(string[] args)
         {
-            var q = NTrib(2);
+            var q = DeleteAndEarn(new []{2,2,3,3,3,4});
             Console.ReadKey();
         }
     }
