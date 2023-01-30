@@ -1,36 +1,35 @@
-﻿740. Delete and Earn
+﻿1143. Longest Common Subsequence
 
+Given two strings text1 and text2, return the length of their longest common subsequence. If there is no common subsequence, return 0.
 
-You are given an integer array nums. You want to maximize the number of points you get by performing the following operation any number of times:
+A subsequence of a string is a new string generated from the original string with some characters (can be none) deleted without changing the relative order of the remaining characters.
 
-Pick any nums[i] and delete it to earn nums[i] points. Afterwards, you must delete every element equal to nums[i] - 1 and every element equal to nums[i] + 1.
-Return the maximum number of points you can earn by applying the above operation some number of times.
+For example, "ace" is a subsequence of "abcde".
+A common subsequence of two strings is a subsequence that is common to both strings.
 
 
 
 Example 1:
 
-Input: nums = [3,4,2]
-Output: 6
-Explanation: You can perform the following operations:
-- Delete 4 to earn 4 points. Consequently, 3 is also deleted. nums = [2].
-- Delete 2 to earn 2 points. nums = [].
-  You earn a total of 6 points.
-  Example 2:
+Input: text1 = "abcde", text2 = "ace"
+Output: 3  
+Explanation: The longest common subsequence is "ace" and its length is 3.
+Example 2:
 
-Input: nums = [2,2,3,3,3,4]
-Output: 9
-Explanation: You can perform the following operations:
-- Delete a 3 to earn 3 points. All 2's and 4's are also deleted. nums = [3,3].
-- Delete a 3 again to earn 3 points. nums = [3].
-- Delete a 3 once more to earn 3 points. nums = [].
-  You earn a total of 9 points.
+Input: text1 = "abc", text2 = "abc"
+Output: 3
+Explanation: The longest common subsequence is "abc" and its length is 3.
+Example 3:
 
-# Solution
-
-The key to understand is this sentence: 
-Pick any nums[i] and **delete it** to earn nums[i] points.
+Input: text1 = "abc", text2 = "def"
+Output: 0
+Explanation: There is no such common subsequence, so the result is 0.
 
 
-So you can group by value, place their sum into empty array with corresponding index.
-Then it's a house robber task: for each index, you either take current with prevPrev or you take prev (take max).
+Constraints:
+
+1 <= text1.length, text2.length <= 1000
+text1 and text2 consist of only lowercase English characters.
+
+
+Trick is to decide whether to take current char or skip it, so just max on both cases and recurse further down with memoization
