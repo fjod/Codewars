@@ -8,57 +8,66 @@ namespace CodeWars
 {
     class Program
     {
-        private static int[][] dp;
-        private static string t1, t2;
-        public static int LongestCommonSubsequence(string text1, string text2)
+        public static int MaximalSquare(char[][] matrix)
         {
-            t1 = text1;
-            t2 = text2;
-            dp = new int[text1.Length][];
-            for (int i = 0; i < text1.Length; i++)
+            if (matrix.Length == 0) return 0;
+            if (matrix.Length == 1) return matrix[0].Any(m => m == '1') ? 1 : 0;
+            var maxRow = matrix.Length;
+            var maxCol = matrix[0].Length;
+            var max = Math.Max(maxRow, maxCol);
+            int[][] dp = new int[max][];
+            for (int i = 0; i < max; i++)
             {
-                dp[i] = new int[text2.Length];
+                dp[i] = new int[max];
             }
 
-            for (int i = 0; i < dp.Length; i++)
+            var ret = 0;
+            for (int i =0; i < maxRow; i++)
             {
-                for (int j = 0; j < dp[i].Length; j++)
+                for (int j = 0; j < maxCol; j++)
                 {
-                    dp[i][j] = -1;
-                }
+                    if((i==0 || j==0) && matrix[i][j] == '1'){
+                        dp[i][j] = 1;
+                    }
+                    
+                    if (i > 0 && j > 0 && matrix[i - 1][ j - 1] == '1')
+                    {
+                        var up = dp[i - 1][j];
+                        var left = (dp[i][j-1]);
+                        var diag = (dp[i-1][j-1]);
+                        var min =Math.Min(Math.Min(up, left), diag)+1;
+                        dp[i][j] = min;
+                        if (dp[i][j] > ret) ret = dp[i][j];
+                    }
+                }   
             }
 
-
-            return dpSolve(0, 0);
+            if (ret == 0)
+                if (matrix.SelectMany(m => m).Any(m => m == '1'))
+                    return 1;
+            return ret * ret;
         }
 
-        private static int dpSolve(int p1, int p2)
+        static int  toInt(char c)
         {
-            if (p1 == t1.Length) return 0;
-            if (p2 == t2.Length) return 0;
-            if (dp[p1][p2] != -1) {
-                return dp[p1][p2];
-            }
-
-            // Option 1: we don't include text1[p1] in the solution.
-            int option1 = dpSolve(p1 + 1, p2);
-            
-            // Option 2: We include text1[p1] in the solution, as long as
-            // a match for it in text2 at or after p2 exists.
-            int firstOccurence = t2.IndexOf(t1[p1], p2);
-            int option2 = 0;
-            if (firstOccurence != -1) {
-                option2 = 1 + dpSolve(p1 + 1, firstOccurence + 1);
-            }
-
-            dp[p1][p2] = Math.Max(option1, option2);
-
-            return dp[p1][p2];
+            return c == '1' ? 1 : 0;
         }
-
+        
         static void Main(string[] args)
         {
-            var ret = LongestCommonSubsequence("abc", "abc");
+            char[][] input = new char[5][];
+            input[0] = new char[] {'1', '1', '1', '1', '1'};
+            input[1] = new char[] {'1', '1', '1', '1', '1'};
+            input[2] = new char[] {'0', '0', '0', '0', '0'};
+            input[3] = new char[] {'1', '1', '1', '1', '1'};
+            input[4] = new char[] {'1', '1', '1', '1', '1'};
+            
+            char[][] input2 = new char[2][];
+            input2[0] = new char[] {'1', '1'};
+            input2[1] = new char[] {'1', '1'};
+         
+
+            var ret = MaximalSquare(input);
             Console.ReadKey();
         }
     }
