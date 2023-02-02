@@ -9,22 +9,46 @@ namespace CodeWars
 {
     class Program
     {
-        public static int MaxProfit(int[] prices)
-        {
-            int minPrice = int.MaxValue, maxProfit = 0;
-            for (int i = 0; i < prices.Length; i++)
-            {
-                if (prices[i] < minPrice) minPrice = prices[i]; // if min is updated, we cant sell it anyway
-                else
-                    maxProfit = Math.Max(maxProfit, prices[i] - minPrice); //if min is not updated, check if it's max
-            }
-            return maxProfit;
-        }
 
+        public static string ConvertSpaces(string input, int l)
+        {
+            var conv = "%20";
+            bool lastCharWasConverted = false;
+            string ret = string.Empty;
+            if (input[0] == ' ')
+            {
+                lastCharWasConverted = true;
+                ret += conv;
+            }
+            else
+            {
+                lastCharWasConverted = false;
+                ret += input[0];
+            }
+            for (int i = 1; i < l; i++)
+            {
+                if (input[i] == ' ' && lastCharWasConverted)
+                {
+                    continue;
+                }
+                if (input[i] == ' ' && !lastCharWasConverted)
+                {
+                    lastCharWasConverted = true;
+                    ret += conv;
+                }
+                else
+                {
+                    lastCharWasConverted = false;
+                    ret += input[i];
+                }
+            }
+
+            return ret;
+        }
 
         static void Main(string[] args)
         {
-            var q = MaxProfit(new[] {2,4,1});
+            var q = ConvertSpaces("Mr John Smith    ", 13);
             Console.ReadKey();
         }
     }
