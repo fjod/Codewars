@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace CodeWars;
@@ -93,4 +94,91 @@ public class cracking_ch1
         return true;
     }
 
+    public static bool OneModification(string s1, string s2)
+    {
+        Dictionary<char, int> vowels = new Dictionary<char, int>();
+        for (int i = 0; i < s1.Length; i++)
+        {
+            var current = s1[i];
+            var vowel = s1.Where(v => v == current).ToList();
+            if (!vowels.ContainsKey(current)) vowels.Add(current, vowel.Count);
+        }
+
+        bool oneModUsed = false;
+        for (int i = 0; i < s2.Length; i++)
+        {
+            var current = s2[i];
+            if (!vowels.ContainsKey(current) && !oneModUsed)
+            {
+                oneModUsed = true;
+                continue;
+            }
+
+            if (!vowels.ContainsKey(current) && oneModUsed)
+            {
+                return false;
+            }
+
+            var amount = vowels[current];
+            amount -= 1;
+            if (amount < 0 && !oneModUsed)
+            {
+                vowels[current] = amount;
+                continue;
+            }
+
+            if (amount < 0 && oneModUsed)
+            {
+                return false;
+            }
+        }
+            
+        return s1.Length - s2.Length <=1;
+    }
+    
+    public static int Compress(char[] chars)
+    {
+        string ret = String.Empty;
+
+        char prev = chars[0];
+        int currentAmount = 1;
+        if (chars.Length == 1) ret += chars[0];
+
+        for (int i = 1; i < chars.Length; i++)
+        {
+            var current = chars[i];
+            if (current != prev) //new char
+            {
+                ret += prev;
+                if (currentAmount != 1)
+                {
+                    ret += currentAmount;
+                }
+
+                prev = current;
+                currentAmount = 1;
+                if (i == chars.Length - 1)
+                {
+                    ret += prev;
+                }
+            }
+            else
+            {
+                currentAmount++;
+                if (i == chars.Length - 1)
+                {
+                    ret += prev;
+                    if (currentAmount > 1) ret += currentAmount;
+                }
+            }
+        }
+            
+
+        for (var i = 0; i < ret.Length; i++)
+        {
+            chars[i] = ret[i];
+        }
+
+        return ret.Length;
+    }
 }
