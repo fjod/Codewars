@@ -1,54 +1,32 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Runtime.Intrinsics.Arm;
-using System.Threading;
+﻿
+using System;
 
 namespace CodeWars
 {
     class Program
     {
 
-        public static string ConvertSpaces(string input, int l)
+        
+        public static bool IsPalindrome(string s)
         {
-            var conv = "%20";
-            bool lastCharWasConverted = false;
-            string ret = string.Empty;
-            if (input[0] == ' ')
+            var converted = s.ToLower().Replace(" ", string.Empty).Trim();
+            converted = System.Text.RegularExpressions.Regex.Replace(converted, "[^a-zA-Z0-9]+", "", System.Text.RegularExpressions.RegexOptions.Compiled);
+            if (converted.Length == 1) return true;
+            var p1 = 0;
+            var p2 = converted.Length - 1;
+            while (p1 <= p2)
             {
-                lastCharWasConverted = true;
-                ret += conv;
-            }
-            else
-            {
-                lastCharWasConverted = false;
-                ret += input[0];
-            }
-            for (int i = 1; i < l; i++)
-            {
-                if (input[i] == ' ' && lastCharWasConverted)
-                {
-                    continue;
-                }
-                if (input[i] == ' ' && !lastCharWasConverted)
-                {
-                    lastCharWasConverted = true;
-                    ret += conv;
-                }
-                else
-                {
-                    lastCharWasConverted = false;
-                    ret += input[i];
-                }
+                if (converted[p1] != converted[p2]) return false;
+                p1++;
+                p2--;
             }
 
-            return ret;
+            return true;
         }
 
         static void Main(string[] args)
         {
-            var q = ConvertSpaces("Mr John Smith    ", 13);
+            var q = IsPalindrome("a.");
             Console.ReadKey();
         }
     }
