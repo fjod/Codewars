@@ -5,16 +5,15 @@ open TreeNodeDef
 
 module ConsoleAppFsharp =
      
-     let coinChange(coins:int[], amount:int) =
-         let dp = Array.init (amount+1) (fun _ -> Int32.MaxValue)
-         dp[0] <- 0
-         for currentAmount in 1..amount do
-             for coin in coins do                 
-                 if coin <= currentAmount then
-                     dp[currentAmount] <- Math.Min(dp[currentAmount], dp[currentAmount - coin] + 1)
-                  
-         if (dp[amount] > amount) then -1 else dp[amount]   
+     let rotateString (s1:string) (s2:string) =
         
-     let test1 = coinChange( [|1;2;5|], 11)
-     let test2 = coinChange( [|186;419;83;408|], 6249) // this this fail because int must be changed to long
+         if (s1.Length <> s2.Length) then false
+         else
+             let firstChar = s1[0]
+             let firstCharPosInS2 = s2.IndexOf firstChar
+             let conv = s2.Substring (firstCharPosInS2, (s2.Length - firstCharPosInS2)) + s2.Substring (0, firstCharPosInS2)
+             s1 = conv
+         
+     
+     rotateString "abcde" "cdeab" |> ignore    
      printfn "Hello from F#1"

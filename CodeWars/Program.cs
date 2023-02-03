@@ -6,37 +6,35 @@ namespace CodeWars
 {
     class Program
     {
-        
-        public void SetZeroes(int[][] matrix)
+        public static bool RotateString(string s, string goal)
         {
-            List<(int, int)> zeroesLocation = new List<(int, int)>();
-            for (var i = 0; i < matrix.Length; i++)
+            if (s.Length != goal.Length) return false;
+            int pos = 0;
+            for (int i = 0; i < s.Length; i++)
             {
-                for (int j = 0; j < matrix[i].Length; j++)
-                {
-                    if (matrix[i][j] == 0) zeroesLocation.Add((i,j));
-                }
+                if (CheckStrings(s, goal, pos)) return true;
+                pos++;
             }
-            
-            for (var i = 0; i < matrix.Length; i++)
-            {
-                for (int j = 0; j < matrix[i].Length; j++)
-                {
-                    if (zeroesLocation.Any(tuple =>
-                        {
-                            var (row, col) = tuple;
-                            return row == i || col == j;
-                        }))
-                    {
-                        matrix[i][j] = 0;
-                    }
-                }
-            }
+
+            return false;
         }
-        
+
+        private static bool CheckStrings(string s, string goal, int pos)
+        {
+            int shift = 0;
+            for (int i = 0; i < s.Length; i++)
+            {
+                shift = pos + i;
+                if (shift >= goal.Length) shift = (pos + i) -goal.Length;
+                if (s[i] != goal[shift]) return false;
+            }
+
+            return true;
+        }
+
         static void Main(string[] args)
         {
-          
+            var q = RotateString("abcde", "cdeab");
             Console.ReadKey();
         }
     }
