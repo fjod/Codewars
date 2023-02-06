@@ -4,16 +4,32 @@ open ListNodeDef
 open TreeNodeDef
 
 module ConsoleAppFsharp =
-     
-     let rotateString (s1:string) (s2:string) =
-        
-         if (s1.Length <> s2.Length) then false
-         else
-             let firstChar = s1[0]
-             let firstCharPosInS2 = s2.IndexOf firstChar
-             let conv = s2.Substring (firstCharPosInS2, (s2.Length - firstCharPosInS2)) + s2.Substring (0, firstCharPosInS2)
-             s1 = conv
-         
-     
-     rotateString "abcde" "cdeab" |> ignore    
-     printfn "Hello from F#1"
+
+    let RemoveNthFromEnd (head: Option<ListNode>) (n: int) =
+
+        match (head, n) with
+        | None, n when n <= 0 -> None
+        | _ ->
+            let fakehead = ListNode -1
+            fakehead.Next <- head
+            let mutable n1 = Some(ListNode -1)
+            let mutable n2 = Some (ListNode -2)
+
+            for i in 0..n do
+                n1 <- n1.Value.Next
+
+            if n1.IsNone then
+                None
+            else
+                while (n1.Value.Next <> None) do
+                    n1 <- n1.Value.Next
+                    n2 <- n2.Value.Next
+                n2.Value.Next <- n2.Value.Next.Value.Next
+                Some fakehead.Next
+
+
+
+
+
+
+    printfn "Hello from F#1"

@@ -1,23 +1,21 @@
-﻿83. Remove Duplicates from Sorted List
-
-    Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
+﻿19. Remove Nth Node From End of List
+    Given the head of a linked list, remove the nth node from the end of the list and return its head.
 
 
 
 Example 1:
 
 
-Input: head = [1,1,2]
-Output: [1,2]
+Input: head = [1,2,3,4,5], n = 2
+Output: [1,2,3,5]
 Example 2:
 
+Input: head = [1], n = 1
+Output: []
+Example 3:
 
-Input: head = [1,1,2,3,3]
-Output: [1,2,3]
+Input: head = [1,2], n = 1
+Output: [1]
 
-
-Constraints:
-
-The number of nodes in the list is in the range [0, 300].
--100 <= Node.val <= 100
-The list is guaranteed to be sorted in ascending order.
+did not solve it myself
+it looks very easy on the first glance

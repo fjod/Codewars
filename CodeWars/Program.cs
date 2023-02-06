@@ -6,38 +6,44 @@ namespace CodeWars
 {
     class Program
     {
-        public static ListNode DeleteDuplicates(ListNode head)
+        public static ListNode RemoveNthFromEnd(ListNode head, int n)
         {
-            if (head == null) return head;
-            var current = head;
-            while (current.next != null)
+            if (head == null || n <= 0) { return null; }
+
+            ListNode fakeHead, node1, node2;
+            fakeHead = new ListNode(-1);
+            fakeHead.next = head;
+
+            node1 = node2 = fakeHead;
+            for (int i = 0; i < n; i++)
             {
-                var next = current.next;
-                if (current.val == next.val)
-                {
-                    while (next != null && current.val == next.val)
-                    {
-                        next = next.next;
-                    }
-                    current.next = next == null ? null : next;
-                    current = next;
-                    if (current == null) break;
-                }
-                else
-                    current = next;
+                if (node1 == null) { return null; }
+                node1 = node1.next;
             }
 
-            return head;
+            if (node1 != null)
+            {
+                while (node1.next != null)
+                {
+                    node1 = node1.next;
+                    node2 = node2.next;
+                }
+                node2.next = node2.next.next;
+            }
+            return fakeHead.next;
         }
 
         static void Main(string[] args)
         {
-             var l3 = new ListNode(3);
-             var l31 = new ListNode(3, l3);
-            var l2 = new ListNode(2, l31);
-            var l11 = new ListNode(1, l2);
-            var l1 = new ListNode(1, l11);
-            DeleteDuplicates(l1);
+             var l5 = new ListNode(5);
+             var l4 = new ListNode(4, l5);
+            var l3 = new ListNode(3, l4);
+            var l2 = new ListNode(2, l3);
+            var l1 = new ListNode(1, l2);
+            RemoveNthFromEnd(l1 , 2);
+            RemoveNthFromEnd(new ListNode(1), 1);
+            
+            RemoveNthFromEnd(new ListNode(1, new ListNode(2)), 2);
             Console.ReadKey();
         }
     }
