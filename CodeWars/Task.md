@@ -1,23 +1,23 @@
-﻿796. Rotate String
+﻿83. Remove Duplicates from Sorted List
 
-Given two strings s and goal, return true if and only if s can become goal after some number of shifts on s.
+    Given the head of a sorted linked list, delete all duplicates such that each element appears only once. Return the linked list sorted as well.
 
-A shift on s consists of moving the leftmost character of s to the rightmost position.
-
-For example, if s = "abcde", then it will be "bcdea" after one shift.
 
 
 Example 1:
 
-Input: s = "abcde", goal = "cdeab"
-Output: true
+
+Input: head = [1,1,2]
+Output: [1,2]
 Example 2:
 
-Input: s = "abcde", goal = "abced"
-Output: false
+
+Input: head = [1,1,2,3,3]
+Output: [1,2,3]
 
 
 Constraints:
 
-1 <= s.length, goal.length <= 100
-s and goal consist of lowercase English letters.
+The number of nodes in the list is in the range [0, 300].
+-100 <= Node.val <= 100
+The list is guaranteed to be sorted in ascending order.

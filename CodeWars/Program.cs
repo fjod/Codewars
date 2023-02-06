@@ -6,35 +6,38 @@ namespace CodeWars
 {
     class Program
     {
-        public static bool RotateString(string s, string goal)
+        public static ListNode DeleteDuplicates(ListNode head)
         {
-            if (s.Length != goal.Length) return false;
-            int pos = 0;
-            for (int i = 0; i < s.Length; i++)
+            if (head == null) return head;
+            var current = head;
+            while (current.next != null)
             {
-                if (CheckStrings(s, goal, pos)) return true;
-                pos++;
+                var next = current.next;
+                if (current.val == next.val)
+                {
+                    while (next != null && current.val == next.val)
+                    {
+                        next = next.next;
+                    }
+                    current.next = next == null ? null : next;
+                    current = next;
+                    if (current == null) break;
+                }
+                else
+                    current = next;
             }
 
-            return false;
-        }
-
-        private static bool CheckStrings(string s, string goal, int pos)
-        {
-            int shift = 0;
-            for (int i = 0; i < s.Length; i++)
-            {
-                shift = pos + i;
-                if (shift >= goal.Length) shift = (pos + i) -goal.Length;
-                if (s[i] != goal[shift]) return false;
-            }
-
-            return true;
+            return head;
         }
 
         static void Main(string[] args)
         {
-            var q = RotateString("abcde", "cdeab");
+             var l3 = new ListNode(3);
+             var l31 = new ListNode(3, l3);
+            var l2 = new ListNode(2, l31);
+            var l11 = new ListNode(1, l2);
+            var l1 = new ListNode(1, l11);
+            DeleteDuplicates(l1);
             Console.ReadKey();
         }
     }
