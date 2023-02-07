@@ -1,49 +1,60 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace CodeWars
 {
     class Program
     {
-        public static ListNode RemoveNthFromEnd(ListNode head, int n)
+        public static ListNode AddTwoNumbers(ListNode l1, ListNode l2)
         {
-            if (head == null || n <= 0) { return null; }
-
-            ListNode fakeHead, node1, node2;
-            fakeHead = new ListNode(-1);
-            fakeHead.next = head;
-
-            node1 = node2 = fakeHead;
-            for (int i = 0; i < n; i++)
+            var n1 = Create(l1);
+            var n2 = Create(l2);
+            var str = (n1 + n2).ToString();
+            
+            var ret = new ListNode(int.Parse(str[^1].ToString()));
+            var start = ret;
+            for (int i = str.Length - 2; i >=0; i--)
             {
-                if (node1 == null) { return null; }
-                node1 = node1.next;
+                var node =  new ListNode(int.Parse(str[i].ToString()));
+                ret.next = node;
+                ret = node;
             }
 
-            if (node1 != null)
-            {
-                while (node1.next != null)
-                {
-                    node1 = node1.next;
-                    node2 = node2.next;
-                }
-                node2.next = node2.next.next;
-            }
-            return fakeHead.next;
+            return start;
         }
 
+        private static BigInteger Create(ListNode l1)
+        {
+            var node = l1;
+            BigInteger ret = 0;
+            BigInteger counter = 1;
+            while (node != null)
+            {
+                ret += counter * node.val;
+                counter *= 10;
+                node = node.next;
+            }
+
+            return ret;
+        }
         static void Main(string[] args)
         {
-             var l5 = new ListNode(5);
-             var l4 = new ListNode(4, l5);
-            var l3 = new ListNode(3, l4);
-            var l2 = new ListNode(2, l3);
-            var l1 = new ListNode(1, l2);
-            RemoveNthFromEnd(l1 , 2);
-            RemoveNthFromEnd(new ListNode(1), 1);
+            var l1_3 = new ListNode(3);
+            var l1_2 = new ListNode(4, l1_3);
+            var l1_1 = new ListNode(2, l1_2);
             
-            RemoveNthFromEnd(new ListNode(1, new ListNode(2)), 2);
+            var l2_3 = new ListNode(4);
+            var l2_2 = new ListNode(6, l2_3);
+            var l2_1 = new ListNode(5, l2_2);
+
+            var l3 = new ListNode(9);
+            var l4 = new ListNode(1,
+                new ListNode(9,
+                    new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9))))))))));
+
+            var q = AddTwoNumbers(l3, l4);
             Console.ReadKey();
         }
     }
