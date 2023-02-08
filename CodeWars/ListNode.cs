@@ -10,6 +10,6 @@ public class ListNode {
 
     public override string ToString()
     {
-        return $"{val} + {next == null}";
+        return val.ToString();
     }
 }

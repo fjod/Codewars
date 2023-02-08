@@ -7,54 +7,59 @@ namespace CodeWars
 {
     class Program
     {
-        public static ListNode AddTwoNumbers(ListNode l1, ListNode l2)
+        public static bool IsPalindrome(ListNode head)
         {
-            var n1 = Create(l1);
-            var n2 = Create(l2);
-            var str = (n1 + n2).ToString();
-            
-            var ret = new ListNode(int.Parse(str[^1].ToString()));
-            var start = ret;
-            for (int i = str.Length - 2; i >=0; i--)
+            if (head == null) return true;
+
+            var endOfFirstHalf = EndOfFirstHalf(head);
+            var secondHalf = ReverseList(endOfFirstHalf.next);
+
+            ListNode p1 = head, p2 = secondHalf;
+            var result = true;
+            while (p2 != null)
             {
-                var node =  new ListNode(int.Parse(str[i].ToString()));
-                ret.next = node;
-                ret = node;
+                if (p1.val != p2.val) return false;
+                p1 = p1.next;
+                p2 = p2.next;
             }
 
-            return start;
+            return result;
         }
 
-        private static BigInteger Create(ListNode l1)
+        private static ListNode EndOfFirstHalf(ListNode head)
         {
-            var node = l1;
-            BigInteger ret = 0;
-            BigInteger counter = 1;
-            while (node != null)
+            ListNode slow = head, fast = head;
+            while (fast.next != null && fast.next.next != null)
             {
-                ret += counter * node.val;
-                counter *= 10;
-                node = node.next;
+                slow = slow.next;
+                fast = fast.next.next;
             }
 
-            return ret;
+            return slow;
         }
+
+        private static ListNode ReverseList(ListNode head)
+        {
+           // 2 -> 1 -> null
+           ListNode prev = null;
+           ListNode curr = head;
+           while (curr != null)
+           {
+               var next = curr.next; //save next element (1)                 (null)
+               curr.next = prev; // curr = 1 prev = null => null <- 2 1 -> null   // curr = 1, prev = 2 => null <- 2 <- 1 null
+               prev = curr; // curr = 2 prev = 2         => null <- 2 1 -> null   // curr = 1 prev = 1 
+               curr = next; // curr = 1 prev = 2         => null <- 2 1 -> null   // curr = null prev = 1
+           }
+
+           return prev;
+        }
+        
+        
         static void Main(string[] args)
         {
-            var l1_3 = new ListNode(3);
-            var l1_2 = new ListNode(4, l1_3);
-            var l1_1 = new ListNode(2, l1_2);
-            
-            var l2_3 = new ListNode(4);
-            var l2_2 = new ListNode(6, l2_3);
-            var l2_1 = new ListNode(5, l2_2);
-
-            var l3 = new ListNode(9);
-            var l4 = new ListNode(1,
-                new ListNode(9,
-                    new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9, new ListNode(9))))))))));
-
-            var q = AddTwoNumbers(l3, l4);
+            var l1 = new ListNode(1, new ListNode(2, new ListNode(2, new ListNode(1))));
+            //var l2 = new ListNode(1, new ListNode(0, new ListNode(1)));
+            var z = IsPalindrome(l1);
             Console.ReadKey();
         }
     }
