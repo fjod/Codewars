@@ -5,25 +5,26 @@ open TreeNodeDef
 
 module ConsoleAppFsharp =
 
-    let CheckInclusion (s1:string) (s2:string) =
-        let s1Count = Array.create 26 0
-        let addToArray (c:char) =
-            s1Count[int(c - 'a')] <- s1Count[int(c - 'a')] + 1
+    let solutions = List<string>()
+    
+    let rec genParensInner (arr:char[]) (index:int) (leftRem:int) (rightRem:int) =
+        if (leftRem = 0 && rightRem =0) then
+            solutions.Add(arr.AsSpan().ToString())
             ()
-        s1.ToCharArray() |> Array.iter addToArray
-        
-        let s2Count = Array.create 26 0
-        [0..s2.Length] |> List.tryFindIndex (fun i ->
-            let s2Char = s2[i]
-            s2Count[int(s2Char - 'a')] <- s2Count[int(s2Char - 'a')] + 1
-            if (i > s1.Length) then
-                 s2Count[int(s2[i - s1.Length] - 'a')] <-  s2Count[int(s2[i - s1.Length] - 'a')] - 1
-               else ()
-            s1Count = s2Count            
-            ) |> Option.isSome
-        
+        else if leftRem > 0 then                
+                    arr[index] <- '('
+                    genParensInner arr (index + 1) (leftRem - 1) rightRem              
+            else if rightRem > 0 && rightRem > leftRem then
+                    arr[index] <- ')'
+                    genParensInner arr (index + 1) leftRem (rightRem - 1)
+            else ()
+            
+    let generateParens (n :int) =
+        let arr = Array.init (n*2) (fun _ -> '0')
+        genParensInner arr 0 3 3
+        solutions
+    
 
-
-
-
+does not work
+    let test = generateParens 3
     printfn "Hello from F#1"

@@ -8,34 +8,30 @@ namespace CodeWars
     class Program
     {
         
-        public static bool CheckInclusion(string s1, string s2)
-        {
-            var s1Length = s1.Length;
-            var s2Length = s2.Length;
+        public static IList<string> GenerateParenthesis(int n) {
+            List<String> solutions = new List<string>();
+            addParenthesis(new char[n * 2], 0, n, n, solutions);
+            return solutions;
+        }
 
-            if (s1Length > s2Length) return false;
-
-            var s1Count = new int[26]; //alphabet and count of letters
-            foreach (var ch in s1)
-                s1Count[ch - 'a']++;
-
-            var s2Count = new int[26];
-            for (int i = 0; i < s2Length; i++)
-            {
-                s2Count[s2[i] - 'a']++; //add letter to another alphabet
-                if (i >= s1Length)
-                    s2Count[s2[i - s1Length] - 'a']--;  //if current char of s2 is on position away from s1 len, then decrease it's count in s2 alphabet
-
-                if (s2Count.SequenceEqual(s1Count))
-                    return true;
+        private static void addParenthesis(char[] currentExpr, int index, int leftRemain, int rightRemain, List<String> solutions) {
+            if (leftRemain == 0 && rightRemain == 0) {
+                solutions.Add(new String(currentExpr));
+                return;
             }
-
-            return false;
+            if (leftRemain > 0) {
+                currentExpr[index] = '(';
+                addParenthesis(currentExpr, index + 1, leftRemain - 1, rightRemain, solutions);
+            }
+            if (rightRemain > 0 && rightRemain > leftRemain) {
+                currentExpr[index] = ')';
+                addParenthesis(currentExpr, index + 1, leftRemain, rightRemain - 1, solutions);
+            }
         }
     
         static void Main(string[] args)
         {
-            CheckInclusion("prospe", "properties");
+            GenerateParenthesis(3);
             Console.ReadKey();
         }
     }
