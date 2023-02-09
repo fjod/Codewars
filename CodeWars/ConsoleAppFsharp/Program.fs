@@ -5,29 +5,23 @@ open TreeNodeDef
 
 module ConsoleAppFsharp =
 
-    let RemoveNthFromEnd (head: Option<ListNode>) (n: int) =
-
-        match (head, n) with
-        | None, n when n <= 0 -> None
-        | _ ->
-            let fakehead = ListNode -1
-            fakehead.Next <- head
-            let mutable n1 = Some(ListNode -1)
-            let mutable n2 = Some (ListNode -2)
-
-            for i in 0..n do
-                n1 <- n1.Value.Next
-
-            if n1.IsNone then
-                None
-            else
-                while (n1.Value.Next <> None) do
-                    n1 <- n1.Value.Next
-                    n2 <- n2.Value.Next
-                n2.Value.Next <- n2.Value.Next.Value.Next
-                Some fakehead.Next
-
-
+    let CheckInclusion (s1:string) (s2:string) =
+        let s1Count = Array.create 26 0
+        let addToArray (c:char) =
+            s1Count[int(c - 'a')] <- s1Count[int(c - 'a')] + 1
+            ()
+        s1.ToCharArray() |> Array.iter addToArray
+        
+        let s2Count = Array.create 26 0
+        [0..s2.Length] |> List.tryFindIndex (fun i ->
+            let s2Char = s2[i]
+            s2Count[int(s2Char - 'a')] <- s2Count[int(s2Char - 'a')] + 1
+            if (i > s1.Length) then
+                 s2Count[int(s2[i - s1.Length] - 'a')] <-  s2Count[int(s2[i - s1.Length] - 'a')] - 1
+               else ()
+            s1Count = s2Count            
+            ) |> Option.isSome
+        
 
 
 

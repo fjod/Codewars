@@ -1,7 +1,23 @@
-﻿62. Unique Paths
+﻿567. Permutation in String
 
-There is a robot on an m x n grid. The robot is initially located at the top-left corner (i.e., grid[0][0]). The robot tries to move to the bottom-right corner (i.e., grid[m - 1][n - 1]). The robot can only move either down or right at any point in time.
+Given two strings s1 and s2, return true if s2 contains a permutation of s1, or false otherwise.
 
-Given the two integers m and n, return the number of possible unique paths that the robot can take to reach the bottom-right corner.
+In other words, return true if one of s1's permutations is the substring of s2.
 
-The test cases are generated so that the answer will be less than or equal to 2 * 109.
+
+
+Example 1:
+
+Input: s1 = "ab", s2 = "eidbaooo"
+Output: true
+Explanation: s2 contains one permutation of s1 ("ba").
+Example 2:
+
+Input: s1 = "ab", s2 = "eidboaoo"
+Output: false
+
+
+Constraints:
+
+1 <= s1.length, s2.length <= 104
+s1 and s2 consist of lowercase English letters.
