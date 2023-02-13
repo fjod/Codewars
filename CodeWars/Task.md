@@ -1,14 +1,18 @@
-﻿518. Coin Change II
-     Medium
-     6.8K
-     120
-     Companies
-     You are given an integer array coins representing coins of different denominations and an integer amount representing a total amount of money.
+﻿217. Contains Duplicate
 
-Return the number of combinations that make up that amount. If that amount of money cannot be made up by any combination of the coins, return 0.
+Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
 
-You may assume that you have an infinite number of each kind of coin.
 
-The answer is guaranteed to fit into a signed 32-bit integer.
 
- 
+Example 1:
+
+Input: nums = [1,2,3,1]
+Output: true
+Example 2:
+
+Input: nums = [1,2,3,4]
+Output: false
+Example 3:
+
+Input: nums = [1,1,1,3,3,4,3,2,4,2]
+Output: true

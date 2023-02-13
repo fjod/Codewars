@@ -1,28 +1,43 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
 
 namespace CodeWars
 {
     class Program
     {
         
-        public static int Change(int amount, int[] coins)
+        public static bool ContainsDuplicate(int[] nums)
         {
-            var dp = new int[amount + 1];
-            dp[0] = 1;
+            HashSet<int> set = new HashSet<int>();
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (!set.Add(nums[i]))
+                {
+                    return true;
+                }
+            }
 
-            foreach (var coin in coins)
-                for (int x = coin; x <= amount; x++)
-                    dp[x] += dp[x - coin];
-
-            return dp[amount];
+            return false;
+        }
+        
+        public static bool ContainsDuplicate2(int[] nums) {
+            HashSet<int> set = new HashSet<int>();
+        
+            foreach (int x in nums){
+                if (set.Contains(x)) return true;
+                set.Add(x);
+            }
+            return false;
         }
 
         static void Main(string[] args)
         {
-            Change(5, new[] {1, 2, 5});
+            ContainsDuplicate( new[] {1, 2, 5, 1});
+            ContainsDuplicate2( new[] {1, 2, 5, 1});
             Console.ReadKey();
         }
     }
