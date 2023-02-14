@@ -10,34 +10,30 @@ namespace CodeWars
     class Program
     {
         
-        public static bool ContainsDuplicate(int[] nums)
+        public static bool IsAnagram(string s, string t)
         {
-            HashSet<int> set = new HashSet<int>();
-            for (int i = 0; i < nums.Length; i++)
+            Dictionary<char, int> dictionary = new Dictionary<char, int>();
+            foreach (var c in s)
             {
-                if (!set.Add(nums[i]))
-                {
-                    return true;
-                }
+                if (!dictionary.ContainsKey(c)) dictionary.Add(c, 1);
+                else dictionary[c] += 1;
             }
 
-            return false;
-        }
-        
-        public static bool ContainsDuplicate2(int[] nums) {
-            HashSet<int> set = new HashSet<int>();
-        
-            foreach (int x in nums){
-                if (set.Contains(x)) return true;
-                set.Add(x);
+            foreach (var c in t)
+            {
+                if (!dictionary.ContainsKey(c)) return false;
+                dictionary[c] -= 1;
+                if (dictionary[c] < 0) return false;
             }
-            return false;
+
+            return dictionary.Values.All(v => v == 0);
         }
+        
+     
 
         static void Main(string[] args)
         {
-            ContainsDuplicate( new[] {1, 2, 5, 1});
-            ContainsDuplicate2( new[] {1, 2, 5, 1});
+            var test = IsAnagram("anagram", "nagaram");
             Console.ReadKey();
         }
     }

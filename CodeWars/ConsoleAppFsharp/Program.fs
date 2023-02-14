@@ -5,19 +5,25 @@ open TreeNodeDef
 
 module ConsoleAppFsharp =
 
- 
-    let generateCoins (coins:int[]) (amount:int) =
+ // possibly can be rewritten with using Seq functions
+    let isAnagram (s:string) (t:string)=
+        let dict = Dictionary<char,int>()
+        let addToDict (c : char) = 
+            if dict.ContainsKey c then dict[c] <- dict[c] + 1
+            else dict.Add(c,1)
+            ()
+        let removeFromDict (c : char) =
+            dict[c] <- dict[c] - 1
+            ()    
+        for c in s do addToDict c
         
-        let dp = Array.init (amount + 1) (fun _ -> 0)
-        dp[0] <- 1
+        let allCharsAreFound = s.ToCharArray()
+                               |> Array.map (fun c -> dict.ContainsKey c)
+                               |> Array.filter (fun r -> r = false)
+                               |> Array.length = 0
+        for c in t do removeFromDict c
         
-        for coin in coins do
-            let interval = [coin..1..amount]
-            for x in interval do
-                dp[x] <-  dp[x] + dp[x - coin]
-        
-        dp[amount]
+        allCharsAreFound && dict.Values |> Seq.forall (fun v -> v = 0)
 
-
-    let test = generateCoins  [|1;2;5|] 5
+  
     printfn "Hello from F#1"
