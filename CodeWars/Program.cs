@@ -10,30 +10,28 @@ namespace CodeWars
     class Program
     {
         
-        public static bool IsAnagram(string s, string t)
+        public static int[] TwoSum(int[] nums, int target)
         {
-            Dictionary<char, int> dictionary = new Dictionary<char, int>();
-            foreach (var c in s)
+
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+            for (int i = 0; i < nums.Length; i++)
             {
-                if (!dictionary.ContainsKey(c)) dictionary.Add(c, 1);
-                else dictionary[c] += 1;
+                var left = target - nums[i];
+                if (dict.ContainsKey(left))
+                {
+                    return new[] {i, dict[left]};
+                }
+                if (!dict.ContainsKey(nums[i])) dict.Add(nums[i], i);
             }
 
-            foreach (var c in t)
-            {
-                if (!dictionary.ContainsKey(c)) return false;
-                dictionary[c] -= 1;
-                if (dictionary[c] < 0) return false;
-            }
-
-            return dictionary.Values.All(v => v == 0);
+            throw new ArgumentException("");
         }
         
      
 
         static void Main(string[] args)
         {
-            var test = IsAnagram("anagram", "nagaram");
+            var test = TwoSum(new []{2,7,11,15}, 9);
             Console.ReadKey();
         }
     }

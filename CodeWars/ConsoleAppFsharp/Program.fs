@@ -5,25 +5,20 @@ open TreeNodeDef
 
 module ConsoleAppFsharp =
 
- // possibly can be rewritten with using Seq functions
-    let isAnagram (s:string) (t:string)=
-        let dict = Dictionary<char,int>()
-        let addToDict (c : char) = 
-            if dict.ContainsKey c then dict[c] <- dict[c] + 1
-            else dict.Add(c,1)
-            ()
-        let removeFromDict (c : char) =
-            dict[c] <- dict[c] - 1
-            ()    
-        for c in s do addToDict c
+ 
+    let twoSum(nums:int[]) (target:int) =
+        let dict = Dictionary<int, int>()
+        nums |> Array.mapi (fun i n ->
+            let left = target - n
+            if dict.ContainsKey(left) then Some (i, dict[left])
+            else                
+                if dict.ContainsKey(n) = false then dict.Add(n, i)
+                None            
+            ) |> Array.choose id |> Array.take 1 |> Array.map (fun r -> [|fst r; snd r|])
+   
         
-        let allCharsAreFound = s.ToCharArray()
-                               |> Array.map (fun c -> dict.ContainsKey c)
-                               |> Array.filter (fun r -> r = false)
-                               |> Array.length = 0
-        for c in t do removeFromDict c
         
-        allCharsAreFound && dict.Values |> Seq.forall (fun v -> v = 0)
-
-  
+    
+    let test = twoSum [|2;7;11;15|] 9
+    let q = test[0]
     printfn "Hello from F#1"
