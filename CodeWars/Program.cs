@@ -4,34 +4,62 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Text;
 
 namespace CodeWars
 {
     class Program
     {
-        
-        public static int[] TwoSum(int[] nums, int target)
+        public static IList<IList<string>> GroupAnagrams(string[] strs)
         {
-
-            Dictionary<int, int> dict = new Dictionary<int, int>();
-            for (int i = 0; i < nums.Length; i++)
+            List<(string, int[])> dict = new List<(string, int[])>();
+            for (int i = 0; i < strs.Length; i++)
             {
-                var left = target - nums[i];
-                if (dict.ContainsKey(left))
-                {
-                    return new[] {i, dict[left]};
-                }
-                if (!dict.ContainsKey(nums[i])) dict.Add(nums[i], i);
+                dict.Add((strs[i], CreateArray(strs[i])));
             }
 
-            throw new ArgumentException("");
+            var test = dict.GroupBy(g => CreateHashCode(g.Item2)).ToList();
+            IList<IList<string>> ret = new List<IList<string>>();
+            foreach (var v in test)
+            {
+                ret.Add(new List<string>(v.Select(z => z.Item1)));
+            }
+
+            return ret;
         }
-        
-     
+
+        private static StringBuilder sb = new StringBuilder();
+        private static int CreateHashCode(int[] i)
+        {
+            sb.Clear();
+            for (int j = 0; j < i.Length; j++)
+            {
+                if (i[j] != 0)
+                {
+                    sb.Append(j);
+                    sb.Append(i[j]*17);
+                }
+            }
+
+            return sb.ToString().GetHashCode();
+        }
+        private static int[] CreateArray(string s)
+        {
+            int[] ret = new int[26];
+            for (var i = 0; i < s.Length; i++)
+            {
+                var c = s[i];
+                var index = c - 'a';
+                ret[index]++;
+            }
+
+            return ret;
+        }
+
 
         static void Main(string[] args)
         {
-            var test = TwoSum(new []{2,7,11,15}, 9);
+            var test = GroupAnagrams(new[] {"abbbbbbbbbbb","aaaaaaaaaaab"});
             Console.ReadKey();
         }
     }
