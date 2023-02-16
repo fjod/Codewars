@@ -10,30 +10,29 @@ namespace CodeWars
 {
     class Program
     {
-        public static int[] ProductExceptSelf(int[] nums) {
-            int prefix = 1, postfix = 1;
-            int[] prefixArr = new int[nums.Length];        
-            int[] postFixArr = new int[nums.Length];
-            
-            for(int i = 0; i < nums.Length; i++){
-                prefixArr[i] = prefix;
-                prefix *= nums[i];
-            }
-        
-            for(int i = nums.Length-1; i>=0; i--){
-                postfix *= nums[i];
-                postFixArr[i] = postfix;
-            }
-
-            var res = new int[nums.Length];
-            for (int i = 0; i < nums.Length; i++)
+        public static bool IsValidSudoku(char[][] board)
+        {
+            Dictionary<int, HashSet<int>> rows = new Dictionary<int, HashSet<int>>(9);
+            Dictionary<int, HashSet<int>> cols = new Dictionary<int, HashSet<int>>(9);
+            Dictionary<(int, int), HashSet<int>> squares = new Dictionary<(int, int), HashSet<int>>(9);
+            for (int row = 0; row < board.Length; row++)
             {
-                var prevVal = i - 1 < 0 ? 1 : prefixArr[i];
-                var nextVal = i + 1 == nums.Length ? 1 : postFixArr[i+1];
-                res[i] = prevVal * nextVal;
+                rows.Add(row, new HashSet<int>());
+                for (int col = 0; col < board[row].Length; col++)
+                {
+                    if (!cols.ContainsKey(col)) cols.Add(col, new HashSet<int>());
+                    if (!squares.ContainsKey((row/3,col/3))) squares.Add((row/3,col/3), new HashSet<int>());
+
+                    var currentChar = board[row][col];
+                    if (currentChar == '.') continue;
+                    var rowStatus = rows[row].Add(currentChar);
+                    var colStatus = cols[col].Add(currentChar);
+                    var squareStatus = squares[(row / 3, col / 3)].Add(currentChar);
+                    if (rowStatus == false || colStatus == false || squareStatus == false) return false;
+                }
             }
 
-            return res;
+            return true;
         }
 
 
