@@ -10,35 +10,48 @@ namespace CodeWars
 {
     class Program
     {
-        public static bool IsValidSudoku(char[][] board)
+        public static int LongestConsecutive(int[] nums)
         {
-            Dictionary<int, HashSet<int>> rows = new Dictionary<int, HashSet<int>>(9);
-            Dictionary<int, HashSet<int>> cols = new Dictionary<int, HashSet<int>>(9);
-            Dictionary<(int, int), HashSet<int>> squares = new Dictionary<(int, int), HashSet<int>>(9);
-            for (int row = 0; row < board.Length; row++)
+            if (nums.Length == 0) return 0;
+            var set = new HashSet<int>(nums.Length);
+            foreach (var num in nums)
             {
-                rows.Add(row, new HashSet<int>());
-                for (int col = 0; col < board[row].Length; col++)
-                {
-                    if (!cols.ContainsKey(col)) cols.Add(col, new HashSet<int>());
-                    if (!squares.ContainsKey((row/3,col/3))) squares.Add((row/3,col/3), new HashSet<int>());
-
-                    var currentChar = board[row][col];
-                    if (currentChar == '.') continue;
-                    var rowStatus = rows[row].Add(currentChar);
-                    var colStatus = cols[col].Add(currentChar);
-                    var squareStatus = squares[(row / 3, col / 3)].Add(currentChar);
-                    if (rowStatus == false || colStatus == false || squareStatus == false) return false;
-                }
+                set.Add(num);
             }
 
-            return true;
+            var visited = new HashSet<int>();
+            var max = 1;
+            foreach (var num in nums)
+            {
+                if (visited.Contains(num)) continue;
+                visited.Add(num);
+                var currentMax = 1;
+                var next = num + 1;
+                while (set.Contains(next))
+                {
+                    visited.Add(next);
+                    currentMax++;
+                    next++;
+                }
+
+                var prev = num - 1;
+                while (set.Contains(prev))
+                {
+                    visited.Add(prev);
+                    currentMax++;
+                    prev--;
+                }
+
+                if (currentMax > max) max = currentMax;
+            }
+
+            return max;
         }
 
 
         static void Main(string[] args)
         {
-            var test = ProductExceptSelf(new[] {1,2, 3, 4});
+            var test = LongestConsecutive(new[] {100, 4, 200, 1, 3, 2});
             Console.ReadKey();
         }
     }

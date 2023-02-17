@@ -6,22 +6,34 @@ open TreeNodeDef
 module ConsoleAppFsharp =
 
  
-    let ProductExceptSelf (nums :int[]) =
-        let mutable prefix = 1
-        let mutable postfix = 1
-        let prefixArray = Array.init nums.Length (fun _ -> 0)
-        let postFixArray = Array.init nums.Length (fun _ -> 0)
-        for i in 0..nums.Length-1 do
-            prefixArray[i] <- prefix
-            prefix <- prefix * nums[i]
-        for i in nums.Length-1 .. -1 ..0 do
-            postfix <- postfix * nums[i]
-            postFixArray[i] <- postfix
-        let getPrefix (index:int) =
-            if index < 0 then 1 else prefixArray[index]
-        let getPostfix (index:int) =
-            if index = nums.Length then 1 else postFixArray[index]
-        Array.init nums.Length id |> Array.map (fun i -> getPrefix(i) * getPostfix(i+1))
+    let LongestConsecutive(nums:int[]) =
+        let set = HashSet<int>(nums.Length)
+        nums |> Array.iter (fun i -> set.Add(i) |> ignore)
+        let visited = HashSet<int>(nums.Length)
+        (1, nums) ||> Array.fold (fun max i ->
+            if visited.Contains(i) then max
+            else
+                visited.Add(i) |> ignore               
+                let rec addNext (next:int) (acc:int) : int =
+                    if set.Contains(next) then
+                        visited.Add(next) |> ignore
+                        acc + addNext (next + 1) (acc + 1)
+                        else
+                        0
+                       
+                let rec addPrev (prev:int) (acc:int) : int =
+                    if set.Contains(prev) then
+                        visited.Add(prev) |> ignore
+                        acc + addPrev (prev - 1) (acc + 1)
+                        else
+                        0
+                let next = addNext (i + 1) 0
+                let prev = addPrev (i - 1) 0
+                let total = next + prev + 1
+                
+                Math.Max(max, total)            
+            ) 
         
-    let test = ProductExceptSelf [|1;2;3;4|]
+        
+    let test = LongestConsecutive [|100; 4; 200; 1; 3; 2|]
     printfn "Hello from F#1"
