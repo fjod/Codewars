@@ -6,34 +6,27 @@ open TreeNodeDef
 module ConsoleAppFsharp =
 
  
-    let LongestConsecutive(nums:int[]) =
-        let set = HashSet<int>(nums.Length)
-        nums |> Array.iter (fun i -> set.Add(i) |> ignore)
-        let visited = HashSet<int>(nums.Length)
-        (1, nums) ||> Array.fold (fun max i ->
-            if visited.Contains(i) then max
+     let IsValid (s:string) =
+        let Stack = System.Collections.Generic.Stack<char>()
+        let rec workOnString (index:int) =
+            if (index = s.Length) then true
             else
-                visited.Add(i) |> ignore               
-                let rec addNext (next:int) (acc:int) : int =
-                    if set.Contains(next) then
-                        visited.Add(next) |> ignore
-                        acc + addNext (next + 1) (acc + 1)
-                        else
-                        0
-                       
-                let rec addPrev (prev:int) (acc:int) : int =
-                    if set.Contains(prev) then
-                        visited.Add(prev) |> ignore
-                        acc + addPrev (prev - 1) (acc + 1)
-                        else
-                        0
-                let next = addNext (i + 1) 0
-                let prev = addPrev (i - 1) 0
-                let total = next + prev + 1
-                
-                Math.Max(max, total)            
-            ) 
-        
-        
-    let test = LongestConsecutive [|100; 4; 200; 1; 3; 2|]
-    printfn "Hello from F#1"
+            let ch = s[index]
+            match ch with 
+                | '(' | '[' | '{' ->
+                    Stack.Push(ch)
+                    workOnString (index + 1)
+                | ')' when Stack.Count > 0 && Stack.Peek() = '(' ->
+                    Stack.Pop() |> ignore
+                    workOnString (index + 1)
+                | ']' when Stack.Count > 0 && Stack.Peek() = '[' ->
+                    Stack.Pop() |> ignore
+                    workOnString (index + 1)
+                | '}' when Stack.Count > 0 && Stack.Peek() = '{' ->
+                    Stack.Pop() |> ignore
+                    workOnString (index + 1)
+                | _ -> false    
+        let work = workOnString 0
+        work &&  Stack.Count = 0
+     let test = IsValid "}(}"
+     printfn "Hello from F#1"

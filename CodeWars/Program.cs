@@ -10,48 +10,51 @@ namespace CodeWars
 {
     class Program
     {
-        public static int LongestConsecutive(int[] nums)
+        public static bool IsValid(string s)
         {
-            if (nums.Length == 0) return 0;
-            var set = new HashSet<int>(nums.Length);
-            foreach (var num in nums)
+            if (s.Length == 1) return false;
+            Stack<char> stack = new Stack<char>();
+            foreach (var p in s)
             {
-                set.Add(num);
+                if (p == '(' || p == '[' || p == '{') stack.Push(p);
+                else
+                {
+                    if (stack.Count == 0) return false;
+                    var prevChar = stack.Pop();
+                    if (p == ')' && prevChar != '(') return false;
+                    if (p == ']' && prevChar != '[') return false;
+                    if (p == '}' && prevChar != '{') return false;
+                }
             }
 
-            var visited = new HashSet<int>();
-            var max = 1;
-            foreach (var num in nums)
-            {
-                if (visited.Contains(num)) continue;
-                visited.Add(num);
-                var currentMax = 1;
-                var next = num + 1;
-                while (set.Contains(next))
-                {
-                    visited.Add(next);
-                    currentMax++;
-                    next++;
-                }
-
-                var prev = num - 1;
-                while (set.Contains(prev))
-                {
-                    visited.Add(prev);
-                    currentMax++;
-                    prev--;
-                }
-
-                if (currentMax > max) max = currentMax;
-            }
-
-            return max;
+            return stack.Count == 0;
         }
 
+        //chat GPT fix
+        public static bool IsValid2(string s)
+        {
+            if (s.Length == 1) return false;
+            Stack<char> stack = new Stack<char>();
+            foreach (var c in s)
+            {
+                if (c == '(' || c == '[' || c == '{')
+                    stack.Push(c);
+                else if (c == ')' && stack.Count > 0 && stack.Peek() == '(')
+                    stack.Pop();
+                else if (c == ']' && stack.Count > 0 && stack.Peek() == '[')
+                    stack.Pop();
+                else if (c == '}' && stack.Count > 0 && stack.Peek() == '{')
+                    stack.Pop();
+                else
+                    return false;
+            }
+            return stack.Count == 0;
+        }
+        
 
         static void Main(string[] args)
         {
-            var test = LongestConsecutive(new[] {100, 4, 200, 1, 3, 2});
+            var test = IsValid("){");
             Console.ReadKey();
         }
     }
