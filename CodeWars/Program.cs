@@ -10,51 +10,57 @@ namespace CodeWars
 {
     class Program
     {
-        public static bool IsValid(string s)
+        public class MinStack
         {
-            if (s.Length == 1) return false;
-            Stack<char> stack = new Stack<char>();
-            foreach (var p in s)
+            private Node head;
+
+            public MinStack()
             {
-                if (p == '(' || p == '[' || p == '{') stack.Push(p);
-                else
+                head = null;
+            }
+
+            // each node has a value and a minValue for stack for time when the node was added,
+            // so on top operation it returns correct value
+            public void Push(int x)
+            {
+                head = head == null ? new Node(x, x) 
+                                    : new Node(x, Math.Min(x, head.MinValue), head);
+            }
+
+            public void Pop()
+            {
+                head = head.Next;
+            }
+
+            public int Top()
+            {
+                return head.Value;
+            }
+
+            public int GetMin()
+            {
+                return head.MinValue;
+            }
+
+            private class Node
+            {
+                public Node(int value, int minValue, Node next = null)
                 {
-                    if (stack.Count == 0) return false;
-                    var prevChar = stack.Pop();
-                    if (p == ')' && prevChar != '(') return false;
-                    if (p == ']' && prevChar != '[') return false;
-                    if (p == '}' && prevChar != '{') return false;
+                    Value = value;
+                    MinValue = minValue;
+                    Next = next;
                 }
-            }
 
-            return stack.Count == 0;
-        }
 
-        //chat GPT fix
-        public static bool IsValid2(string s)
-        {
-            if (s.Length == 1) return false;
-            Stack<char> stack = new Stack<char>();
-            foreach (var c in s)
-            {
-                if (c == '(' || c == '[' || c == '{')
-                    stack.Push(c);
-                else if (c == ')' && stack.Count > 0 && stack.Peek() == '(')
-                    stack.Pop();
-                else if (c == ']' && stack.Count > 0 && stack.Peek() == '[')
-                    stack.Pop();
-                else if (c == '}' && stack.Count > 0 && stack.Peek() == '{')
-                    stack.Pop();
-                else
-                    return false;
+                public int Value { get; }
+                public int MinValue { get; }
+                public Node Next { get; }
             }
-            return stack.Count == 0;
         }
         
 
         static void Main(string[] args)
         {
-            var test = IsValid("){");
             Console.ReadKey();
         }
     }
