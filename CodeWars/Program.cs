@@ -10,57 +10,44 @@ namespace CodeWars
 {
     class Program
     {
-        public class MinStack
+        public static int EvalRPN(string[] tokens)
         {
-            private Node head;
-
-            public MinStack()
+            if (tokens.Length == 1) return int.Parse(tokens.First());
+            Stack<int> vals = new Stack<int>();
+            int result = 0;
+            for (int c = 0; c < tokens.Length; c++)
             {
-                head = null;
-            }
-
-            // each node has a value and a minValue for stack for time when the node was added,
-            // so on top operation it returns correct value
-            public void Push(int x)
-            {
-                head = head == null ? new Node(x, x) 
-                                    : new Node(x, Math.Min(x, head.MinValue), head);
-            }
-
-            public void Pop()
-            {
-                head = head.Next;
-            }
-
-            public int Top()
-            {
-                return head.Value;
-            }
-
-            public int GetMin()
-            {
-                return head.MinValue;
-            }
-
-            private class Node
-            {
-                public Node(int value, int minValue, Node next = null)
+                if (tokens[c] == "+" || tokens[c] == "-" || tokens[c] == "/" || tokens[c] == "*")
                 {
-                    Value = value;
-                    MinValue = minValue;
-                    Next = next;
+                    var v1 = vals.Pop();
+                    var v2 = vals.Pop();
+                    result = calc(tokens[c], v1, v2);
+                    vals.Push(result);
                 }
-
-
-                public int Value { get; }
-                public int MinValue { get; }
-                public Node Next { get; }
+                else
+                {
+                    vals.Push(int.Parse(tokens[c]));
+                }
             }
+
+            return result;
         }
-        
+
+        private static int calc(string i, int v1, int v2)
+        {
+            return i switch
+            {
+                "+" => v1 + v2,
+                "-" => v2 - v1,
+                "*" => v1 * v2,
+                "/" => v2 / v1
+            };
+        }
+
 
         static void Main(string[] args)
         {
+            var q = EvalRPN(new[] {"2", "1", "+", "3", "*"});
             Console.ReadKey();
         }
     }

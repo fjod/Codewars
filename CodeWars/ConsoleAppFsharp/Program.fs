@@ -6,27 +6,30 @@ open TreeNodeDef
 module ConsoleAppFsharp =
 
  
-     let IsValid (s:string) =
-        let Stack = System.Collections.Generic.Stack<char>()
-        let rec workOnString (index:int) =
-            if (index = s.Length) then true
+     let EvalRPN (s:string[]) =
+        let calc (sign:string) (v1:int) (v2:int) =
+            match sign with
+            | "+" -> v1 + v2
+            | "-" -> v2 - v1
+            | "/" -> v2 / v1
+            | "*" -> v1 * v2
+        let stack = Stack<int>()
+        let rec calcRpn (index:int) (returnValue : int) =
+            if (index = s.Length) then returnValue
             else
-            let ch = s[index]
-            match ch with 
-                | '(' | '[' | '{' ->
-                    Stack.Push(ch)
-                    workOnString (index + 1)
-                | ')' when Stack.Count > 0 && Stack.Peek() = '(' ->
-                    Stack.Pop() |> ignore
-                    workOnString (index + 1)
-                | ']' when Stack.Count > 0 && Stack.Peek() = '[' ->
-                    Stack.Pop() |> ignore
-                    workOnString (index + 1)
-                | '}' when Stack.Count > 0 && Stack.Peek() = '{' ->
-                    Stack.Pop() |> ignore
-                    workOnString (index + 1)
-                | _ -> false    
-        let work = workOnString 0
-        work &&  Stack.Count = 0
-     let test = IsValid "}(}"
+            let current = s[index]
+            match current with
+            | "+" | "-" | "/" | "/" ->
+                let v1 = stack.Pop()
+                let v2 = stack.Pop()
+                let ret = calc current v1 v2
+                stack.Push ret
+                calcRpn (index + 1) ret
+             | _ ->
+                 stack.Push(Int32.Parse(current))
+                 calcRpn (index + 1) returnValue
+            
+        calcRpn 0 0
+      
+   
      printfn "Hello from F#1"
