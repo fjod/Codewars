@@ -1,21 +1,39 @@
-﻿739. Daily Temperatures
+﻿167. Two Sum II - Input Array Is Sorted
      Medium
-     10.1K
-     233
+     8.9K
+     1.2K
      Companies
-     Given an array of integers temperatures represents the daily temperatures, return an array answer such that answer[i] is the number of days you have to wait after the ith day to get a warmer temperature. If there is no future day for which this is possible, keep answer[i] == 0 instead.
+     Given a 1-indexed array of integers numbers that is already sorted in non-decreasing order, find two numbers such that they add up to a specific target number. Let these two numbers be numbers[index1] and numbers[index2] where 1 <= index1 < index2 <= numbers.length.
+
+Return the indices of the two numbers, index1 and index2, added by one as an integer array [index1, index2] of length 2.
+
+The tests are generated such that there is exactly one solution. You may not use the same element twice.
+
+Your solution must use only constant extra space.
 
 
 
 Example 1:
 
-Input: temperatures = [73,74,75,71,69,72,76,73]
-Output: [1,1,4,2,1,1,0,0]
+Input: numbers = [2,7,11,15], target = 9
+Output: [1,2]
+Explanation: The sum of 2 and 7 is 9. Therefore, index1 = 1, index2 = 2. We return [1, 2].
 Example 2:
 
-Input: temperatures = [30,40,50,60]
-Output: [1,1,1,0]
+Input: numbers = [2,3,4], target = 6
+Output: [1,3]
+Explanation: The sum of 2 and 4 is 6. Therefore index1 = 1, index2 = 3. We return [1, 3].
 Example 3:
 
-Input: temperatures = [30,60,90]
-Output: [1,1,0]
+Input: numbers = [-1,0], target = -1
+Output: [1,2]
+Explanation: The sum of -1 and 0 is -1. Therefore index1 = 1, index2 = 2. We return [1, 2].
+
+
+Constraints:
+
+2 <= numbers.length <= 3 * 104
+-1000 <= numbers[i] <= 1000
+numbers is sorted in non-decreasing order.
+-1000 <= target <= 1000
+The tests are generated such that there is exactly one solution.
