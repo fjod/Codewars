@@ -6,30 +6,19 @@ open TreeNodeDef
 module ConsoleAppFsharp =
 
  
-     let EvalRPN (s:string[]) =
-        let calc (sign:string) (v1:int) (v2:int) =
-            match sign with
-            | "+" -> v1 + v2
-            | "-" -> v2 - v1
-            | "/" -> v2 / v1
-            | "*" -> v1 * v2
-        let stack = Stack<int>()
-        let rec calcRpn (index:int) (returnValue : int) =
-            if (index = s.Length) then returnValue
-            else
-            let current = s[index]
-            match current with
-            | "+" | "-" | "/" | "/" ->
-                let v1 = stack.Pop()
-                let v2 = stack.Pop()
-                let ret = calc current v1 v2
-                stack.Push ret
-                calcRpn (index + 1) ret
-             | _ ->
-                 stack.Push(Int32.Parse(current))
-                 calcRpn (index + 1) returnValue
-            
-        calcRpn 0 0
+     
       
-   
+     let rec calcMaxArea (left:int) (right:int) (height:int[]) (max:int) =
+         if (left >= right) then max
+         else
+             let curHeight = Math.Min(height[left], height[right])
+             let currentVolume = (right - left) * curHeight
+             let curMax = Math.Max(max, currentVolume)
+             if (height[left] < height[right]) then calcMaxArea (left + 1) right height curMax
+             else calcMaxArea left (right - 1) height curMax
+             
+     let maxArea(height: int[]) =
+         calcMaxArea 0 (height.Length - 1) height 0
+         
+     let test = maxArea [|1;8;6;2;5;4;8;3;7|]    
      printfn "Hello from F#1"

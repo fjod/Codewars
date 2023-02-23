@@ -12,64 +12,29 @@ namespace CodeWars
     class Program
     {
 
-        /// <summary>
-        /// Time Limit Exceeded
-        /// Last Executed Input
-        /// 308 / 312 testcases passed
-        /// </summary>
-        /// <param name="nums"></param>
-        /// <returns></returns>
-        public static IList<IList<int>> ThreeSum(int[] nums)
+        public static int MaxArea(int[] height)
         {
-            IList<IList<int>> ret = new List<IList<int>>();
-            for (int i = 0; i < nums.Length; i++)
+
+            int left = 0;
+            int right = height.Length - 1;
+            int maxVolume = 0;
+            while (left < right)
             {
-                List<int> test = new List<int>();
-                test.AddRange(nums);
-                test.RemoveAt(i);
-                List<(int,int)> remindersEqualToZero = Find(test, nums[i] * -1);
-                foreach (var valueTuple in remindersEqualToZero)
-                {
-                    var list = new List<int>(3) {nums[i], valueTuple.Item1, valueTuple.Item2};
-                    if (ret.All(l => GetHash(l) != GetHash(list)))
-                    {
-                        ret.Add(list);
-                    }
-                }
+                var currentHeight = Math.Min(height[left], height[right]);
+                var currentVolume = (right - left) * currentHeight;
+                maxVolume = Math.Max(maxVolume, currentVolume);
+                if (height[left] < height[right]) left++;
+                else right--;
             }
 
-            return ret;
-        }
+            return maxVolume;
 
-        private static int GetHash(IList<int> three)
-        {
-            return (three[0]*17).ToString().GetHashCode() + ((three[1]*17).ToString()).GetHashCode() + ((three[2]*17).ToString()).GetHashCode();
-        }
-
-        // find all pairs in test so pair1 + pair2 = num
-        private static List<(int, int)> Find(List<int> test, int num)
-        {
-            List<(int, int)> ret = new List<(int, int)>();
-            for (int i = 0; i < test.Count; i++)
-            {
-                var reminder = num - test[i];
-                List<int> test2 = new List<int>();
-                test2.AddRange(test);
-                test2.RemoveAt(i);
-                var reminders = test2.Where(v => v == reminder).Distinct();
-                foreach (var reminder1 in reminders)
-                {
-                    if (!ret.Contains((test[i], reminder1))) ret.Add((test[i], reminder1));
-                }
-            }
-
-            return ret;
         }
 
 
         static void Main(string[] args)
         {
-            var q = ThreeSum(new[] {-1, 0, 1, 2, -1, -4});
+            var q = MaxArea(new[] {1,8,6,2,5,4,8,3,7});
             Console.ReadKey();
         }
     }
