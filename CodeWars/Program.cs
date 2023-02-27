@@ -11,43 +11,32 @@ namespace CodeWars
 {
     class Program
     {
-
-        public static int MinEatingSpeed(int[] piles, int h)
+        public static int FindMin(int[] nums)
         {
-            if (h <= piles.Length) return piles.Max();
-            int minSpeed = 0;
-            int left = 1;
-            int right = piles.Max();
-            while (left < right)
+            int left = 0, right = nums.Length - 1;
+            while (left <= right)
             {
-                int mid = (left + right) / 2;
-                var eatingSpeed = mid;
-                long currentTotal = 0;
-                for (int i = 0; i < piles.Length; i++)
-                {
-                    currentTotal += (int)Math.Ceiling((double)piles[i] / eatingSpeed);
-                }
+                if (nums[left] <= nums[right]) return nums[left];
 
-                if (currentTotal <= h)
-                {
-                    minSpeed = mid;
-                    right = mid - 1;
-                }
-                else
+                int mid = (left + right) / 2;
+                if (nums[mid] >= nums[left])
                 {
                     left = mid + 1;
                 }
-                
+                else
+                {
+                    right = mid;
+                }
             }
 
-            return minSpeed;
+            return 0;
         }
-        
-        public static int Search(int[] nums, int target) {
-          
+
+        public static int Search(int[] nums, int target)
+        {
             int left = 0;
             int right = nums.Length - 1;
-            
+
             if (nums.Length == 1)
             {
                 if (nums[0] == target) return 0;
@@ -62,7 +51,7 @@ namespace CodeWars
                 {
                     return mid;
                 }
-                
+
                 if (val < target)
                 {
                     left = mid + 1;
@@ -80,7 +69,7 @@ namespace CodeWars
 
         static void Main(string[] args)
         {
-            var q = MinEatingSpeed(new []{805306368,805306368,805306368}, 1000000000);
+            var q = FindMin(new[] {4, 5, 6, 7, 0, 1, 2});
             Console.ReadKey();
         }
     }
