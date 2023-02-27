@@ -12,29 +12,92 @@ namespace CodeWars
     class Program
     {
 
-        public static int MaxArea(int[] height)
-        {
-
-            int left = 0;
-            int right = height.Length - 1;
-            int maxVolume = 0;
-            while (left < right)
+        public static bool SearchMatrix(int[][] matrix, int target) {
+            if (matrix.Length == 1)
             {
-                var currentHeight = Math.Min(height[left], height[right]);
-                var currentVolume = (right - left) * currentHeight;
-                maxVolume = Math.Max(maxVolume, currentVolume);
-                if (height[left] < height[right]) left++;
-                else right--;
+                return Search(matrix.First(), target) != -1;
+            }
+            int left = 0;
+            int right = matrix.Length;
+            int targetArray = right - 1;
+            while (left <= right)
+            {
+                int mid = (left + right) / 2;
+                if (mid >= matrix.Length) break;
+                int firstVal = matrix[mid][0];
+                if (target == firstVal) return true;
+                if (mid == 0)
+                {
+                    if (firstVal <= target)
+                    {
+                        targetArray = 0;
+                        break;
+                    }
+
+                    return false;
+                }
+
+                var firstPrevVal = matrix[mid - 1][0];
+                if (target < firstVal && target >= firstPrevVal)
+                {
+                    targetArray = mid - 1;
+                    break;
+                }
+
+              
+                if (target > firstVal)
+                {
+                    left = mid + 1;
+                }
+
+                if (target < firstVal)
+                {
+                    right = mid - 1;
+                }
             }
 
-            return maxVolume;
+            var search = Search(matrix[targetArray], target);
+            return search != -1;
+        }
+        
+        public static int Search(int[] nums, int target) {
+          
+            int left = 0;
+            int right = nums.Length - 1;
+            
+            if (nums.Length == 1)
+            {
+                if (nums[0] == target) return 0;
+                return -1;
+            }
 
+            while (left <= right)
+            {
+                int mid = (right + left) / 2;
+                int val = nums[mid];
+                if (val == target)
+                {
+                    return mid;
+                }
+                
+                if (val < target)
+                {
+                    left = mid + 1;
+                }
+
+                if (val > target)
+                {
+                    right = mid - 1;
+                }
+            }
+
+            return -1;
         }
 
 
         static void Main(string[] args)
         {
-            var q = MaxArea(new[] {1,8,6,2,5,4,8,3,7});
+            var q = SearchMatrix(new []{new []{1}, new []{3}}, 4);
             Console.ReadKey();
         }
     }
