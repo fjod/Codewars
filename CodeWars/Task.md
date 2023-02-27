@@ -1,14 +1,27 @@
-﻿74. Search a 2D Matrix
-    Medium
-    11.5K
-    337
-    Companies
-    You are given an m x n integer matrix matrix with the following two properties:
+﻿875. Koko Eating Bananas
+     Medium
+     6.1K
+     292
+     Companies
+     Koko loves to eat bananas. There are n piles of bananas, the ith pile has piles[i] bananas. The guards have gone and will come back in h hours.
 
-Each row is sorted in non-decreasing order.
-The first integer of each row is greater than the last integer of the previous row.
-Given an integer target, return true if target is in matrix or false otherwise.
+Koko can decide her bananas-per-hour eating speed of k. Each hour, she chooses some pile of bananas and eats k bananas from that pile. If the pile has less than k bananas, she eats all of them instead and will not eat any more bananas during this hour.
 
-You must write a solution in O(log(m * n)) time complexity.
+Koko likes to eat slowly but still wants to finish eating all the bananas before the guards return.
 
- int left = 0;int right = matrix.return 0;false; null, 1
+Return the minimum integer k such that she can eat all the bananas within h hours.
+
+
+
+Example 1:
+
+Input: piles = [3,6,7,11], h = 8
+Output: 4
+Example 2:
+
+Input: piles = [30,11,23,4,20], h = 5
+Output: 30
+Example 3:
+
+Input: piles = [30,11,23,4,20], h = 6
+Output: 23

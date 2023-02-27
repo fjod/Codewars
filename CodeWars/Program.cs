@@ -12,52 +12,35 @@ namespace CodeWars
     class Program
     {
 
-        public static bool SearchMatrix(int[][] matrix, int target) {
-            if (matrix.Length == 1)
-            {
-                return Search(matrix.First(), target) != -1;
-            }
-            int left = 0;
-            int right = matrix.Length;
-            int targetArray = right - 1;
-            while (left <= right)
+        public static int MinEatingSpeed(int[] piles, int h)
+        {
+            if (h <= piles.Length) return piles.Max();
+            int minSpeed = 0;
+            int left = 1;
+            int right = piles.Max();
+            while (left < right)
             {
                 int mid = (left + right) / 2;
-                if (mid >= matrix.Length) break;
-                int firstVal = matrix[mid][0];
-                if (target == firstVal) return true;
-                if (mid == 0)
+                var eatingSpeed = mid;
+                long currentTotal = 0;
+                for (int i = 0; i < piles.Length; i++)
                 {
-                    if (firstVal <= target)
-                    {
-                        targetArray = 0;
-                        break;
-                    }
-
-                    return false;
+                    currentTotal += (int)Math.Ceiling((double)piles[i] / eatingSpeed);
                 }
 
-                var firstPrevVal = matrix[mid - 1][0];
-                if (target < firstVal && target >= firstPrevVal)
+                if (currentTotal <= h)
                 {
-                    targetArray = mid - 1;
-                    break;
+                    minSpeed = mid;
+                    right = mid - 1;
                 }
-
-              
-                if (target > firstVal)
+                else
                 {
                     left = mid + 1;
                 }
-
-                if (target < firstVal)
-                {
-                    right = mid - 1;
-                }
+                
             }
 
-            var search = Search(matrix[targetArray], target);
-            return search != -1;
+            return minSpeed;
         }
         
         public static int Search(int[] nums, int target) {
@@ -97,7 +80,7 @@ namespace CodeWars
 
         static void Main(string[] args)
         {
-            var q = SearchMatrix(new []{new []{1}, new []{3}}, 4);
+            var q = MinEatingSpeed(new []{805306368,805306368,805306368}, 1000000000);
             Console.ReadKey();
         }
     }
