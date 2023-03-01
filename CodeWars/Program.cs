@@ -11,30 +11,35 @@ namespace CodeWars
 {
     class Program
     {
-        // almost made it by myself
-        public static int LengthOfLongestSubstring(string s)
+        public static int CharacterReplacement(string s, int k)
         {
-            int leftPointer = 0, rightPointer = 0, maxLength = 0;
-            HashSet<int> chars = new HashSet<int>();
-
-            while (rightPointer < s.Length) {
-                char currChar = s[rightPointer];
-                if (chars.Contains(currChar)) { // Move left pointer until all duplicate chars removed
-                    chars.Remove(s[leftPointer]);
-                    leftPointer++;
-                } else {
-                    chars.Add(currChar);
-                    maxLength = Math.Max(maxLength, rightPointer - leftPointer + 1);
-                    rightPointer++;
+            int left = 0;
+            int right = 0;
+            int max = 0;
+            Dictionary<char, int> dictionary = new Dictionary<char, int>(26);
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (!dictionary.ContainsKey(s[i])) dictionary.Add(s[i], 1);
+                else dictionary[s[i]] += 1;
+                var otherLetters = dictionary.MaxBy(d => d.Value);
+               
+                
+                if (right - left + 1 - otherLetters.Value> k){
+                    dictionary[s[left]] -= 1;
+                    left++;
                 }
+                max = Math.Max(right - left + 1, max);
+                right++;
             }
-            return maxLength;
+
+            return max;
+
         }
 
 
         static void Main(string[] args)
         {
-            var q = LengthOfLongestSubstring("dvdf");
+            var q = CharacterReplacement("BAAA", 0);
             Console.ReadKey();
         }
     }

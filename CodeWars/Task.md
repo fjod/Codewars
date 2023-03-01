@@ -1,33 +1,23 @@
-﻿3. Longest Substring Without Repeating Characters
-   Medium
-   32.4K
-   1.4K
-   Companies
-   Given a string s, find the length of the longest
-   substring
-   without repeating characters.
+﻿424. Longest Repeating Character Replacement
+     Medium
+     7.5K
+     308
+     Companies
+     You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times.
+
+Return the length of the longest substring containing the same letter you can get after performing the above operations.
 
 
 
 Example 1:
 
-Input: s = "abcabcbb"
-Output: 3
-Explanation: The answer is "abc", with the length of 3.
+Input: s = "ABAB", k = 2
+Output: 4
+Explanation: Replace the two 'A's with two 'B's or vice versa.
 Example 2:
 
-Input: s = "bbbbb"
-Output: 1
-Explanation: The answer is "b", with the length of 1.
-Example 3:
-
-Input: s = "pwwkew"
-Output: 3
-Explanation: The answer is "wke", with the length of 3.
-Notice that the answer must be a substring, "pwke" is a subsequence and not a substring.
-
-
-Constraints:
-
-0 <= s.length <= 5 * 104
-s consists of English letters, digits, symbols and spaces.
+Input: s = "AABABBA", k = 1
+Output: 4
+Explanation: Replace the one 'A' in the middle with 'B' and form "AABBBBA".
+The substring "BBBB" has the longest repeating letters, which is 4.
+ 
