@@ -1,5 +1,8 @@
-﻿namespace CodeWars;
+﻿using System.Diagnostics;
 
+namespace CodeWars;
+
+[DebuggerDisplay("{val}")]
 public class ListNode {
     public int val;
     public ListNode next;
@@ -10,6 +13,6 @@ public class ListNode {
 
     public override string ToString()
     {
-        return val.ToString();
+        return $"{val}";
     }
 }

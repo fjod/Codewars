@@ -1,23 +1,23 @@
-﻿424. Longest Repeating Character Replacement
-     Medium
-     7.5K
-     308
+﻿206. Reverse Linked List
+     Easy
+     16.9K
+     294
      Companies
-     You are given a string s and an integer k. You can choose any character of the string and change it to any other uppercase English character. You can perform this operation at most k times.
-
-Return the length of the longest substring containing the same letter you can get after performing the above operations.
+     Given the head of a singly linked list, reverse the list, and return the reversed list.
 
 
 
 Example 1:
 
-Input: s = "ABAB", k = 2
-Output: 4
-Explanation: Replace the two 'A's with two 'B's or vice versa.
+
+Input: head = [1,2,3,4,5]
+Output: [5,4,3,2,1]
 Example 2:
 
-Input: s = "AABABBA", k = 1
-Output: 4
-Explanation: Replace the one 'A' in the middle with 'B' and form "AABBBBA".
-The substring "BBBB" has the longest repeating letters, which is 4.
- 
+
+Input: head = [1,2]
+Output: [2,1]
+Example 3:
+
+Input: head = []
+Output: []

@@ -11,35 +11,28 @@ namespace CodeWars
 {
     class Program
     {
-        public static int CharacterReplacement(string s, int k)
+        public static ListNode ReverseList(ListNode head)
         {
-            int left = 0;
-            int right = 0;
-            int max = 0;
-            Dictionary<char, int> dictionary = new Dictionary<char, int>(26);
-            for (int i = 0; i < s.Length; i++)
+            if (head == null) return head;
+            var prev = head; //1
+            var current = prev.next; //2
+            ListNode next = null;
+            while (current != null)
             {
-                if (!dictionary.ContainsKey(s[i])) dictionary.Add(s[i], 1);
-                else dictionary[s[i]] += 1;
-                var otherLetters = dictionary.MaxBy(d => d.Value);
-               
-                
-                if (right - left + 1 - otherLetters.Value> k){
-                    dictionary[s[left]] -= 1;
-                    left++;
-                }
-                max = Math.Max(right - left + 1, max);
-                right++;
+                next = current.next; // save 3
+                current.next = prev; // 2 -> 1
+                prev = current; // move forward, so current node is 2
+                current = next; // next node is 3
             }
 
-            return max;
-
+            head.next = null;
+            return prev;
         }
 
 
         static void Main(string[] args)
         {
-            var q = CharacterReplacement("BAAA", 0);
+            var q = ReverseList(new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5))))));
             Console.ReadKey();
         }
     }
