@@ -8,17 +8,18 @@ module ConsoleAppFsharp =
  
      
       
-     let rec calcMaxArea (left:int) (right:int) (height:int[]) (max:int) =
-         if (left >= right) then max
-         else
-             let curHeight = Math.Min(height[left], height[right])
-             let currentVolume = (right - left) * curHeight
-             let curMax = Math.Max(max, currentVolume)
-             if (height[left] < height[right]) then calcMaxArea (left + 1) right height curMax
-             else calcMaxArea left (right - 1) height curMax
-             
-     let maxArea(height: int[]) =
-         calcMaxArea 0 (height.Length - 1) height 0
+     let invertTree (root:TreeNode) =
+        let rec invert(n:Option<TreeNode>) : Option<TreeNode> =
+            if n.IsNone then None
+            else
+                let left = invert n.Value.Left
+                let right = invert n.Value.Right
+                let ret = TreeNode(n.Value.V, right, left)
+                Some ret
+        invert (Some root)
+        
          
-     let test = maxArea [|1;8;6;2;5;4;8;3;7|]    
+     
+     let node = TreeNode(4, TreeNode(1,TreeNode(1),TreeNode(3)),TreeNode(7,TreeNode(6), TreeNode(9)))
+     let test = invertTree node
      printfn "Hello from F#1"

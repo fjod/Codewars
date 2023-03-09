@@ -11,28 +11,25 @@ namespace CodeWars
 {
     class Program
     {
-        public static ListNode ReverseList(ListNode head)
+        public static TreeNode  InvertTree(TreeNode root)
         {
-            if (head == null) return head;
-            var prev = head; //1
-            var current = prev.next; //2
-            ListNode next = null;
-            while (current != null)
-            {
-                next = current.next; // save 3
-                current.next = prev; // 2 -> 1
-                prev = current; // move forward, so current node is 2
-                current = next; // next node is 3
-            }
+            return InvertInner(root);
+        }
 
-            head.next = null;
-            return prev;
+        static TreeNode InvertInner(TreeNode node)
+        {
+            if (node == null) return node;
+            var left = InvertInner(node.left);
+            var right =InvertInner(node.right);
+            return new TreeNode {val = node.val, left = right, right = left};
         }
 
 
         static void Main(string[] args)
         {
-            var q = ReverseList(new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5))))));
+            var q = InvertTree(new TreeNode{ val = 4, 
+                left = new TreeNode { val = 2, left = new TreeNode { val = 1}, right = new TreeNode{val = 3}},
+                 right= new TreeNode { val = 7, left = new TreeNode { val = 6}, right = new TreeNode{val = 9}}});
             Console.ReadKey();
         }
     }

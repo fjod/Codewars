@@ -2,7 +2,7 @@
 
 namespace CodeWars;
 
-[DebuggerDisplay("{val}")]
+[DebuggerDisplay("Val = {val}")]
 public class ListNode {
     public int val;
     public ListNode next;
@@ -11,8 +11,4 @@ public class ListNode {
         this.next = next;
     }
 
-    public override string ToString()
-    {
-        return $"{val}";
-    }
 }
