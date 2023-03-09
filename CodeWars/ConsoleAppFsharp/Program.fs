@@ -19,6 +19,16 @@ module ConsoleAppFsharp =
         invert (Some root)
         
          
+     let maxDepth(root:TreeNode) =
+         let rec depth(n:TreeNode option) (d:int) =
+             if n.IsNone then d
+             else
+                let left = depth n.Value.Left d  + 1
+                let right = depth n.Value.Right d + 1
+                Math.Max(left,right)
+         let left = depth root.Left 1
+         let right = depth root.Right 1
+         Math.Max(left,right)
      
      let node = TreeNode(4, TreeNode(1,TreeNode(1),TreeNode(3)),TreeNode(7,TreeNode(6), TreeNode(9)))
      let test = invertTree node

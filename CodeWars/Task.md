@@ -1,6 +1,8 @@
-﻿226. Invert Binary Tree
+﻿104. Maximum Depth of Binary Tree
      Easy
-     11.8K
-     165
+     10.3K
+     163
      Companies
-     Given the root of a binary tree, invert the tree, and return its root.
+     Given the root of a binary tree, return its maximum depth.
+
+A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
