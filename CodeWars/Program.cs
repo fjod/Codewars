@@ -11,17 +11,20 @@ namespace CodeWars
 {
     class Program
     {
-        public int MaxDepth(TreeNode root)
+        private int res = -1;
+        public int DiameterOfBinaryTree(TreeNode root)
         {
             if (root == null) return 0;
-            return Math.Max(DepthInner(root.left, 1), DepthInner(root.right, 1));
+            Traverse(root);
+            return res;
         }
 
-        static int DepthInner(TreeNode node, int d)
+        int Traverse(TreeNode root)
         {
-            if (node == null) return d;
-            var left = DepthInner(node.left, d)+1;
-            var right =DepthInner(node.right, d)+1;
+            if (root == null) return -1;
+            var left = Traverse(root.left) + 1;
+            var right = Traverse(root.right) + 1;
+            res = Math.Max(res, (left + right));
             return Math.Max(left, right);
         }
 

@@ -1,8 +1,12 @@
-﻿104. Maximum Depth of Binary Tree
+﻿543. Diameter of Binary Tree
      Easy
-     10.3K
-     163
+     10.9K
+     679
      Companies
-     Given the root of a binary tree, return its maximum depth.
+     Given the root of a binary tree, return the length of the diameter of the tree.
 
-A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+The length of a path between two nodes is represented by the number of edges between them.
+
+ 
