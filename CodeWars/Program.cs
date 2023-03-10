@@ -11,21 +11,25 @@ namespace CodeWars
 {
     class Program
     {
-        private int res = -1;
-        public int DiameterOfBinaryTree(TreeNode root)
+        private bool _result = true;
+        public bool IsBalanced(TreeNode root)
         {
-            if (root == null) return 0;
             Traverse(root);
-            return res;
+            return _result;
         }
 
         int Traverse(TreeNode root)
         {
-            if (root == null) return -1;
-            var left = Traverse(root.left) + 1;
-            var right = Traverse(root.right) + 1;
-            res = Math.Max(res, (left + right));
-            return Math.Max(left, right);
+            if(root == null) {
+                return -1;
+            }
+
+            var leftDepth = Traverse(root.left);
+            var rightDepth = Traverse(root.right);
+
+            _result = _result && (Math.Abs(rightDepth - leftDepth) <= 1);
+
+            return Math.Max(leftDepth, rightDepth) + 1;
         }
 
 
