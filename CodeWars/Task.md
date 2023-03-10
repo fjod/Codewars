@@ -1,8 +1,8 @@
-﻿100. Same Tree
+﻿572. Subtree of Another Tree
      Easy
-     9K
-     181
+     6.9K
+     392
      Companies
-     Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+     Given the roots of two binary trees root and subRoot, return true if there is a subtree of root with the same structure and node values of subRoot and false otherwise.
 
-Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
+A subtree of a binary tree tree is a tree that consists of a node in tree and all of this node's descendants. The tree tree could also be considered as a subtree of itself.

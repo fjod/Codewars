@@ -11,9 +11,19 @@ namespace CodeWars
 {
     class Program
     {
-        public bool IsSameTree(TreeNode p, TreeNode q)
+        public bool IsSubtree(TreeNode root, TreeNode subRoot)
         {
-            return CompareNodes(p, q);
+            return FindSub(root, subRoot);
+        }
+
+        bool FindSub(TreeNode root, TreeNode subRoot)
+        {
+            if (root == null && subRoot == null) return true;
+            if (root == null) return false;
+            if (subRoot == null) return false;
+            if (root.val == subRoot.val) 
+                return CompareNodes(root, subRoot) || FindSub(root.left, subRoot) || FindSub(root.right, subRoot);
+            return FindSub(root.left, subRoot) || FindSub(root.right, subRoot);
         }
 
         bool CompareNodes(TreeNode p, TreeNode q)
