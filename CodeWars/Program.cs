@@ -11,25 +11,18 @@ namespace CodeWars
 {
     class Program
     {
-        private bool _result = true;
-        public bool IsBalanced(TreeNode root)
+        public bool IsSameTree(TreeNode p, TreeNode q)
         {
-            Traverse(root);
-            return _result;
+            return CompareNodes(p, q);
         }
 
-        int Traverse(TreeNode root)
+        bool CompareNodes(TreeNode p, TreeNode q)
         {
-            if(root == null) {
-                return -1;
-            }
-
-            var leftDepth = Traverse(root.left);
-            var rightDepth = Traverse(root.right);
-
-            _result = _result && (Math.Abs(rightDepth - leftDepth) <= 1);
-
-            return Math.Max(leftDepth, rightDepth) + 1;
+            if (p == null && q == null) return true;
+            if (p == null) return false;
+            if (q == null) return false;
+            if (p.val != q.val) return false;
+            return CompareNodes(p.left, q.left) && CompareNodes(p.right, q.right);
         }
 
 

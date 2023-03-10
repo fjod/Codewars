@@ -1,8 +1,8 @@
-﻿110. Balanced Binary Tree
+﻿100. Same Tree
      Easy
-     8.5K
-     476
+     9K
+     181
      Companies
-     Given a binary tree, determine if it is
-     height-balanced
-     .
+     Given the roots of two binary trees p and q, write a function to check if they are the same or not.
+
+Two binary trees are considered the same if they are structurally identical, and the nodes have the same value.
