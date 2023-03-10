@@ -35,7 +35,7 @@ module ConsoleAppFsharp =
          match p,q with
          | None, None -> true       
          | Some v1, Some v2 when v1.V <> v2.V -> false
-         | Some v1, Some v2 -> compare v1.Left v2.Left && compare v1.Left v2.Right
+         | Some v1, Some v2 -> compare v1.Left v2.Left && compare v1.Right v2.Right
          | _ -> false
          
      
