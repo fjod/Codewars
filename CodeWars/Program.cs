@@ -11,36 +11,54 @@ namespace CodeWars
 {
     class Program
     {
-        public bool IsSubtree(TreeNode root, TreeNode subRoot)
+        public static TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
         {
-            return FindSub(root, subRoot);
+            List<TreeNode> wayTo_p = new List<TreeNode>();
+            List<TreeNode> wayTo_q = new List<TreeNode>();
+            Find(root, p, wayTo_p);
+            Find(root, q, wayTo_q);
+            var shortest = wayTo_p.Count > wayTo_q.Count ? wayTo_p : wayTo_q;
+            var longest = wayTo_p.Count < wayTo_q.Count ? wayTo_p : wayTo_q;
+            if (wayTo_q.Count == wayTo_p.Count)
+            {
+                shortest = wayTo_p;
+                longest = wayTo_q;
+            }
+            longest.Reverse();
+            foreach (var treeNode in longest)
+            {
+                if (shortest.Contains(treeNode)) return treeNode;
+            }
+
+            throw new Exception("val not found");
         }
 
-        bool FindSub(TreeNode root, TreeNode subRoot)
+        private static void Find(TreeNode root, TreeNode treeNode, List<TreeNode> wayToP)
         {
-            if (root == null && subRoot == null) return true;
-            if (root == null) return false;
-            if (subRoot == null) return false;
-            if (root.val == subRoot.val) 
-                return CompareNodes(root, subRoot) || FindSub(root.left, subRoot) || FindSub(root.right, subRoot);
-            return FindSub(root.left, subRoot) || FindSub(root.right, subRoot);
-        }
+            wayToP.Add(root);
+            if (root.val == treeNode.val)
+            {
+                return;
+            }
 
-        bool CompareNodes(TreeNode p, TreeNode q)
-        {
-            if (p == null && q == null) return true;
-            if (p == null) return false;
-            if (q == null) return false;
-            if (p.val != q.val) return false;
-            return CompareNodes(p.left, q.left) && CompareNodes(p.right, q.right);
+            if (root.val > treeNode.val)
+            {
+                Find(root.left, treeNode, wayToP);
+            }
+            if (root.val < treeNode.val)
+            {
+                Find(root.right, treeNode, wayToP);
+            }
         }
 
 
         static void Main(string[] args)
         {
-            // var q = InvertTree(new TreeNode{ val = 4, 
-            //     left = new TreeNode { val = 2, left = new TreeNode { val = 1}, right = new TreeNode{val = 3}},
-            //      right= new TreeNode { val = 7, left = new TreeNode { val = 6}, right = new TreeNode{val = 9}}});
+             var q = LowestCommonAncestor(new TreeNode{ val = 6, 
+                  left = new TreeNode { val = 2,
+                      left = new TreeNode {val = 0}, 
+                      right = new TreeNode{val = 4, left = new TreeNode{val = 3}, right = new TreeNode{val = 5}}},
+                  right= new TreeNode { val = 8, left = new TreeNode { val = 7 }, right = new TreeNode{val = 9}}}, new TreeNode {val = 2}, new TreeNode {val = 8});
             Console.ReadKey();
         }
     }

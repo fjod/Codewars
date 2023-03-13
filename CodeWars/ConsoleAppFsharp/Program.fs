@@ -38,7 +38,18 @@ module ConsoleAppFsharp =
          | Some v1, Some v2 -> compare v1.Left v2.Left && compare v1.Right v2.Right
          | _ -> false
          
+     let lcs (root:TreeNode) (q:TreeNode) (p:TreeNode) =
+         //...
+         0
      
+     let rec find(root:TreeNode option) (target:TreeNode option) (path: TreeNode list) : TreeNode list =
+        match root, target with
+            | Some r, Some t when r.V = t.V -> r :: path
+            | Some r, Some t when r.V > t.V -> find r.Left target (r :: path)
+            | Some r, Some t when r.V < t.V -> find r.Right target (r :: path)
+            | _ -> path
+                        
+        
      let node = TreeNode(4, TreeNode(1,TreeNode(1),TreeNode(3)),TreeNode(7,TreeNode(6), TreeNode(9)))
      let test = invertTree node
      printfn "Hello from F#1"
