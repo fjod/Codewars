@@ -11,54 +11,33 @@ namespace CodeWars
 {
     class Program
     {
-        public static TreeNode LowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q)
+        public static IList<IList<int>> LevelOrder(TreeNode root)
         {
-            List<TreeNode> wayTo_p = new List<TreeNode>();
-            List<TreeNode> wayTo_q = new List<TreeNode>();
-            Find(root, p, wayTo_p);
-            Find(root, q, wayTo_q);
-            var shortest = wayTo_p.Count > wayTo_q.Count ? wayTo_p : wayTo_q;
-            var longest = wayTo_p.Count < wayTo_q.Count ? wayTo_p : wayTo_q;
-            if (wayTo_q.Count == wayTo_p.Count)
-            {
-                shortest = wayTo_p;
-                longest = wayTo_q;
-            }
-            longest.Reverse();
-            foreach (var treeNode in longest)
-            {
-                if (shortest.Contains(treeNode)) return treeNode;
-            }
-
-            throw new Exception("val not found");
+         
+            List<IList<int>> ret = new List<IList<int>>();
+            if (root == null) return ret;
+            ret.Add(new List<int> {root.val});
+            Traverse(root, ret, 1);
+            if (ret.Last().Count == 0) ret.Remove(ret.Last());
+            return ret;
         }
 
-        private static void Find(TreeNode root, TreeNode treeNode, List<TreeNode> wayToP)
+        private static void Traverse(TreeNode root, List<IList<int>> ret, int level)
         {
-            wayToP.Add(root);
-            if (root.val == treeNode.val)
-            {
-                return;
-            }
-
-            if (root.val > treeNode.val)
-            {
-                Find(root.left, treeNode, wayToP);
-            }
-            if (root.val < treeNode.val)
-            {
-                Find(root.right, treeNode, wayToP);
-            }
+            if (root == null) return;
+            if (ret.Count <= level) ret.Add(new List<int>());
+            if (root.left != null) ret[level].Add(root.left.val);
+            if (root.right != null) ret[level].Add(root.right.val);
+            Traverse(root.left, ret, level + 1);
+            Traverse(root.right, ret, level + 1);
         }
 
 
         static void Main(string[] args)
         {
-             var q = LowestCommonAncestor(new TreeNode{ val = 6, 
-                  left = new TreeNode { val = 2,
-                      left = new TreeNode {val = 0}, 
-                      right = new TreeNode{val = 4, left = new TreeNode{val = 3}, right = new TreeNode{val = 5}}},
-                  right= new TreeNode { val = 8, left = new TreeNode { val = 7 }, right = new TreeNode{val = 9}}}, new TreeNode {val = 2}, new TreeNode {val = 8});
+             var q = LevelOrder(new TreeNode{ val = 3, 
+                  left = new TreeNode { val = 9},
+                  right= new TreeNode { val = 20, left = new TreeNode { val = 15 }, right = new TreeNode{val = 7}}});
             Console.ReadKey();
         }
     }

@@ -1,10 +1,8 @@
-﻿235. Lowest Common Ancestor of a Binary Search Tree
+﻿102. Binary Tree Level Order Traversal
      Medium
-     9K
-     252
+     12.6K
+     249
      Companies
-     Given a binary search tree (BST), find the lowest common ancestor (LCA) node of two given nodes in the BST.
-
-According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+     Given the root of a binary tree, return the level order traversal of its nodes' values. (i.e., from left to right, level by level).
 
  
