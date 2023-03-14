@@ -1,22 +1,12 @@
-﻿78. Subsets
+﻿39. Combination Sum
     Medium
-    13.8K
-    198
+    15.3K
+    305
     Companies
-    Given an integer array nums of unique elements, return all possible
-    subsets
-    (the power set).
+    Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
 
-The solution set must not contain duplicate subsets. Return the solution in any order.
+The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the
+frequency
+of at least one of the chosen numbers is different.
 
-
-
-Example 1:
-
-Input: nums = [1,2,3]
-Output: [[],[1],[2],[1,2],[3],[1,3],[2,3],[1,2,3]]
-Example 2:
-
-Input: nums = [0]
-Output: [[],[0]]
- 
+The test cases are generated such that the number of unique combinations that sum up to target is less than 150 combinations for the given input.

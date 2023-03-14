@@ -11,32 +11,35 @@ namespace CodeWars
 {
     class Program
     {
-        private static List<IList<int>> ret = new List<IList<int>>();
-        private static List<int> subset = new List<int>();
-        public static IList<IList<int>> Subsets(int[] nums)
-        {
-            BackTrack(nums, 0);
-            return ret;
-        }
+        static readonly IList<IList<int>> result = new List<IList<int>>();
 
-        private static void BackTrack(int[] nums, int level)
+        private static void backTrack(int index, int total, int[] candidates, int target, List<int> path)
         {
-            if (level >= nums.Length)
+            if (total == target)
             {
-                ret.Add(new List<int>(subset));
+                result.Add(path.ToList());
                 return;
             }
-            
-            subset.Add(nums[level]);
-            BackTrack(nums, level +1);
-            subset.Remove(nums[level]);
-            BackTrack(nums, level +1);
+
+            if (total > target || index >= candidates.Length) return;
+            path.Add(candidates[index]);
+            backTrack(index, total + candidates[index], candidates, target, path);
+            path.Remove(path.Last());
+            backTrack(index+1, total, candidates, target, path);
         }
+        public static IList<IList<int>> CombinationSum(int[] candidates, int target)
+        {
+
+            backTrack(0, 0, candidates, target, new List<int>());
+            return result;
+        }
+            
+        
 
 
         static void Main(string[] args)
         {
-            var q = Subsets(new[] {1, 2, 3});
+            var q = CombinationSum(new[] {2,3,6,7}, 7);
             Console.ReadKey();
         }
     }
