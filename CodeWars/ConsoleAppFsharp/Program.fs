@@ -6,50 +6,15 @@ open TreeNodeDef
 module ConsoleAppFsharp =
 
  
-     
-      
-     let invertTree (root:TreeNode) =
-        let rec invert(n:Option<TreeNode>) : Option<TreeNode> =
-            if n.IsNone then None
-            else
-                let left = invert n.Value.Left
-                let right = invert n.Value.Right
-                let ret = TreeNode(n.Value.V, right, left)
-                Some ret
-        invert (Some root)
-        
-         
-     let maxDepth(root:TreeNode) =
-         let rec depth(n:TreeNode option) (d:int) =
-             if n.IsNone then d
+     let subset (num:int[]) =        
+         let rec backTrack (subset:int list) (ret : int list list) (level:int)=
+             if level >= num.Length then
+                let copy = subset.GetSlice(Some 0, Some 3)
+                copy :: ret
              else
-                let left = depth n.Value.Left d  + 1
-                let right = depth n.Value.Right d + 1
-                Math.Max(left,right)
-         let left = depth root.Left 1
-         let right = depth root.Right 1
-         Math.Max(left,right)
+                 let ret2 = backTrack ( (level+1) :: subset) ret (level + 1)
+                 backTrack subset ret2 (level + 1)         
+         backTrack [] [] 0
      
-     // 💘 So clean
-     let rec compare(p:TreeNode option) (q:TreeNode option) =
-         match p,q with
-         | None, None -> true       
-         | Some v1, Some v2 when v1.V <> v2.V -> false
-         | Some v1, Some v2 -> compare v1.Left v2.Left && compare v1.Right v2.Right
-         | _ -> false
-         
-     let lcs (root:TreeNode) (q:TreeNode) (p:TreeNode) =
-         //...
-         0
-     
-     let rec find(root:TreeNode option) (target:TreeNode option) (path: TreeNode list) : TreeNode list =
-        match root, target with
-            | Some r, Some t when r.V = t.V -> r :: path
-            | Some r, Some t when r.V > t.V -> find r.Left target (r :: path)
-            | Some r, Some t when r.V < t.V -> find r.Right target (r :: path)
-            | _ -> path
-                        
-        
-     let node = TreeNode(4, TreeNode(1,TreeNode(1),TreeNode(3)),TreeNode(7,TreeNode(6), TreeNode(9)))
-     let test = invertTree node
+     let test = subset [|1;2;3|]
      printfn "Hello from F#1"
