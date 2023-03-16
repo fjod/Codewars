@@ -11,32 +11,28 @@ namespace CodeWars
 {
     class Program
     {
-            
-        public static IList<IList<int>> Permute(int[] nums)
+        
+        public static int[][] KClosest(int[][] points, int k)
         {
-            List<IList<int>> ret = new List<IList<int>>();
-            InnerPermute(ret, nums, 0);
-            return ret;
-        }
-
-
-        static void InnerPermute(IList<IList<int>> ret, int[] nums, int level)
-        {
-            if (level == nums.Length)ret.Add(new List<int>(nums));
-            else
+            var q = new PriorityQueue<int[], double>();
+            foreach (var point in points)
             {
-                for (int i = level; i < nums.Length; i++)
-                {
-                    (nums[i], nums[level]) = (nums[level], nums[i]);
-                    InnerPermute(ret, nums, level + 1);
-                    (nums[i], nums[level]) = (nums[level], nums[i]);
-                }
+                var distance = Math.Sqrt(point[0] * point[0] + point[1] * point[1]);
+                q.Enqueue(point, distance);
             }
+
+            var ret = new int[k][];
+            for (int i = 0; i < k; i++)
+            {
+                ret[i] = q.Dequeue();
+            }
+
+            return ret;
         }
         
         static void Main(string[] args)
         {
-            var q = Permute(new[] {1,2,3});
+            var q = KClosest(new []{new[] {1,3}, new []{-2,2}}, 1);
             Console.ReadKey();
         }
     }

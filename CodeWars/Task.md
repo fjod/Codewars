@@ -1,12 +1,10 @@
-﻿39. Combination Sum
-    Medium
-    15.3K
-    305
-    Companies
-    Given an array of distinct integers candidates and a target integer target, return a list of all unique combinations of candidates where the chosen numbers sum to target. You may return the combinations in any order.
+﻿973. K Closest Points to Origin
+     Medium
+     7.2K
+     260
+     Companies
+     Given an array of points where points[i] = [xi, yi] represents a point on the X-Y plane and an integer k, return the k closest points to the origin (0, 0).
 
-The same number may be chosen from candidates an unlimited number of times. Two combinations are unique if the
-frequency
-of at least one of the chosen numbers is different.
+The distance between two points on the X-Y plane is the Euclidean distance (i.e., √(x1 - x2)2 + (y1 - y2)2).
 
-The test cases are generated such that the number of unique combinations that sum up to target is less than 150 combinations for the given input.
+You may return the answer in any order. The answer is guaranteed to be unique (except for the order that it is in).
