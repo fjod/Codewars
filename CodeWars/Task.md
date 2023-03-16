@@ -1,10 +1,10 @@
-﻿973. K Closest Points to Origin
-     Medium
-     7.2K
-     260
-     Companies
-     Given an array of points where points[i] = [xi, yi] represents a point on the X-Y plane and an integer k, return the k closest points to the origin (0, 0).
+﻿57. Insert Interval
+    Medium
+    8K
+    558
+    Companies
+    You are given an array of non-overlapping intervals intervals where intervals[i] = [starti, endi] represent the start and the end of the ith interval and intervals is sorted in ascending order by starti. You are also given an interval newInterval = [start, end] that represents the start and end of another interval.
 
-The distance between two points on the X-Y plane is the Euclidean distance (i.e., √(x1 - x2)2 + (y1 - y2)2).
+Insert newInterval into intervals such that intervals is still sorted in ascending order by starti and intervals still does not have any overlapping intervals (merge overlapping intervals if necessary).
 
-You may return the answer in any order. The answer is guaranteed to be unique (except for the order that it is in).
+Return intervals after the insertion.

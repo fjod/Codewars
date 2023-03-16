@@ -11,28 +11,45 @@ namespace CodeWars
 {
     class Program
     {
-        
-        public static int[][] KClosest(int[][] points, int k)
-        {
-            var q = new PriorityQueue<int[], double>();
-            foreach (var point in points)
+        public int[][] Insert(int[][] intervals, int[] newInterval) {
+            var result = new List<int[]>();
+
+            for (var i = 0; i < intervals.Length; i++)
             {
-                var distance = Math.Sqrt(point[0] * point[0] + point[1] * point[1]);
-                q.Enqueue(point, distance);
+                var targetEnd = newInterval[1];
+                var targetStart = newInterval[0];
+                var currentStart = intervals[i][0];
+                var currentEnd = intervals[i][1];
+                // новый интервал перед текущим интервалом
+                if (targetEnd < currentStart)
+                {
+                    result.Add(newInterval);
+                    result.AddRange(intervals.AsEnumerable().Skip(i).ToArray());
+                    return result.ToArray();
+                }
+
+                // новый интервал после текущего интервала
+                if (targetStart > currentEnd)
+                {
+                    result.Add(intervals[i]);
+                }
+                else
+                {
+                    // новый интервал частично внутри текущего интервала, пересчитаем границы нового
+                    newInterval[0] = Math.Min(currentStart, targetStart);
+                    newInterval[1] = Math.Max(currentEnd, targetEnd);
+                }
             }
 
-            var ret = new int[k][];
-            for (int i = 0; i < k; i++)
-            {
-                ret[i] = q.Dequeue();
-            }
+            // если новый интервал был сразу позади всех
+            result.Add(newInterval);
 
-            return ret;
+            return result.ToArray();
         }
-        
+
         static void Main(string[] args)
         {
-            var q = KClosest(new []{new[] {1,3}, new []{-2,2}}, 1);
+            var q = Insert(new[] {new[] {1, 2}, new[] {3, 5}, new []{6,7}, new []{8,10}, new []{12,16}}, new[] {4, 8});
             Console.ReadKey();
         }
     }
