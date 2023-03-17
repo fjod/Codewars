@@ -5,34 +5,15 @@ open TreeNodeDef
 
 module ConsoleAppFsharp =
 
- 
-     let subset (num:int[]) =        
-         let rec backTrack (subset:int list) (ret : int list list) (level:int)=
-             if level >= num.Length then
-                subset :: ret
+     let maxSub (arr:int[]) =
+         let rec calcSum (arr:int[]) (index:int) (max:int) (sum:int) =
+             if (index = arr.Length) then max
              else
-                 let l1 = level + 1
-                 let ret2 = backTrack (l1 :: subset) ret l1
-                 backTrack subset ret2 l1
-         backTrack [] [] 0
+                 let curSum = sum + arr[index]
+                 let curSum = Math.Max(curSum, 0)
+                 let maxSub = Math.Max(curSum, max)
+                 calcSum arr (index+1) maxSub curSum
+         calcSum arr 0 arr[0] 0
      
-     let permute (num:int[])=
-         let rec backTrack (num:int[]) (ret : int list list) (level:int)=
-             if num.Length = level then
-                    let lst = num |> Array.toList 
-                    lst :: ret
-                else
-                    let lst = [level..num.Length]
-                    for i in lst do
-                          let numsI = num[i]
-                          let numLevel = num[level]
-                          num[level] <- numsI
-                          num[i] <- numLevel                       
-                          backTrack num ret (level + 1) |> ignore
-                          num[level] <- numLevel
-                          num[i] <- numsI           
-                    ret
-         backTrack num [] 0 
-     
-     let test = subset [|1;2;3|]
+     let test = maxSub [|-2;1;-3;4;-1;2;1;-5;4|]
      printfn "Hello from F#1"

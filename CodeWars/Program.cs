@@ -11,45 +11,24 @@ namespace CodeWars
 {
     class Program
     {
-        public int[][] Insert(int[][] intervals, int[] newInterval) {
-            var result = new List<int[]>();
-
-            for (var i = 0; i < intervals.Length; i++)
+        public static int MaxSubArray(int[] nums)
+        {
+            int curSum = 0;
+            int maxSub = nums[0];
+            for (int i = 0; i < nums.Length; i++)
             {
-                var targetEnd = newInterval[1];
-                var targetStart = newInterval[0];
-                var currentStart = intervals[i][0];
-                var currentEnd = intervals[i][1];
-                // новый интервал перед текущим интервалом
-                if (targetEnd < currentStart)
-                {
-                    result.Add(newInterval);
-                    result.AddRange(intervals.AsEnumerable().Skip(i).ToArray());
-                    return result.ToArray();
-                }
-
-                // новый интервал после текущего интервала
-                if (targetStart > currentEnd)
-                {
-                    result.Add(intervals[i]);
-                }
-                else
-                {
-                    // новый интервал частично внутри текущего интервала, пересчитаем границы нового
-                    newInterval[0] = Math.Min(currentStart, targetStart);
-                    newInterval[1] = Math.Max(currentEnd, targetEnd);
-                }
+                // если сумма оказалась отрицательной, то сбрасываем начало подсчета
+                if (curSum < 0) curSum = 0;
+                curSum += nums[i];
+                maxSub = Math.Max(curSum, maxSub);
             }
 
-            // если новый интервал был сразу позади всех
-            result.Add(newInterval);
-
-            return result.ToArray();
+            return maxSub;
         }
 
         static void Main(string[] args)
         {
-            var q = Insert(new[] {new[] {1, 2}, new[] {3, 5}, new []{6,7}, new []{8,10}, new []{12,16}}, new[] {4, 8});
+            var q = MaxSubArray(new[] {-2,1,-3,4,-1,2,1,-5,4});
             Console.ReadKey();
         }
     }
