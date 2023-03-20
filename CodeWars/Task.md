@@ -1,20 +1,12 @@
-﻿846. Hand of Straights
-     Medium
-     1.9K
-     141
-     Companies
-     Alice has some number of cards and she wants to rearrange the cards into groups so that each group is of size groupSize, and consists of groupSize consecutive cards.
+﻿1899. Merge Triplets to Form Target Triplet
+      Medium
+      548
+      39
+      Companies
+      A triplet is an array of three integers. You are given a 2D integer array triplets, where triplets[i] = [ai, bi, ci] describes the ith triplet. You are also given an integer array target = [x, y, z] that describes the triplet you want to obtain.
 
-Given an integer array hand where hand[i] is the value written on the ith card and an integer groupSize, return true if she can rearrange the cards, or false otherwise.
+To obtain target, you may apply the following operation on triplets any number of times (possibly zero):
 
-
-
-Example 1:
-
-Input: hand = [1,2,3,6,2,3,4,7,8], groupSize = 3
-Output: true
-Explanation: Alice's hand can be rearranged as [1,2,3],[2,3,4],[6,7,8]
-Example 2:
-
-Input: hand = [1,2,3,4,5], groupSize = 4
-Output: false
+Choose two indices (0-indexed) i and j (i != j) and update triplets[j] to become [max(ai, aj), max(bi, bj), max(ci, cj)].
+For example, if triplets[i] = [2, 5, 3] and triplets[j] = [1, 7, 5], triplets[j] will be updated to [max(2, 1), max(5, 7), max(3, 5)] = [2, 7, 5].
+Return true if it is possible to obtain the target triplet [x, y, z] as an element of triplets, or false otherwise.

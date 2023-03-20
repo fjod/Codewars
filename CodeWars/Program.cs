@@ -12,32 +12,19 @@ namespace CodeWars
 {
     class Program
     {
-        public static bool IsNStraightHand(int[] hand, int groupSize)
+        public bool MergeTriplets(int[][] triplets, int[] target)
         {
-            if (hand.Length % groupSize != 0) return false;
-
-            var ordered = hand.ToList().OrderBy(h => h).ToList();
-            return work(ordered, groupSize);
-
-        }
-
-        static bool work(List<int> nums, int groupSize)
-        {
-            if (nums.Count < groupSize) return false;
-
-            int prev = nums.Min();
-            nums.Remove(prev);
-            for (int i = 1; i < groupSize; i++)
+            // Remove all triplets which contains such item that merging them will cause bad result
+            var work = triplets.Where(t => t[0] <= target[0] && t[1] <= target[1] && t[2] <= target[2]).ToList();
+            for (int i = 0; i < target.Length; i++)
             {
-                var current = nums.FirstOrDefault(c => c == (prev+1));
-                if (current== 0) return false;
-                var toRemove = current;
-                nums.Remove(toRemove);
-                prev = toRemove;
+                var tripletTarget = target[i];
+              
+                var anyTripletContainTarget = work.Any(t => t[i] == tripletTarget);
+                if (!anyTripletContainTarget) return false;
             }
 
-            if (nums.Count == 0) return true;
-            return work(nums, groupSize);
+            return true;
         }
         
 
