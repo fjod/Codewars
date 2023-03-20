@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO.Enumeration;
 using System.Linq;
 using System.Numerics;
@@ -11,28 +12,40 @@ namespace CodeWars
 {
     class Program
     {
-        public static int CanCompleteCircuit(int[] gas, int[] cost)
+        public static bool IsNStraightHand(int[] hand, int groupSize)
         {
+            if (hand.Length % groupSize != 0) return false;
 
-            if (gas.Sum() < cost.Sum()) return -1;
-            int ret = 0;
-            int total = 0;
-            for (int i = 0; i < gas.Length; i++)
+            var ordered = hand.ToList().OrderBy(h => h).ToList();
+            return work(ordered, groupSize);
+
+        }
+
+        static bool work(List<int> nums, int groupSize)
+        {
+            if (nums.Count < groupSize) return false;
+
+            int prev = nums.Min();
+            nums.Remove(prev);
+            for (int i = 1; i < groupSize; i++)
             {
-                total += gas[i] - cost[i];
-                if (total < 0) // если текущая сумма < 0, то начинать надо не отсюда (дальше не уедем)
-                {
-                    ret = i + 1;
-                    total = 0;
-                }
+                var current = nums.FirstOrDefault(c => c == (prev+1));
+                if (current== 0) return false;
+                var toRemove = current;
+                nums.Remove(toRemove);
+                prev = toRemove;
             }
 
-            return ret;
+            if (nums.Count == 0) return true;
+            return work(nums, groupSize);
         }
+        
+
+        
         
         static void Main(string[] args)
         {
-            var q = CanCompleteCircuit(new[] {2, 3, 1, 1, 4});
+            var q = IsNStraightHand(new[] {1,2,3,6,2,3,4,7,8}, 3);
 
             Console.ReadKey();
         }
