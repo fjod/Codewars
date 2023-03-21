@@ -12,54 +12,28 @@ namespace CodeWars
 {
     class Program
     {
-        public static int NumIslands(char[][] grid)
+        private Dictionary<Node, Node> map = new Dictionary<Node, Node>();
+        public Node CloneGraph(Node node)
         {
-            var m = grid.Length;
-            var n = grid[0].Length;
-            var visited = new bool[m, n];
-            var numIslands = 0;
-
-
-            void dfs(int i, int j, char[][] grid)
+            if (node == null) return null;
+            if (!map.ContainsKey(node))
             {
-                if (i < 0 || i >= m) return;
-                if (j < 0 || j >= n) return;
-                if (visited[i, j] == true || grid[i][j] == '0') return;
-
-                visited[i, j] = true;
-
-                dfs(i + 1, j, grid);
-                dfs(i - 1, j, grid);
-                dfs(i, j - 1, grid);
-                dfs(i, j + 1, grid);
-            }
-
-            for (int i = 0; i < m; i++)
-            {
-                for (int j = 0; j < n; j++)
+                map.Add(node, new Node(node.val));
+                foreach (var n in node.neighbors)
                 {
-                    if (visited[i, j] == false && grid[i][j] == '1')
-                    {
-                        numIslands++;
-                        dfs(i, j, grid);
-                    }
+                    map[node].neighbors.Add(CloneGraph(n));
                 }
             }
 
-            return numIslands;
+            return map[node];
         }
 
-        // almost solved by myself
         static void Main(string[] args)
         {
-            var q = NumIslands(new[]
-            {
-                new[] {'1', '1', '1'},
-                new[] {'0', '1', '0'},
-                new[] {'1', '1', '1'}
-            });
 
             Console.ReadKey();
         }
     }
+
+
 }
