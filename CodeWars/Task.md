@@ -1,14 +1,8 @@
-﻿678. Valid Parenthesis String
+﻿200. Number of Islands
      Medium
-     4.3K
-     104
+     19.2K
+     428
      Companies
-     Given a string s containing only three types of characters: '(', ')' and '*', return true if s is valid.
+     Given an m x n 2D binary grid grid which represents a map of '1's (land) and '0's (water), return the number of islands.
 
-The following rules define a valid string:
-
-Any left parenthesis '(' must have a corresponding right parenthesis ')'.
-Any right parenthesis ')' must have a corresponding left parenthesis '('.
-Left parenthesis '(' must go before the corresponding right parenthesis ')'.
-'*' could be treated as a single right parenthesis ')' or a single left parenthesis '(' or an empty string "".
- 
+An island is surrounded by water and is formed by connecting adjacent lands horizontally or vertically. You may assume all four edges of the grid are all surrounded by water.
