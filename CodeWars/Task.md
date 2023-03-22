@@ -1,15 +1,10 @@
-﻿133. Clone Graph
+﻿695. Max Area of Island
      Medium
-     7.4K
-     3.1K
+     8.7K
+     195
      Companies
-     Given a reference of a node in a connected undirected graph.
+     You are given an m x n binary matrix grid. An island is a group of 1's (representing land) connected 4-directionally (horizontal or vertical.) You may assume all four edges of the grid are surrounded by water.
 
-Return a deep copy (clone) of the graph.
+The area of an island is the number of cells with a value 1 in the island.
 
-Each node in the graph contains a value (int) and a list (List[Node]) of its neighbors.
-
-class Node {
-public int val;
-public List<Node> neighbors;
-}
+Return the maximum area of an island in grid. If there is no island, return 0.

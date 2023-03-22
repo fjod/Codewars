@@ -12,20 +12,42 @@ namespace CodeWars
 {
     class Program
     {
-        private Dictionary<Node, Node> map = new Dictionary<Node, Node>();
-        public Node CloneGraph(Node node)
+        private Dictionary<(int, int), bool> visited = new Dictionary<(int, int), bool>();
+        private int current;
+        private int max;
+        private int maxLen;
+        private int maxWidth;
+        public int MaxAreaOfIsland(int[][] grid)
         {
-            if (node == null) return null;
-            if (!map.ContainsKey(node))
+            maxLen = grid.Length;
+            maxWidth = grid.First().Length;
+            for (int i = 0; i < grid.Length; i++)
             {
-                map.Add(node, new Node(node.val));
-                foreach (var n in node.neighbors)
+                for (int j = 0; j < grid[i].Length; j++)
                 {
-                    map[node].neighbors.Add(CloneGraph(n));
+                    if (visited.ContainsKey((i,j))) continue;
+                    dfs(i, j, grid);
+                    max = Math.Max(current, max);
+                    current = 0;
                 }
             }
 
-            return map[node];
+            return max;
+        }
+
+        private void dfs(int i, int j, int[][] grid)
+        {
+            if (i < 0 || i >= maxLen) return;
+            if (j < 0 || j >= maxWidth) return;
+            if (grid[i][j] == 1 && !visited.ContainsKey((i,j)))
+            {
+                visited.Add((i,j), true);
+                current += 1;
+                dfs(i +1 , j, grid);
+                dfs(i -1 , j, grid);
+                dfs(i  , j +1, grid);
+                dfs(i  , j - 1, grid);
+            }
         }
 
         static void Main(string[] args)
