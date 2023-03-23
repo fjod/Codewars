@@ -1,14 +1,15 @@
-﻿417. Pacific Atlantic Water Flow
+﻿994. Rotting Oranges
      Medium
-     6.2K
-     1.2K
+     10K
+     338
      Companies
-     There is an m x n rectangular island that borders both the Pacific Ocean and Atlantic Ocean. The Pacific Ocean touches the island's left and top edges, and the Atlantic Ocean touches the island's right and bottom edges.
+     You are given an m x n grid where each cell can have one of three values:
 
-The island is partitioned into a grid of square cells. You are given an m x n integer matrix heights where heights[r][c] represents the height above sea level of the cell at coordinate (r, c).
+0 representing an empty cell,
+1 representing a fresh orange, or
+2 representing a rotten orange.
+Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
 
-The island receives a lot of rain, and the rain water can flow to neighboring cells directly north, south, east, and west if the neighboring cell's height is less than or equal to the current cell's height. Water can flow from any cell adjacent to an ocean into the ocean.
-
-Return a 2D list of grid coordinates result where result[i] = [ri, ci] denotes that rain water can flow from cell (ri, ci) to both the Pacific and Atlantic oceans.
+Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
 
  

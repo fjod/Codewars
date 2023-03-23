@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO.Enumeration;
 using System.Linq;
 using System.Numerics;
@@ -12,86 +13,70 @@ namespace CodeWars
 {
     class Program
     {
-        //67 / 113 testcases passed for my solution
-        private static int maxLen;
-        private static int maxWidth;
-        private static List<IList<int>> ret = new List<IList<int>>();
-        public static IList<IList<int>> PacificAtlantic(int[][] heights)
+        public static int OrangesRotting(int[][] grid)
         {
-            maxLen = heights.Length;
-            maxWidth = heights.First().Length;
-            for (int i = 0; i < heights.Length; i++)
+            int minutes = 0;
+            bool allAreRotten = true;
+            while (allAreRotten)
             {
-                for (int j = 0; j < heights[i].Length; j++)
+                rottenOnThisTurn.Clear();
+                for (int i = 0; i < grid.Length; i++)
                 {
-                    visitedPacific.Clear();
-                    visitedAtlantic.Clear();
-                    var pacific = CanGoPacific(i, j, heights, int.MaxValue);
-                    var atlantic = CanGoAtlantic(i, j, heights, int.MaxValue);
-                    var newList = new List<int>(2) {i, j};
-                    if (pacific && atlantic && !ret.Any(l => l.SequenceEqual(newList)))
+                    for (int j = 0; j < grid[i].Length; j++)
                     {
-                        ret.Add(newList);
+                        rot(i, j, grid);
                     }
                 }
+
+                var gotFresh = grid.SelectMany(g => g).Any(i => i == 1);
+                allAreRotten = gotFresh;
+                if (rottenOnThisTurn.Count == 0 && gotFresh) return -1;
+                if (rottenOnThisTurn.Count > 0 ) minutes++;
             }
 
-            return ret;
+            return minutes;
         }
 
-        private static Dictionary<(int, int), bool> visitedPacific = new Dictionary<(int, int), bool>(); 
-        static bool CanGoPacific(int i, int j, int[][] grid, int prevCellValue)
+        private static Dictionary<(int, int), bool> rottenOnThisTurn = new Dictionary<(int, int), bool>();
+        private static void rot(int i, int j, int[][] grid)
         {
-            if (visitedPacific.ContainsKey((i, j))) return false;
-            visitedPacific.Add((i,j), true);
-            if (i < 0 || i >= maxLen) return false;
-            if (j < 0 || j >= maxWidth) return false;
-            var current = grid[i][j];
-            if (i == 0 && current <= prevCellValue) return true;
-            if (j == 0 && current <= prevCellValue) return true;
-            
-            if (current > prevCellValue) return false;
-            var goUp = CanGoPacific(i - 1, j, grid, current);
-            var goLeft =   CanGoPacific(i , j - 1, grid, current);
-            var goRight =   CanGoPacific(i , j + 1, grid, current);
-            return goUp || goLeft || goRight;
+            if (i < 0 || j < 0 || i == grid.Length || j == grid[0].Length) return;
+            if (grid[i][j] != 2) return;
+            if (rottenOnThisTurn.ContainsKey((i, j))) return;
+            if (needToRotIt(i + 1, j, grid)) rotThisOne(i + 1, j, grid);
+            if (needToRotIt(i, j + 1, grid)) rotThisOne(i , j+1, grid);
+            if (needToRotIt(i - 1, j, grid))rotThisOne(i - 1, j, grid);
+            if (needToRotIt(i , j-1, grid)) rotThisOne(i , j-1, grid);
         }
 
-        private static Dictionary<(int, int), bool> visitedAtlantic = new Dictionary<(int, int), bool>();
-        static bool CanGoAtlantic(int i, int j, int[][] grid, int prevCellValue)
+        private static bool needToRotIt(int i, int j, int[][] grid)
         {
-            if (visitedAtlantic.ContainsKey((i, j))) return false;
-            visitedAtlantic.Add((i,j), true);
-            if (i < 0 || i >= maxLen) return false;
-            if (j < 0 || j >= maxWidth) return false;
-            var current = grid[i][j];
-            if (i == maxLen - 1 && current <= prevCellValue) return true;
-            if (j == maxWidth - 1 && current <= prevCellValue) return true;
-          
-            if (current > prevCellValue) return false;
-            var goUp = CanGoAtlantic(i+ 1, j, grid, current);
-            var goLeft = CanGoAtlantic(i , j + 1, grid, current);
-            var goRight = CanGoAtlantic(i , j - 1, grid, current);
-            return goUp || goLeft || goRight;
+            if (i < 0 || j < 0 || i == grid.Length || j == grid[0].Length) return false;
+            if (grid[i][j] == 1) return true;
+            return false;
         }
         
+        private static void rotThisOne(int i, int j, int[][] grid)
+        {
+            if (i < 0 || j < 0 || i == grid.Length || j == grid[0].Length) return;
+            if (rottenOnThisTurn.ContainsKey((i, j))) return;
+            
+            if (grid[i][j] ==1)
+            {
+                grid[i][j] = 2;
+                rottenOnThisTurn.Add((i,j), true);
+            }
+        }
+
         static void Main(string[] args)
         {
-            var q = PacificAtlantic(new[]
+            var q1 = OrangesRotting(new[]
             {
-                new []{1,2,2,3,5},
-                new []{3,2,3,4,4},
-                new []{2,4,5,3,1},
-                new []{6,7,1,4,5},
-                new []{5,1,1,2,4}
+                new []{2,1,1},
+                new []{1,1,0},
+                new []{0,1,1},
             });
-            
-            var q1 = PacificAtlantic(new[]
-            {
-                new []{1,2,3},
-                new []{8,9,4},
-                new []{7,6,5},
-            });
+
             Console.ReadKey();
         }
     }
