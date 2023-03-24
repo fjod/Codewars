@@ -1,15 +1,9 @@
-﻿994. Rotting Oranges
+﻿207. Course Schedule
      Medium
-     10K
-     338
+     12.9K
+     512
      Companies
-     You are given an m x n grid where each cell can have one of three values:
+     There are a total of numCourses courses you have to take, labeled from 0 to numCourses - 1. You are given an array prerequisites where prerequisites[i] = [ai, bi] indicates that you must take course bi first if you want to take course ai.
 
-0 representing an empty cell,
-1 representing a fresh orange, or
-2 representing a rotten orange.
-Every minute, any fresh orange that is 4-directionally adjacent to a rotten orange becomes rotten.
-
-Return the minimum number of minutes that must elapse until no cell has a fresh orange. If this is impossible, return -1.
-
- 
+For example, the pair [0, 1], indicates that to take course 0 you have to first take course 1.
+Return true if you can finish all courses. Otherwise, return false.

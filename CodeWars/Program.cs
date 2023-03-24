@@ -13,68 +13,69 @@ namespace CodeWars
 {
     class Program
     {
-        public static int OrangesRotting(int[][] grid)
+        public static bool CanFinish(int numCourses, int[][] prerequisites)
         {
-            int minutes = 0;
-            bool allAreRotten = true;
-            while (allAreRotten)
+            Dictionary<int, List<int>> coursesPrereqs = new Dictionary<int, List<int>>(numCourses - 1);
+            HashSet<int> visited = new HashSet<int>(numCourses - 1);
+            for (int i = 0; i < numCourses; i++)
             {
-                rottenOnThisTurn.Clear();
-                for (int i = 0; i < grid.Length; i++)
+                var preqs = prerequisites.Where(p => p[0] == i).Select(p => p[1]).ToList();
+                coursesPrereqs.Add(i, preqs);
+            }
+
+            foreach (int c in Enumerable.Range(0, numCourses))
+            {
+                visited.Clear();
+                if (!checkCourse(c, coursesPrereqs, visited))
                 {
-                    for (int j = 0; j < grid[i].Length; j++)
-                    {
-                        rot(i, j, grid);
-                    }
+                    return false;
                 }
-
-                var gotFresh = grid.SelectMany(g => g).Any(i => i == 1);
-                allAreRotten = gotFresh;
-                if (rottenOnThisTurn.Count == 0 && gotFresh) return -1;
-                if (rottenOnThisTurn.Count > 0 ) minutes++;
             }
-
-            return minutes;
+            return true;
         }
 
-        private static Dictionary<(int, int), bool> rottenOnThisTurn = new Dictionary<(int, int), bool>();
-        private static void rot(int i, int j, int[][] grid)
+        private static Dictionary<int, bool> canFinish = new Dictionary<int, bool>();
+        private static bool checkCourse(int i, Dictionary<int, List<int>> coursesPrereqs, HashSet<int> visited)
         {
-            if (i < 0 || j < 0 || i == grid.Length || j == grid[0].Length) return;
-            if (grid[i][j] != 2) return;
-            if (rottenOnThisTurn.ContainsKey((i, j))) return;
-            if (needToRotIt(i + 1, j, grid)) rotThisOne(i + 1, j, grid);
-            if (needToRotIt(i, j + 1, grid)) rotThisOne(i , j+1, grid);
-            if (needToRotIt(i - 1, j, grid))rotThisOne(i - 1, j, grid);
-            if (needToRotIt(i , j-1, grid)) rotThisOne(i , j-1, grid);
-        }
-
-        private static bool needToRotIt(int i, int j, int[][] grid)
-        {
-            if (i < 0 || j < 0 || i == grid.Length || j == grid[0].Length) return false;
-            if (grid[i][j] == 1) return true;
-            return false;
-        }
-        
-        private static void rotThisOne(int i, int j, int[][] grid)
-        {
-            if (i < 0 || j < 0 || i == grid.Length || j == grid[0].Length) return;
-            if (rottenOnThisTurn.ContainsKey((i, j))) return;
-            
-            if (grid[i][j] ==1)
+            if (visited.Contains(i)) return false;
+            var prequesForTheCourse = coursesPrereqs[i];
+            if (!prequesForTheCourse.Any()) return true;
+            visited.Add(i);
+            foreach (var i1 in prequesForTheCourse)
             {
-                grid[i][j] = 2;
-                rottenOnThisTurn.Add((i,j), true);
+                if (!canFinish.ContainsKey(i1))
+                {
+                    var course = checkCourse(i1, coursesPrereqs, visited);
+                    if (!course)
+                    {
+                        return false;
+                    }
+
+                    canFinish.Add(i1, true);
+                    visited.Remove(i1);
+                }
+                else return canFinish[i1];
             }
+
+            return true;
         }
+
 
         static void Main(string[] args)
         {
-            var q1 = OrangesRotting(new[]
+            var q2 = CanFinish(8, new[]
             {
-                new []{2,1,1},
-                new []{1,1,0},
-                new []{0,1,1},
+                new []{1,0},
+                new []{0,1},
+            });
+            var q1 = CanFinish(8, new[]
+            {
+                new []{1,0},
+                new []{2,6},
+                new []{1,7},
+                new []{6,4},
+                new []{7,0},
+                new []{0,5},
             });
 
             Console.ReadKey();
