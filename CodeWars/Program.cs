@@ -13,40 +13,50 @@ namespace CodeWars
 {
     class Program
     {
-        public static string LongestPalindrome(string s)
+        public static int CountSubstrings(string s)
         {
-            int high = 0;
-            int low = 0;
-            
+
+            int ret = 0;
+            StringBuilder sbOuter = new StringBuilder();
+            StringBuilder sbInner = new StringBuilder();
             for (int i = 0; i < s.Length; i++)
             {
-                int current = Math.Max(TestPalindrome(s, i, i), TestPalindrome(s, i, i + 1));
-                if (current > high - low)
+                sbOuter.Clear();
+                var current = s[i];
+                sbOuter.Append(current);
+                if (IsPalindrome(sbOuter)) ret += 1;
+                sbInner.Clear();
+                sbInner.Append(sbOuter.ToString());
+                for (int j = i+1; j < s.Length; j++)
                 {
-                    high = i + current / 2;
-                    low = i - (current-1) / 2;
+                    var next = s[j];
+                    sbInner.Append(next);
+                    if (IsPalindrome(sbInner)) ret += 1;
                 }
             }
 
-            return s.Substring(low, high -low  + 1);
+            return ret;
         }
 
-        static int  TestPalindrome(string s,  int low, int high)
+        private static bool IsPalindrome(StringBuilder sbInner)
         {
-            while (low >=0 && high< s.Length && s[high] == s[low])
+            if (sbInner.Length == 1) return true;
+            var left = 0;
+            var right = sbInner.Length - 1;
+            while (left <= right)
             {
-                high++;
-                low--;
+                if (sbInner[left] != sbInner[right]) return false;
+                left++;
+                right--;
             }
 
-            return high - low - 1;
+            return true;
         }
-     
 
 
         static void Main(string[] args)
         {
-            var test = LongestPalindrome("babad");
+            var test = CountSubstrings("aaa");
             Console.ReadKey();
         }
     }

@@ -1,23 +1,23 @@
-﻿5. Longest Palindromic Substring
-   Medium
-   24.5K
-   1.4K
-   Companies
-   Given a string s, return the longest
-   palindromic
+﻿647. Palindromic Substrings
+     Medium
+     8.8K
+     188
+     Companies
+     Given a string s, return the number of palindromic substrings in it.
 
-substring
-in s.
+A string is a palindrome when it reads the same backward as forward.
+
+A substring is a contiguous sequence of characters within the string.
 
 
 
 Example 1:
 
-Input: s = "babad"
-Output: "bab"
-Explanation: "aba" is also a valid answer.
+Input: s = "abc"
+Output: 3
+Explanation: Three palindromic strings: "a", "b", "c".
 Example 2:
 
-Input: s = "cbbd"
-Output: "bb"
- 
+Input: s = "aaa"
+Output: 6
+Explanation: Six palindromic strings: "a", "a", "a", "aa", "aa", "aaa".
