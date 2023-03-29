@@ -13,53 +13,32 @@ namespace CodeWars
 {
     class Program
     {
-        public static int CountSubstrings(string s)
+        public static int NumDecodings(string s)
         {
 
-            int ret = 0;
-            StringBuilder sbOuter = new StringBuilder();
-            StringBuilder sbInner = new StringBuilder();
-            for (int i = 0; i < s.Length; i++)
+            var dp = Enumerable.Repeat(1, s.Length + 1).ToArray();
+            for (int i = s.Length -1; i >= 0; i--)
             {
-                sbOuter.Clear();
                 var current = s[i];
-                sbOuter.Append(current);
-                if (IsPalindrome(sbOuter)) ret += 1;
-                sbInner.Clear();
-                sbInner.Append(sbOuter.ToString());
-                for (int j = i+1; j < s.Length; j++)
-                {
-                    var next = s[j];
-                    sbInner.Append(next);
-                    if (IsPalindrome(sbInner)) ret += 1;
-                }
+                if (current == '0') dp[i] = 0;
+                else dp[i] = dp[i + 1];
+
+                if (i != s.Length - 1 &&
+                    (current == '1' || 
+                     (current == '2' && "0123456".Contains(s[i + 1]))
+                    ))
+                    dp[i] += dp[i + 2];
             }
 
-            return ret;
-        }
+            return dp[0];
 
-        private static bool IsPalindrome(StringBuilder sbInner)
-        {
-            if (sbInner.Length == 1) return true;
-            var left = 0;
-            var right = sbInner.Length - 1;
-            while (left <= right)
-            {
-                if (sbInner[left] != sbInner[right]) return false;
-                left++;
-                right--;
-            }
-
-            return true;
         }
 
 
         static void Main(string[] args)
         {
-            var test = CountSubstrings("aaa");
+            var test = NumDecodings("206");
             Console.ReadKey();
         }
     }
-
-
 }
