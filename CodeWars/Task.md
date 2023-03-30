@@ -1,24 +1,27 @@
-﻿152. Maximum Product Subarray
+﻿139. Word Break
      Medium
-     15.5K
-     468
+     13.7K
+     577
      Companies
-     Given an integer array nums, find a
-     subarray
-     that has the largest product, and return the product.
+     Given a string s and a dictionary of strings wordDict, return true if s can be segmented into a space-separated sequence of one or more dictionary words.
 
-The test cases are generated so that the answer will fit in a 32-bit integer.
+Note that the same word in the dictionary may be reused multiple times in the segmentation.
 
 
 
 Example 1:
 
-Input: nums = [2,3,-2,4]
-Output: 6
-Explanation: [2,3] has the largest product 6.
+Input: s = "leetcode", wordDict = ["leet","code"]
+Output: true
+Explanation: Return true because "leetcode" can be segmented as "leet code".
 Example 2:
 
-Input: nums = [-2,0,-1]
-Output: 0
-Explanation: The result cannot be 2, because [-2,-1] is not a subarray.
+Input: s = "applepenapple", wordDict = ["apple","pen"]
+Output: true
+Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+Note that you are allowed to reuse a dictionary word.
+Example 3:
+
+Input: s = "catsandog", wordDict = ["cats","dog","sand","and","cat"]
+Output: false
  

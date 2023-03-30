@@ -13,32 +13,36 @@ namespace CodeWars
 {
     class Program
     {
-        public int MaxProduct(int[] nums)
+        public static bool WordBreak(string s, IList<string> wordDict)
         {
-            int max = nums.Max();
-            int currentMax = 1;
-            int currentMin = 1;
-            foreach (var n in nums)
+            
+                return TryBreak(s, wordDict);
+            
+        }
+
+        private static Dictionary<string, bool> dict = new Dictionary<string, bool>();
+        private static bool TryBreak(string s, IList<string> wordDict)
+        {
+            if (dict.ContainsKey(s)) return false;
+            if (string.IsNullOrEmpty(s)) return true;
+            string word = string.Empty;
+            for (int i = 0; i < s.Length; i++)
             {
-                var tmp = currentMax * n;
-                if (n == 0)
+                word += s[i];
+                if (wordDict.Any(w => w == word))
                 {
-                    currentMax = 1;
-                    currentMin = 1;
-                    continue;
+                    if (TryBreak(s.Substring(word.Length), wordDict)) return true;
                 }
-                currentMax = new int[]{n, n * currentMax, n*currentMin}.Max();
-                currentMin = new int[]{n, n * currentMin, tmp}.Min();
-                max = Math.Max(max, currentMax);
             }
 
-            return max;
+            dict.Add(s, false);
+            return false;
         }
 
 
         static void Main(string[] args)
         {
-            var test = NumDecodings("206");
+            var test = WordBreak("applepenapple", new List<string>(){"apple","pen"});
             Console.ReadKey();
         }
     }
