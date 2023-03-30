@@ -13,25 +13,26 @@ namespace CodeWars
 {
     class Program
     {
-        public static int NumDecodings(string s)
+        public int MaxProduct(int[] nums)
         {
-
-            var dp = Enumerable.Repeat(1, s.Length + 1).ToArray();
-            for (int i = s.Length -1; i >= 0; i--)
+            int max = nums.Max();
+            int currentMax = 1;
+            int currentMin = 1;
+            foreach (var n in nums)
             {
-                var current = s[i];
-                if (current == '0') dp[i] = 0;
-                else dp[i] = dp[i + 1];
-
-                if (i != s.Length - 1 &&
-                    (current == '1' || 
-                     (current == '2' && "0123456".Contains(s[i + 1]))
-                    ))
-                    dp[i] += dp[i + 2];
+                var tmp = currentMax * n;
+                if (n == 0)
+                {
+                    currentMax = 1;
+                    currentMin = 1;
+                    continue;
+                }
+                currentMax = new int[]{n, n * currentMax, n*currentMin}.Max();
+                currentMin = new int[]{n, n * currentMin, tmp}.Min();
+                max = Math.Max(max, currentMax);
             }
 
-            return dp[0];
-
+            return max;
         }
 
 
