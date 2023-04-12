@@ -13,43 +13,45 @@ namespace CodeWars
 {
     class Program
     {
-        static string RemoveSpecialChars(string w)
+        public static bool ArrayStringsAreEqual(string[] word1, string[] word2)
         {
-            const string chars = "!?',;.";
-            sb.Clear();
-            foreach (var c in w.Where(c => !chars.Contains(c)))
+            int counter = 0;
+            var leftSum = word1.Aggregate(0, (i, s) => i + s.Length);
+            var rightSum = word2.Aggregate(0, (i, s) => i + s.Length);
+            if (leftSum != rightSum) return false;
+            while (true)
             {
-                sb.Append(c);
-            }
+                var left = GetCharByIndex(word1, counter);
+                if (!left.Item2) return false;
+                
+                var right = GetCharByIndex(word2, counter);
+                if (!right.Item2) return false;
 
-            return sb.ToString();
+                if (left.Item1 != right.Item1) return false;
+
+                counter++;
+                if (counter == leftSum) return true;
+            }
+            
         }
 
-        private static StringBuilder sb = new StringBuilder();
-        public static string MostCommonWord(string paragraph, string[] banned)
+        static (char, bool) GetCharByIndex(string[] words, int index)
         {
-            var splitted = paragraph
-                .Replace(',', ' ')
-                .Split(' ')
-                .Where(w => !string.IsNullOrEmpty(w))
-                .Select(w => w.ToLower())
-                .Select(RemoveSpecialChars)
-                .GroupBy(w => w)
-                .OrderByDescending(kvp => kvp.Count());
-            foreach (var grouping in splitted)
+            int wordIndex = 0;
+            while (true)
             {
-                var word = grouping.Key;
-                if (!banned.Contains(word))
-                    return word;
+                if (wordIndex == words.Length) return (' ', false);
+                var word = words[wordIndex];
+                if (index < word.Length) return (word[index], true);
+                index -= word.Length;
+                wordIndex++;
             }
-
-            throw new Exception("It is guaranteed there is at least one word that is not banned, and that the answer is unique");
         }
 
 
         static void Main(string[] args)
         {
-            var test = MostCommonWord("Bob hit a ball, the hit BALL flew far after it was hit.", new[] {"hit"});
+            var test = ArrayStringsAreEqual( new[] {"abc", "d", "defg"}, new[] {"abcddefg"});
             Console.ReadKey();
         }
     }

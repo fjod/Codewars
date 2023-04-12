@@ -1,25 +1,32 @@
-﻿819. Most Common Word
-     Easy
-     1.5K
-     2.9K
-     Companies
-     Given a string paragraph and a string array of the banned words banned, return the most frequent word that is not banned. It is guaranteed there is at least one word that is not banned, and that the answer is unique.
+﻿1662. Check If Two String Arrays are Equivalent
 
-The words in paragraph are case-insensitive and the answer should be returned in lowercase.
+Given two string arrays word1 and word2, return true if the two arrays represent the same string, and false otherwise.
+
+A string is represented by an array if the array elements concatenated in order forms the string.
 
 
 
 Example 1:
 
-Input: paragraph = "Bob hit a ball, the hit BALL flew far after it was hit.", banned = ["hit"]
-Output: "ball"
+Input: word1 = ["ab", "c"], word2 = ["a", "bc"]
+Output: true
 Explanation:
-"hit" occurs 3 times, but it is a banned word.
-"ball" occurs twice (and no other word does), so it is the most frequent non-banned word in the paragraph.
-Note that words in the paragraph are not case sensitive,
-that punctuation is ignored (even if adjacent to words, such as "ball,"),
-and that "hit" isn't the answer even though it occurs more because it is banned.
+word1 represents string "ab" + "c" -> "abc"
+word2 represents string "a" + "bc" -> "abc"
+The strings are the same, so return true.
 Example 2:
 
-Input: paragraph = "a.", banned = []
-Output: "a"
+Input: word1 = ["a", "cb"], word2 = ["ab", "c"]
+Output: false
+Example 3:
+
+Input: word1  = ["abc", "d", "defg"], word2 = ["abcddefg"]
+Output: true
+
+
+Constraints:
+
+1 <= word1.length, word2.length <= 103
+1 <= word1[i].length, word2[i].length <= 103
+1 <= sum(word1[i].length), sum(word2[i].length) <= 103
+word1[i] and word2[i] consist of lowercase letters.
