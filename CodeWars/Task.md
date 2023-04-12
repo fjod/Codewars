@@ -1,32 +1,28 @@
-﻿1672. Richest Customer Wealth
+﻿1678. Goal Parser Interpretation
       Easy
-      3.3K
-      326
+      1.3K
+      83
       Companies
-      You are given an m x n integer grid accounts where accounts[i][j] is the amount of money the i​​​​​​​​​​​th​​​​ customer has in the j​​​​​​​​​​​th​​​​ bank. Return the wealth that the richest customer has.
+      You own a Goal Parser that can interpret a string command. The command consists of an alphabet of "G", "()" and/or "(al)" in some order. The Goal Parser will interpret "G" as the string "G", "()" as the string "o", and "(al)" as the string "al". The interpreted strings are then concatenated in the original order.
 
-A customer's wealth is the amount of money they have in all their bank accounts. The richest customer is the customer that has the maximum wealth.
+Given the string command, return the Goal Parser's interpretation of command.
 
 
 
 Example 1:
 
-Input: accounts = [[1,2,3],[3,2,1]]
-Output: 6
-Explanation:
-1st customer has wealth = 1 + 2 + 3 = 6
-2nd customer has wealth = 3 + 2 + 1 = 6
-Both customers are considered the richest with a wealth of 6 each, so return 6.
+Input: command = "G()(al)"
+Output: "Goal"
+Explanation: The Goal Parser interprets the command as follows:
+G -> G
+() -> o
+(al) -> al
+The final concatenated result is "Goal".
 Example 2:
 
-Input: accounts = [[1,5],[7,3],[3,5]]
-Output: 10
-Explanation:
-1st customer has wealth = 6
-2nd customer has wealth = 10
-3rd customer has wealth = 8
-The 2nd customer is the richest with a wealth of 10.
+Input: command = "G()()()()(al)"
+Output: "Gooooal"
 Example 3:
 
-Input: accounts = [[2,8,7],[7,1,3],[1,9,5]]
-Output: 17
+Input: command = "(al)G(al)()()G"
+Output: "alGalooG"

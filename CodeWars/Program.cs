@@ -13,9 +13,9 @@ namespace CodeWars
 {
     class Program
     {
-        public int MaximumWealth(int[][] accounts)
+        public static string Interpret(string command)
         {
-            return accounts.Max(acc => acc.Sum());
+            return command.Replace("()", "o").Replace("(al)", "al");
         }
 
 
