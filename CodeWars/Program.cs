@@ -13,36 +13,43 @@ namespace CodeWars
 {
     class Program
     {
-        public static bool WordBreak(string s, IList<string> wordDict)
+        static string RemoveSpecialChars(string w)
         {
-            
-                return TryBreak(s, wordDict);
-            
-        }
-
-        private static Dictionary<string, bool> dict = new Dictionary<string, bool>();
-        private static bool TryBreak(string s, IList<string> wordDict)
-        {
-            if (dict.ContainsKey(s)) return false;
-            if (string.IsNullOrEmpty(s)) return true;
-            string word = string.Empty;
-            for (int i = 0; i < s.Length; i++)
+            const string chars = "!?',;.";
+            sb.Clear();
+            foreach (var c in w.Where(c => !chars.Contains(c)))
             {
-                word += s[i];
-                if (wordDict.Any(w => w == word))
-                {
-                    if (TryBreak(s.Substring(word.Length), wordDict)) return true;
-                }
+                sb.Append(c);
             }
 
-            dict.Add(s, false);
-            return false;
+            return sb.ToString();
+        }
+
+        private static StringBuilder sb = new StringBuilder();
+        public static string MostCommonWord(string paragraph, string[] banned)
+        {
+            var splitted = paragraph
+                .Replace(',', ' ')
+                .Split(' ')
+                .Where(w => !string.IsNullOrEmpty(w))
+                .Select(w => w.ToLower())
+                .Select(RemoveSpecialChars)
+                .GroupBy(w => w)
+                .OrderByDescending(kvp => kvp.Count());
+            foreach (var grouping in splitted)
+            {
+                var word = grouping.Key;
+                if (!banned.Contains(word))
+                    return word;
+            }
+
+            throw new Exception("It is guaranteed there is at least one word that is not banned, and that the answer is unique");
         }
 
 
         static void Main(string[] args)
         {
-            var test = WordBreak("applepenapple", new List<string>(){"apple","pen"});
+            var test = MostCommonWord("Bob hit a ball, the hit BALL flew far after it was hit.", new[] {"hit"});
             Console.ReadKey();
         }
     }
