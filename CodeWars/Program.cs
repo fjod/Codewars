@@ -13,17 +13,9 @@ namespace CodeWars
 {
     class Program
     {
-        public static int MaxRepeating(string sequence, string word)
+        public int MaximumWealth(int[][] accounts)
         {
-            int ret=0;
-            string w=word;
-            while(sequence.Contains(w, StringComparison.Ordinal))
-            {
-                w+=word;
-                ret++;
-            }
-        
-            return ret;
+            return accounts.Max(acc => acc.Sum());
         }
 
 

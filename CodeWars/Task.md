@@ -1,26 +1,32 @@
-﻿1668. Maximum Repeating Substring
+﻿1672. Richest Customer Wealth
       Easy
-      557
-      194
+      3.3K
+      326
       Companies
-      For a string sequence, a string word is k-repeating if word concatenated k times is a substring of sequence. The word's maximum k-repeating value is the highest value k where word is k-repeating in sequence. If word is not a substring of sequence, word's maximum k-repeating value is 0.
+      You are given an m x n integer grid accounts where accounts[i][j] is the amount of money the i​​​​​​​​​​​th​​​​ customer has in the j​​​​​​​​​​​th​​​​ bank. Return the wealth that the richest customer has.
 
-Given strings sequence and word, return the maximum k-repeating value of word in sequence.
+A customer's wealth is the amount of money they have in all their bank accounts. The richest customer is the customer that has the maximum wealth.
 
 
 
 Example 1:
 
-Input: sequence = "ababc", word = "ab"
-Output: 2
-Explanation: "abab" is a substring in "ababc".
+Input: accounts = [[1,2,3],[3,2,1]]
+Output: 6
+Explanation:
+1st customer has wealth = 1 + 2 + 3 = 6
+2nd customer has wealth = 3 + 2 + 1 = 6
+Both customers are considered the richest with a wealth of 6 each, so return 6.
 Example 2:
 
-Input: sequence = "ababc", word = "ba"
-Output: 1
-Explanation: "ba" is a substring in "ababc". "baba" is not a substring in "ababc".
+Input: accounts = [[1,5],[7,3],[3,5]]
+Output: 10
+Explanation:
+1st customer has wealth = 6
+2nd customer has wealth = 10
+3rd customer has wealth = 8
+The 2nd customer is the richest with a wealth of 10.
 Example 3:
 
-Input: sequence = "ababc", word = "ac"
-Output: 0
-Explanation: "ac" is not a substring in "ababc". 
+Input: accounts = [[2,8,7],[7,1,3],[1,9,5]]
+Output: 17

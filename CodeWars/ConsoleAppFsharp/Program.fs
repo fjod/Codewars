@@ -23,6 +23,11 @@ module ConsoleAppFsharp =
                  |> Array.find (fun (key, _) -> (banned |> Array.contains key) |> not)
                  |> fst
                             
+     let maxAcc(acc : int [][]) =
+         acc |> Array.map Array.sum
+             |> Array.max
+         
+         
          
      let test = MostCommonWord "Bob hit a ball, the hit BALL flew far after it was hit." [|"hit"|]
      printfn "Hello from F#1"
