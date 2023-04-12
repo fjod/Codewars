@@ -7,29 +7,22 @@ open ConsoleAppFsharp.Node
 
 module ConsoleAppFsharp =
 
-     let maxSub (arr:int[]) =
-         let rec calcSum (arr:int[]) (index:int) (max:int) (sum:int) =
-             if (index = arr.Length) then max
-             else
-                 let curSum = sum + arr[index]
-                 let curSum = Math.Max(curSum, 0)
-                 let maxSub = Math.Max(curSum, max)
-                 calcSum arr (index+1) maxSub curSum
-         calcSum arr 0 arr[0] 0
-     
-     let Clone(n:Node) =
-         let dict = new Dictionary<Node,Node>()
-         let rec cloneInner (z:Node) =
-             if (dict.ContainsKey(z)) then dict[z]
-             else
-                 let current = Node(z.V)
-                 dict.Add(z, current)
-                 for i in z.Neighbours do
-                      let clonedChild = cloneInner i
-                      current.Neighbours.Add(clonedChild)              
-                 dict[z] 
-              
-         dict[n]
-     
-     let test = maxSub [|-2;1;-3;4;-1;2;1;-5;4|]
+        
+     let MostCommonWord (p:string) (banned: string[]) =
+         let removeSpecial (s:string) =
+             s.ToCharArray()
+             |> Array.where (fun f -> "!?',;.".Contains(f) |> not)
+             |> Array.fold (fun acc x -> acc + x.ToString()) ""             
+       
+         p.Replace(',',' ').Split(' ')  
+                 |> Array.where (fun f -> String.IsNullOrWhiteSpace(f) |> not)
+                 |> Array.map (fun f -> f.ToLower())
+                 |> Array.map removeSpecial
+                 |> Array.groupBy id
+                 |> Array.sortByDescending (fun (_, values) -> values.Length)
+                 |> Array.find (fun (key, _) -> (banned |> Array.contains key) |> not)
+                 |> fst
+                            
+         
+     let test = MostCommonWord "Bob hit a ball, the hit BALL flew far after it was hit." [|"hit"|]
      printfn "Hello from F#1"
