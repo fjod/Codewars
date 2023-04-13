@@ -13,36 +13,19 @@ namespace CodeWars
 {
     class Program
     {
-        public static int[] PlusOne(int[] digits) {
+        public IList<int> InorderTraversal(TreeNode root)
+        {
+            List<int> ret = new List<int>();
+            Traverse(root, ret);
+            return ret;
+        }
 
-            if (digits[^1] != 9)
-            {
-                digits[^1] = digits[^1] + 1;
-                return digits;
-            }
-
-            int[] newDigs = new int[digits.Length + 1];
-            for (int i = 0; i < digits.Length; i++)
-            {
-                newDigs[i + 1] = digits[i];
-            }
-            newDigs[^1] = 0;
-            for (int i = newDigs.Length - 2; i >= 0; i--)
-            {
-                if (newDigs[i] != 9)
-                {
-                    newDigs[i] = newDigs[i] + 1;
-                    if (newDigs.First() == 0) return newDigs.Skip(1).ToArray();
-                    return newDigs;
-                }
-                else
-                {
-                    newDigs[i] = 0;
-                }
-            }
-
-            if (newDigs.First() == 0) return newDigs.Skip(1).ToArray();
-            return newDigs;
+        private void Traverse(TreeNode root, List<int> ret)
+        {
+            if (root == null) return;
+            Traverse(root.left, ret);
+            ret.Add(root.val);
+            Traverse(root.right, ret);
         }
 
 
