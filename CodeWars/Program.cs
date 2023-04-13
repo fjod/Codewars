@@ -13,25 +13,33 @@ namespace CodeWars
 {
     class Program
     {
-        public IList<int> InorderTraversal(TreeNode root)
+        public static int MinDepth(TreeNode root)
         {
-            List<int> ret = new List<int>();
-            Traverse(root, ret);
-            return ret;
+            if (root == null) return 0;
+            if (root.left == null && root.right == null) return 1;
+           Traverse(root.left, 1);
+            Traverse(root.right, 1);
+            return minDepth;
         }
 
-        private void Traverse(TreeNode root, List<int> ret)
+        private static int minDepth = int.MaxValue;
+        static void Traverse(TreeNode root, int depth)
         {
             if (root == null) return;
-            Traverse(root.left, ret);
-            ret.Add(root.val);
-            Traverse(root.right, ret);
+            if (root.left == null && root.right == null) minDepth = Math.Min(depth + 1, minDepth);
+            if (root.left != null) Traverse(root.left, depth + 1);
+            if (root.right != null) Traverse(root.right, depth + 1);
         }
 
 
         static void Main(string[] args)
         {
-            var test = PlusOne( new []{9});
+            var t6 = new TreeNode {val = 6};
+            var t5 = new TreeNode {val = 5, right = t6};
+            var t4 = new TreeNode {val = 4, right = t5};
+            var t3 = new TreeNode {val = 3, right = t4};
+            var t2 = new TreeNode {val = 2, right = t3};
+            MinDepth(t2);
             Console.ReadKey();
         }
     }

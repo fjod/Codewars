@@ -1,28 +1,28 @@
-﻿94. Binary Tree Inorder Traversal
-    Easy
-    11.2K
-    556
-    Companies
-    Given the root of a binary tree, return the inorder traversal of its nodes' values.
+﻿111. Minimum Depth of Binary Tree
+     Easy
+     5.6K
+     1.1K
+     Companies
+     Given a binary tree, find its minimum depth.
+
+The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.
+
+Note: A leaf is a node with no children.
 
 
 
 Example 1:
 
 
-Input: root = [1,null,2,3]
-Output: [1,3,2]
+Input: root = [3,9,20,null,null,15,7]
+Output: 2
 Example 2:
 
-Input: root = []
-Output: []
-Example 3:
-
-Input: root = [1]
-Output: [1]
+Input: root = [2,null,3,null,4,null,5,null,6]
+Output: 5
 
 
 Constraints:
 
-The number of nodes in the tree is in the range [0, 100].
--100 <= Node.val <= 100
+The number of nodes in the tree is in the range [0, 105].
+-1000 <= Node.val <= 1000
