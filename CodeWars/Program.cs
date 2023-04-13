@@ -13,24 +13,24 @@ namespace CodeWars
 {
     class Program
     {
-        public static int MinDepth(TreeNode root)
+        public bool HasCycle(ListNode head)
         {
-            if (root == null) return 0;
-            if (root.left == null && root.right == null) return 1;
-           Traverse(root.left, 1);
-            Traverse(root.right, 1);
-            return minDepth;
+            if (head == null || head.next == null) return false;
+            var slow = head.next;
+            var fast = head.next.next;
+            while (true)
+            {
+                if (slow != null && fast != null && slow == fast) return true;
+                if (slow.next == null) return false;
+                if (fast == null) return false;
+                slow = slow.next;
+                if (fast.next == null) return false;
+                fast = fast.next.next;
+            }
+
         }
 
-        private static int minDepth = int.MaxValue;
-        static void Traverse(TreeNode root, int depth)
-        {
-            if (root == null) return;
-            if (root.left == null && root.right == null) minDepth = Math.Min(depth + 1, minDepth);
-            if (root.left != null) Traverse(root.left, depth + 1);
-            if (root.right != null) Traverse(root.right, depth + 1);
-        }
-
+        
 
         static void Main(string[] args)
         {

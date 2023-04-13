@@ -1,28 +1,31 @@
-﻿111. Minimum Depth of Binary Tree
+﻿141. Linked List Cycle
      Easy
-     5.6K
-     1.1K
+     11.9K
+     1K
      Companies
-     Given a binary tree, find its minimum depth.
+     Given head, the head of a linked list, determine if the linked list has a cycle in it.
 
-The minimum depth is the number of nodes along the shortest path from the root node down to the nearest leaf node.
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
 
-Note: A leaf is a node with no children.
+Return true if there is a cycle in the linked list. Otherwise, return false.
 
 
 
 Example 1:
 
 
-Input: root = [3,9,20,null,null,15,7]
-Output: 2
+Input: head = [3,2,0,-4], pos = 1
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed).
 Example 2:
 
-Input: root = [2,null,3,null,4,null,5,null,6]
-Output: 5
+
+Input: head = [1,2], pos = 0
+Output: true
+Explanation: There is a cycle in the linked list, where the tail connects to the 0th node.
+Example 3:
 
 
-Constraints:
-
-The number of nodes in the tree is in the range [0, 105].
--1000 <= Node.val <= 1000
+Input: head = [1], pos = -1
+Output: false
+Explanation: There is no cycle in the linked list.
