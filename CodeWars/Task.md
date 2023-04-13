@@ -1,35 +1,30 @@
-﻿2206. Divide Array Into Equal Pairs
+﻿2582. Pass the Pillow
       Easy
-      536
-      22
+      262
+      12
       Companies
-      You are given an integer array nums consisting of 2 * n integers.
+      There are n people standing in a line labeled from 1 to n. The first person in the line is holding a pillow initially. Every second, the person holding the pillow passes it to the next person standing in the line. Once the pillow reaches the end of the line, the direction changes, and people continue passing the pillow in the opposite direction.
 
-You need to divide nums into n pairs such that:
-
-Each element belongs to exactly one pair.
-The elements present in a pair are equal.
-Return true if nums can be divided into n pairs, otherwise return false.
+For example, once the pillow reaches the nth person they pass it to the n - 1th person, then to the n - 2th person and so on.
+Given the two positive integers n and time, return the index of the person holding the pillow after time seconds.
 
 
 
 Example 1:
 
-Input: nums = [3,2,3,2,2,2]
-Output: true
-Explanation:
-There are 6 elements in nums, so they should be divided into 6 / 2 = 3 pairs.
-If nums is divided into the pairs (2, 2), (3, 3), and (2, 2), it will satisfy all the conditions.
+Input: n = 4, time = 5
+Output: 2
+Explanation: People pass the pillow in the following way: 1 -> 2 -> 3 -> 4 -> 3 -> 2.
+Afer five seconds, the pillow is given to the 2nd person.
 Example 2:
 
-Input: nums = [1,2,3,4]
-Output: false
-Explanation:
-There is no way to divide nums into 4 / 2 = 2 pairs such that the pairs satisfy every condition.
+Input: n = 3, time = 2
+Output: 3
+Explanation: People pass the pillow in the following way: 1 -> 2 -> 3.
+Afer two seconds, the pillow is given to the 3rd person.
 
 
 Constraints:
 
-nums.length == 2 * n
-1 <= n <= 500
-1 <= nums[i] <= 500
+2 <= n <= 1000
+1 <= time <= 1000

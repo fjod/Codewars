@@ -13,41 +13,35 @@ namespace CodeWars
 {
     class Program
     {
-        public static bool DivideArray(int[] nums)
+        public static int PassThePillow(int n, int time)
         {
-            bool[] used = new bool[nums.Length];
-            Array.Fill(used, false);
-            for (int i = 0; i < nums.Length; i++)
+            if (n == 2)
             {
-                if (used[i] != true)
-                {
-                    var current = nums[i];
-                    if (!FindSameNumber(nums, used, current, i + 1)) return false;
-                    used[i] = true;
-                }
+                if (time % 2 == 0) return 1;
+                else return 2;
             }
-
-            return true;
+            if (time < n) return time + 1;
+            if (time == n) return n - 1;
+            bool forward = true;
+            while (true)
+            {
+                time = time - (n - 1);
+                forward = !forward;
+                if (time < n && !forward) 
+                    return n - time;
+                if (time < n && forward) 
+                    return time + 1;
+                if (time == n) 
+                    return n - 1;   
+            }
         }
 
-        static bool  FindSameNumber(int[] nums, bool[] used, int target, int start)
-        {
-            for (int i = start; i < nums.Length; i++)
-            {
-                if (nums[i] == target && used[i] == false)
-                {
-                    used[i] = true;
-                    return true;
-                }
-            }
-
-            return false;
-        }
+       
 
 
         static void Main(string[] args)
         {
-            var test = DivideArray( new []{3,2,3,2,2,2});
+            var test = PassThePillow( 2, 341);
             Console.ReadKey();
         }
     }
