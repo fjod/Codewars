@@ -13,33 +13,28 @@ namespace CodeWars
 {
     class Program
     {
-        public bool HasCycle(ListNode head)
+        
+        public static string ConvertToTitle(int columnNumber)
         {
-            if (head == null || head.next == null) return false;
-            var slow = head.next;
-            var fast = head.next.next;
-            while (true)
+            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+            var sb = new StringBuilder();
+            while (columnNumber > 0)
             {
-                if (slow != null && fast != null && slow == fast) return true;
-                if (slow.next == null) return false;
-                if (fast == null) return false;
-                slow = slow.next;
-                if (fast.next == null) return false;
-                fast = fast.next.next;
+                columnNumber--;
+
+                var d = columnNumber % 26;
+                sb.Insert(0, chars[d]);
+                columnNumber /= 26;
             }
 
+            return sb.ToString();
         }
 
         
 
         static void Main(string[] args)
         {
-            var t6 = new TreeNode {val = 6};
-            var t5 = new TreeNode {val = 5, right = t6};
-            var t4 = new TreeNode {val = 4, right = t5};
-            var t3 = new TreeNode {val = 3, right = t4};
-            var t2 = new TreeNode {val = 2, right = t3};
-            MinDepth(t2);
+            var q = ConvertToTitle(27);
             Console.ReadKey();
         }
     }

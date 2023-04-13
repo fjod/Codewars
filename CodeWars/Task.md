@@ -1,31 +1,31 @@
-﻿141. Linked List Cycle
+﻿168. Excel Sheet Column Title
      Easy
-     11.9K
-     1K
+     3.7K
+     536
      Companies
-     Given head, the head of a linked list, determine if the linked list has a cycle in it.
+     Given an integer columnNumber, return its corresponding column title as it appears in an Excel sheet.
 
-There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+For example:
 
-Return true if there is a cycle in the linked list. Otherwise, return false.
-
+A -> 1
+B -> 2
+C -> 3
+...
+Z -> 26
+AA -> 27
+AB -> 28
+...
 
 
 Example 1:
 
-
-Input: head = [3,2,0,-4], pos = 1
-Output: true
-Explanation: There is a cycle in the linked list, where the tail connects to the 1st node (0-indexed).
+Input: columnNumber = 1
+Output: "A"
 Example 2:
 
-
-Input: head = [1,2], pos = 0
-Output: true
-Explanation: There is a cycle in the linked list, where the tail connects to the 0th node.
+Input: columnNumber = 28
+Output: "AB"
 Example 3:
 
-
-Input: head = [1], pos = -1
-Output: false
-Explanation: There is no cycle in the linked list.
+Input: columnNumber = 701
+Output: "ZY"
