@@ -13,38 +13,42 @@ namespace CodeWars
 {
     class Program
     {
-        public static string OddString(string[] words)
-        {
-            List<(int, string)> diffs = new List<(int, string)>();
-            for (int i = 0; i < words.Length; i++)
+        public static int[] PlusOne(int[] digits) {
+
+            if (digits[^1] != 9)
             {
-                var current = CalcDiff(words[i]);
-                diffs.Add((current, words[i]));
+                digits[^1] = digits[^1] + 1;
+                return digits;
             }
 
-            var group = diffs.GroupBy(c => c.Item1).OrderByDescending(c => c.Count()).Last();
-            return group.First().Item2;
-        }
-
-        private static StringBuilder sb = new StringBuilder();
-        static int CalcDiff(string w)
-        {
-            sb.Clear();
-            for (int i = 1; i < w.Length; i++)
+            int[] newDigs = new int[digits.Length + 1];
+            for (int i = 0; i < digits.Length; i++)
             {
-                sb.Append(w[i] - w[i - 1]);
-                sb.Append('g');
+                newDigs[i + 1] = digits[i];
+            }
+            newDigs[^1] = 0;
+            for (int i = newDigs.Length - 2; i >= 0; i--)
+            {
+                if (newDigs[i] != 9)
+                {
+                    newDigs[i] = newDigs[i] + 1;
+                    if (newDigs.First() == 0) return newDigs.Skip(1).ToArray();
+                    return newDigs;
+                }
+                else
+                {
+                    newDigs[i] = 0;
+                }
             }
 
-            return sb.ToString().GetHashCode();
+            if (newDigs.First() == 0) return newDigs.Skip(1).ToArray();
+            return newDigs;
         }
-
-       
 
 
         static void Main(string[] args)
         {
-            var test = OddString( new []{"abm","bcn","alm"});
+            var test = PlusOne( new []{9});
             Console.ReadKey();
         }
     }

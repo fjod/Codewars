@@ -1,30 +1,32 @@
-﻿2451. Odd String Difference
-      Easy
-      285
-      84
-      Companies
-      You are given an array of equal-length strings words. Assume that the length of each string is n.
+﻿66. Plus One
+    Easy
+    6.9K
+    4.9K
+    Companies
+    You are given a large integer represented as an integer array digits, where each digits[i] is the ith digit of the integer. The digits are ordered from most significant to least significant in left-to-right order. The large integer does not contain any leading 0's.
 
-Each string words[i] can be converted into a difference integer array difference[i] of length n - 1 where difference[i][j] = words[i][j+1] - words[i][j] where 0 <= j <= n - 2. Note that the difference between two letters is the difference between their positions in the alphabet i.e. the position of 'a' is 0, 'b' is 1, and 'z' is 25.
-
-For example, for the string "acb", the difference integer array is [2 - 0, 1 - 2] = [2, -1].
-All the strings in words have the same difference integer array, except one. You should find that string.
-
-Return the string in words that has different difference integer array.
+Increment the large integer by one and return the resulting array of digits.
 
 
 
 Example 1:
 
-Input: words = ["adc","wzy","abc"]
-Output: "abc"
-Explanation:
-- The difference integer array of "adc" is [3 - 0, 2 - 3] = [3, -1].
-- The difference integer array of "wzy" is [25 - 22, 24 - 25]= [3, -1].
-- The difference integer array of "abc" is [1 - 0, 2 - 1] = [1, 1].
-  The odd array out is [1, 1], so we return the corresponding string, "abc".
-  Example 2:
+Input: digits = [1,2,3]
+Output: [1,2,4]
+Explanation: The array represents the integer 123.
+Incrementing by one gives 123 + 1 = 124.
+Thus, the result should be [1,2,4].
+Example 2:
 
-Input: words = ["aaa","bob","ccc","ddd"]
-Output: "bob"
-Explanation: All the integer arrays are [0, 0] except for "bob", which corresponds to [13, -13].
+Input: digits = [4,3,2,1]
+Output: [4,3,2,2]
+Explanation: The array represents the integer 4321.
+Incrementing by one gives 4321 + 1 = 4322.
+Thus, the result should be [4,3,2,2].
+Example 3:
+
+Input: digits = [9]
+Output: [1,0]
+Explanation: The array represents the integer 9.
+Incrementing by one gives 9 + 1 = 10.
+Thus, the result should be [1,0].
