@@ -13,10 +13,30 @@ namespace CodeWars
 {
     class Program
     {
-        public int MostWordsFound(string[] sentences)
+        public static string OddString(string[] words)
         {
+            List<(int, string)> diffs = new List<(int, string)>();
+            for (int i = 0; i < words.Length; i++)
+            {
+                var current = CalcDiff(words[i]);
+                diffs.Add((current, words[i]));
+            }
 
-            return sentences.Select(s => s.Count(inner => inner == ' ') + 1).Max();
+            var group = diffs.GroupBy(c => c.Item1).OrderByDescending(c => c.Count()).Last();
+            return group.First().Item2;
+        }
+
+        private static StringBuilder sb = new StringBuilder();
+        static int CalcDiff(string w)
+        {
+            sb.Clear();
+            for (int i = 1; i < w.Length; i++)
+            {
+                sb.Append(w[i] - w[i - 1]);
+                sb.Append('g');
+            }
+
+            return sb.ToString().GetHashCode();
         }
 
        
@@ -24,7 +44,7 @@ namespace CodeWars
 
         static void Main(string[] args)
         {
-            var test = PassThePillow( 2, 341);
+            var test = OddString( new []{"abm","bcn","alm"});
             Console.ReadKey();
         }
     }
