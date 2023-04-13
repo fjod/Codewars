@@ -1,30 +1,37 @@
-﻿2582. Pass the Pillow
+﻿2114. Maximum Number of Words Found in Sentences
       Easy
-      262
-      12
+      1.3K
+      41
       Companies
-      There are n people standing in a line labeled from 1 to n. The first person in the line is holding a pillow initially. Every second, the person holding the pillow passes it to the next person standing in the line. Once the pillow reaches the end of the line, the direction changes, and people continue passing the pillow in the opposite direction.
+      A sentence is a list of words that are separated by a single space with no leading or trailing spaces.
 
-For example, once the pillow reaches the nth person they pass it to the n - 1th person, then to the n - 2th person and so on.
-Given the two positive integers n and time, return the index of the person holding the pillow after time seconds.
+You are given an array of strings sentences, where each sentences[i] represents a single sentence.
+
+Return the maximum number of words that appear in a single sentence.
 
 
 
 Example 1:
 
-Input: n = 4, time = 5
-Output: 2
-Explanation: People pass the pillow in the following way: 1 -> 2 -> 3 -> 4 -> 3 -> 2.
-Afer five seconds, the pillow is given to the 2nd person.
-Example 2:
+Input: sentences = ["alice and bob love leetcode", "i think so too", "this is great thanks very much"]
+Output: 6
+Explanation:
+- The first sentence, "alice and bob love leetcode", has 5 words in total.
+- The second sentence, "i think so too", has 4 words in total.
+- The third sentence, "this is great thanks very much", has 6 words in total.
+  Thus, the maximum number of words in a single sentence comes from the third sentence, which has 6 words.
+  Example 2:
 
-Input: n = 3, time = 2
+Input: sentences = ["please wait", "continue to fight", "continue to win"]
 Output: 3
-Explanation: People pass the pillow in the following way: 1 -> 2 -> 3.
-Afer two seconds, the pillow is given to the 3rd person.
+Explanation: It is possible that multiple sentences contain the same number of words.
+In this example, the second and third sentences (underlined) have the same number of words.
 
 
 Constraints:
 
-2 <= n <= 1000
-1 <= time <= 1000
+1 <= sentences.length <= 100
+1 <= sentences[i].length <= 100
+sentences[i] consists only of lowercase English letters and ' ' only.
+sentences[i] does not have leading or trailing spaces.
+All the words in sentences[i] are separated by a single space.

@@ -13,27 +13,10 @@ namespace CodeWars
 {
     class Program
     {
-        public static int PassThePillow(int n, int time)
+        public int MostWordsFound(string[] sentences)
         {
-            if (n == 2)
-            {
-                if (time % 2 == 0) return 1;
-                else return 2;
-            }
-            if (time < n) return time + 1;
-            if (time == n) return n - 1;
-            bool forward = true;
-            while (true)
-            {
-                time = time - (n - 1);
-                forward = !forward;
-                if (time < n && !forward) 
-                    return n - time;
-                if (time < n && forward) 
-                    return time + 1;
-                if (time == n) 
-                    return n - 1;   
-            }
+
+            return sentences.Select(s => s.Count(inner => inner == ' ') + 1).Max();
         }
 
        
