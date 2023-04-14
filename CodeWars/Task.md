@@ -1,31 +1,29 @@
-﻿168. Excel Sheet Column Title
+﻿202. Happy Number
      Easy
-     3.7K
-     536
+     8.5K
+     1.1K
      Companies
-     Given an integer columnNumber, return its corresponding column title as it appears in an Excel sheet.
+     Write an algorithm to determine if a number n is happy.
 
-For example:
+A happy number is a number defined by the following process:
 
-A -> 1
-B -> 2
-C -> 3
-...
-Z -> 26
-AA -> 27
-AB -> 28
-...
+Starting with any positive integer, replace the number by the sum of the squares of its digits.
+Repeat the process until the number equals 1 (where it will stay), or it loops endlessly in a cycle which does not include 1.
+Those numbers for which this process ends in 1 are happy.
+Return true if n is a happy number, and false if not.
+
 
 
 Example 1:
 
-Input: columnNumber = 1
-Output: "A"
+Input: n = 19
+Output: true
+Explanation:
+12 + 92 = 82
+82 + 22 = 68
+62 + 82 = 100
+12 + 02 + 02 = 1
 Example 2:
 
-Input: columnNumber = 28
-Output: "AB"
-Example 3:
-
-Input: columnNumber = 701
-Output: "ZY"
+Input: n = 2
+Output: false

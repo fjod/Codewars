@@ -14,27 +14,32 @@ namespace CodeWars
     class Program
     {
         
-        public static string ConvertToTitle(int columnNumber)
+        public static bool IsHappy(int n)
         {
-            const string chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-            var sb = new StringBuilder();
-            while (columnNumber > 0)
+
+            HashSet<string> hashSet = new HashSet<string>();
+            while (true)
             {
-                columnNumber--;
+                var sum = 0;
+                var s = n.ToString();
+                if (hashSet.Contains(s)) return false;
+                foreach (var c in s)
+                {
+                    var v = int.Parse(c.ToString());
+                    sum += v * v;
+                }
 
-                var d = columnNumber % 26;
-                sb.Insert(0, chars[d]);
-                columnNumber /= 26;
+                if (sum == 1) return true;
+                hashSet.Add(s);
+                n = sum;
             }
-
-            return sb.ToString();
         }
 
         
 
         static void Main(string[] args)
         {
-            var q = ConvertToTitle(27);
+            var q = IsHappy(2);
             Console.ReadKey();
         }
     }
