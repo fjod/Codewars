@@ -1,35 +1,33 @@
-﻿58. Length of Last Word
-    Easy
-    3K
-    154
-    Companies
-    Given a string s consisting of words and spaces, return the length of the last word in the string.
-
-A word is a maximal
-substring
-consisting of non-space characters only.
+﻿338. Counting Bits
+     Easy
+     8.7K
+     412
+     Companies
+     Given an integer n, return an array ans of length n + 1 such that for each i (0 <= i <= n), ans[i] is the number of 1's in the binary representation of i.
 
 
 
 Example 1:
 
-Input: s = "Hello World"
-Output: 5
-Explanation: The last word is "World" with length 5.
+Input: n = 2
+Output: [0,1,1]
+Explanation:
+0 --> 0
+1 --> 1
+2 --> 10
 Example 2:
 
-Input: s = "   fly me   to   the moon  "
-Output: 4
-Explanation: The last word is "moon" with length 4.
-Example 3:
-
-Input: s = "luffy is still joyboy"
-Output: 6
-Explanation: The last word is "joyboy" with length 6.
+Input: n = 5
+Output: [0,1,1,2,1,2]
+Explanation:
+0 --> 0
+1 --> 1
+2 --> 10
+3 --> 11
+4 --> 100
+5 --> 101
 
 
 Constraints:
 
-1 <= s.length <= 104
-s consists of only English letters and spaces ' '.
-There will be at least one word in s.
+0 <= n <= 105

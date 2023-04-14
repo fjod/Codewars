@@ -14,21 +14,34 @@ namespace CodeWars
     class Program
     {
         
-        public int LengthOfLastWord(string s)
+        public int[] CountBits(int n)
         {
 
-            return s.Split(" ").Last(s => !string.IsNullOrEmpty(s)).Length;
+            int[] ret = new int[n+1];
+            for (int i = 0; i < n+1; i++)
+            {
+                var asBin = Convert.ToString(i, 2);
+                ret[i] = asBin.Count(s => s == '1');
+                ret[i] = solve(i);
+            }
+
+            return ret;
         }
+        
+        public int solve(int n){
+            // base condition
+            if(n == 0) return 0;
+            if(n == 1) return 1;
+        
+            if(n % 2 == 0) return solve(n / 2); // handling even case
+            else return 1 + solve(n / 2); // handling odd case
+        }
+    }
 
 
         static void Main(string[] args)
         {
-            TreeNode five = new TreeNode {val = 5};
-            TreeNode two = new TreeNode {val = 2, right = five};
-            TreeNode three = new TreeNode {val = 3};
-            TreeNode one = new TreeNode {val = 1, left = two, right = three};
-            var test = BinaryTreePaths(one);
-            Console.ReadKey();
+        
         }
     }
 }
