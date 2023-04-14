@@ -14,15 +14,10 @@ namespace CodeWars
     class Program
     {
         
-        public static int MinNumber(int[] nums1, int[] nums2)
+        public int LengthOfLastWord(string s)
         {
-            var checkSame = nums1.Where(nums2.Contains);
-            if (checkSame.Any()) return checkSame.Min();
-            var minLeft = nums1.Min();
-            var minRight = nums2.Min();
-            var v1 = minLeft * 10 + minRight;
-            var v2 = minLeft + 10* minRight;
-            return minLeft != minRight ? Math.Min(v1, v2) : minLeft;
+
+            return s.Split(" ").Last(s => !string.IsNullOrEmpty(s)).Length;
         }
 
 
