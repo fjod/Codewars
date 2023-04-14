@@ -14,32 +14,46 @@ namespace CodeWars
     class Program
     {
         
-        public static bool IsHappy(int n)
+        public static IList<string> BinaryTreePaths(TreeNode root)
         {
-
-            HashSet<string> hashSet = new HashSet<string>();
-            while (true)
-            {
-                var sum = 0;
-                var s = n.ToString();
-                if (hashSet.Contains(s)) return false;
-                foreach (var c in s)
-                {
-                    var v = int.Parse(c.ToString());
-                    sum += v * v;
-                }
-
-                if (sum == 1) return true;
-                hashSet.Add(s);
-                n = sum;
-            }
+            List<string> paths = new List<string>();
+            Traverse(root, "", paths);
+            return paths;
         }
 
-        
+        private static void Traverse(TreeNode root, string current, List<string> paths)
+        {
+            if (root == null) return;
+            if (root.left == null && root.right == null)
+            {
+                if (current != "")
+                    paths.Add($"{current}->{root.val}");
+                else 
+                    paths.Add($"{root.val}");
+                return;
+            }
+
+            if (current == "")
+            {
+                current = root.val.ToString();
+            }
+            else
+            {
+                current = $"{current}->{root.val.ToString()}";    
+            }
+            
+            Traverse(root.left, current, paths);
+            Traverse(root.right, current, paths);
+        }
+
 
         static void Main(string[] args)
         {
-            var q = IsHappy(2);
+            TreeNode five = new TreeNode {val = 5};
+            TreeNode two = new TreeNode {val = 2, right = five};
+            TreeNode three = new TreeNode {val = 3};
+            TreeNode one = new TreeNode {val = 1, left = two, right = three};
+            var test = BinaryTreePaths(one);
             Console.ReadKey();
         }
     }
