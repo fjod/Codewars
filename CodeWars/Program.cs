@@ -14,36 +14,15 @@ namespace CodeWars
     class Program
     {
         
-        public static IList<string> BinaryTreePaths(TreeNode root)
+        public static int MinNumber(int[] nums1, int[] nums2)
         {
-            List<string> paths = new List<string>();
-            Traverse(root, "", paths);
-            return paths;
-        }
-
-        private static void Traverse(TreeNode root, string current, List<string> paths)
-        {
-            if (root == null) return;
-            if (root.left == null && root.right == null)
-            {
-                if (current != "")
-                    paths.Add($"{current}->{root.val}");
-                else 
-                    paths.Add($"{root.val}");
-                return;
-            }
-
-            if (current == "")
-            {
-                current = root.val.ToString();
-            }
-            else
-            {
-                current = $"{current}->{root.val.ToString()}";    
-            }
-            
-            Traverse(root.left, current, paths);
-            Traverse(root.right, current, paths);
+            var checkSame = nums1.Where(nums2.Contains);
+            if (checkSame.Any()) return checkSame.Min();
+            var minLeft = nums1.Min();
+            var minRight = nums2.Min();
+            var v1 = minLeft * 10 + minRight;
+            var v2 = minLeft + 10* minRight;
+            return minLeft != minRight ? Math.Min(v1, v2) : minLeft;
         }
 
 
