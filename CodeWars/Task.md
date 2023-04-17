@@ -1,30 +1,26 @@
-﻿17. Letter Combinations of a Phone Number
+﻿43. Multiply Strings
     Medium
-    14.7K
-    832
+    6.1K
+    2.7K
     Companies
-    Given a string containing digits from 2-9 inclusive, return all possible letter combinations that the number could represent. Return the answer in any order.
+    Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
 
-A mapping of digits to letters (just like on the telephone buttons) is given below. Note that 1 does not map to any letters.
-
+Note: You must not use any built-in BigInteger library or convert the inputs to integer directly.
 
 
 
 Example 1:
 
-Input: digits = "23"
-Output: ["ad","ae","af","bd","be","bf","cd","ce","cf"]
+Input: num1 = "2", num2 = "3"
+Output: "6"
 Example 2:
 
-Input: digits = ""
-Output: []
-Example 3:
-
-Input: digits = "2"
-Output: ["a","b","c"]
+Input: num1 = "123", num2 = "456"
+Output: "56088"
 
 
 Constraints:
 
-0 <= digits.length <= 4
-digits[i] is a digit in the range ['2', '9'].
+1 <= num1.length, num2.length <= 200
+num1 and num2 consist of digits only.
+Both num1 and num2 do not contain any leading zero, except the number 0 itself.
