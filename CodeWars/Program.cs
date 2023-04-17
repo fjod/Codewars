@@ -13,55 +13,50 @@ namespace CodeWars
 {
     class Program
     {
-        public int MyAtoi(string s)
+        public static IList<string> LetterCombinations(string digits)
         {
-            int sign = 1;
-            var trimmed = s.Trim();
-            if (trimmed.StartsWith('-'))
+            if (digits == string.Empty) return new List<string>();
+            List<string> chars = new List<string>
             {
-                sign = -1;
-                s = s.Substring(1);
+                String.Empty,
+                String.Empty,
+                "abc",
+                "def",
+                "ghi",
+                "jkl",
+                "mno",
+                "pqrs",
+                "tuv",
+                "wxyz"
+            };
+            if (digits.Length == 1)
+            {
+                var dig = int.Parse(digits[0].ToString());
+                return chars[dig].Select(c => c.ToString()).ToList();
+            }
+        
+            var results = new List<string>() { "" };
+            foreach (var digit in digits)
+            {
+                var keys = chars[digit - '0'];
+                if (keys.Length == 0) continue;
+
+                var temp = new List<string>();
+                foreach (var result in results)
+                foreach (var ch in keys)
+                    temp.Add(result + ch.ToString());
+
+                results = temp;
             }
 
-            if (trimmed.StartsWith('+'))
-            {
-                s = s.Substring(1);
-            }
-
-            string conv = String.Empty;
-            for (int i = 0; i < s.Length; i++)
-            {
-                var c = s[i];
-                if (c >= '0' && c <= '9')
-                {
-                    conv += c;
-                }
-            }
-
-            if (conv.Length == 0)
-            {
-                return 0;
-            }
-
-            conv = conv.TrimStart('0');
-            var parsed = long.Parse(conv) * sign;
-            if (parsed > int.MaxValue)
-            {
-                return int.MaxValue;
-            }
-            if (parsed < int.MinValue)
-            {
-                return int.MinValue;
-            }
-
-            return (int)parsed;
+            if (results.Count == 1 && results[0] == "") results.Clear();
+            return results;
         }
-
 
 
         static void Main(string[] args)
         {
-            var q = Convert("PAYPALISHIRING", 3);
+            var q = LetterCombinations("23");
         }
     }
 }
