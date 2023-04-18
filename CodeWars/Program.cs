@@ -13,107 +13,59 @@ namespace CodeWars
 {
     class Program
     {
-        //161 / 311 testcases passed
-        public static string Multiply(string num1, string num2)
+        public static int[] SearchRange(int[] nums, int target)
         {
-            if (num1 == "0" || num2 == "0") return "0";
-            if (num1 == "1") return num2;
-            if (num2 == "1") return num1;
 
-            var longerString = num1.Length > num2.Length ? num1 : num2;
-            var shortertString = num1.Length < num2.Length ? num1 : num2;
-            if (num1.Length == num2.Length)
+            if (nums.Length == 1)
             {
-                longerString = num1;
-                shortertString = num2;
-            }
-
-            Int64 sum = 0;
-            for (int i = longerString.Length - 1; i >= 0; i--)
-            {
-                var longerDigit = longerString[i];
-                for (int j = shortertString.Length - 1; j >= 0; j--)
+                if (nums[0] == target)
                 {
-                    var shorterDigit = shortertString[j];
-                    Int64 product = (longerDigit - '0') * (shorterDigit - '0');
-                    if (i != longerString.Length - 1) product *= (Int64)Math.Pow(10,(longerString.Length - 1 - i));
-                    if (j != shortertString.Length - 1) product *= (Int64)Math.Pow(10, shortertString.Length - 1 - j);
-                    sum += product;
+                    return new[] {0, 0};
                 }
+                return new[] {-1, -1};
             }
-
-            return sum.ToString();
-        }
-
-         public static string Multiply1(string num1, string num2)
-        {
-            if (num1 == "0" || num2 == "0") { return "0"; }
-            var MAX_RADIX = 1000000000;
-            var RADIX_LENGTH = 9;
-
-            var num1Value = new long[num1.Length / RADIX_LENGTH + 1];
-            var num2Value = new long[num2.Length / RADIX_LENGTH + 1];
-
-            int i, j, temp, data, index = 0;
-            for (i = num1.Length; i > 0; i -= RADIX_LENGTH)
+            List<int> ret = new List<int>();
+            int left = 0;
+            int right = nums.Length - 1;
+            
+            while (left <= right)
             {
-                data = 0;
-                temp = i > RADIX_LENGTH ? i - RADIX_LENGTH : 0;
-                for (j = temp; j < i; j++)
-                {
-                    data = data * 10 + (num1[j] - '0');
-                }
-                num1Value[index++] = data;
-            }
-            index = 0;
-            for (i = num2.Length; i > 0; i -= RADIX_LENGTH)
-            {
-                data = 0;
-                temp = i > RADIX_LENGTH ? i - RADIX_LENGTH : 0;
-                for (j = temp; j < i; j++)
-                {
-                    data = data * 10 + (num2[j] - '0');
-                }
-                num2Value[index++] = data;
-            }
-
-            var resultValue = new long[num1Value.Length + num2Value.Length];
-            for (i = 0; i < num1Value.Length; i++)
-            {
-                for (j = 0; j < num2Value.Length; j++)
-                {
-                    resultValue[i + j] += num1Value[i] * num2Value[j];
-                    if (resultValue[i + j] >= MAX_RADIX)
+                int mid = (left + right)/2;
+                if (nums[mid] == target)
+                { //search left and right for termination
+                    int l = mid;
+                    int r = mid;
+                    while (l >= 0 && nums[l] == target)
                     {
-                        resultValue[i + j + 1] += resultValue[i + j] / MAX_RADIX;
-                        resultValue[i + j] = resultValue[i + j] % MAX_RADIX;
+                        l--;
                     }
-                }
-            }
-
-            var builder = new StringBuilder();
-            var tempStr = string.Empty;
-            var started = false;
-            for (i = resultValue.Length - 1; i >= 0; i--)
-            {
-                if (resultValue[i] != 0)
-                {
-                    tempStr = resultValue[i].ToString();
-                    if (started)
+                    while (r < nums.Length && nums[r] == target)
                     {
-                        builder.Append('0', 9 - tempStr.Length);
+                        r++;
                     }
-                    builder.Append(resultValue[i].ToString());
-                    started = true;
+
+                    ret.Add(l+1);
+                    ret.Add(r-1);
+                    return ret.ToArray();
+                }
+                else if (nums[mid] < target)
+                {
+                    left = mid+ 1;
+                }
+                else
+                {
+                    right = mid - 1;
                 }
             }
-
-            return builder.ToString();
+            
+            ret.Add(-1);
+            ret.Add(-1);
+            return ret.ToArray();
         }
 
         static void Main(string[] args)
         {
-            var q = Multiply1("498828660196", "840477629533");
+            var q = SearchRange(new []{2,2}, 2);
         }
     }
 }

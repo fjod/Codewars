@@ -1,26 +1,33 @@
-﻿43. Multiply Strings
+﻿34. Find First and Last Position of Element in Sorted Array
     Medium
-    6.1K
-    2.7K
+    16.6K
+    394
     Companies
-    Given two non-negative integers num1 and num2 represented as strings, return the product of num1 and num2, also represented as a string.
+    Given an array of integers nums sorted in non-decreasing order, find the starting and ending position of a given target value.
 
-Note: You must not use any built-in BigInteger library or convert the inputs to integer directly.
+If target is not found in the array, return [-1, -1].
+
+You must write an algorithm with O(log n) runtime complexity.
 
 
 
 Example 1:
 
-Input: num1 = "2", num2 = "3"
-Output: "6"
+Input: nums = [5,7,7,8,8,10], target = 8
+Output: [3,4]
 Example 2:
 
-Input: num1 = "123", num2 = "456"
-Output: "56088"
+Input: nums = [5,7,7,8,8,10], target = 6
+Output: [-1,-1]
+Example 3:
+
+Input: nums = [], target = 0
+Output: [-1,-1]
 
 
 Constraints:
 
-1 <= num1.length, num2.length <= 200
-num1 and num2 consist of digits only.
-Both num1 and num2 do not contain any leading zero, except the number 0 itself.
+0 <= nums.length <= 105
+-109 <= nums[i] <= 109
+nums is a non-decreasing array.
+-109 <= target <= 109
