@@ -13,41 +13,47 @@ namespace CodeWars
 {
     class Program
     {
-        public static ListNode RotateRight(ListNode head, int k)
+        // easy dp ftw
+        public static int MinPathSum(int[][] grid)
         {
-
-            if (head == null || k == 0 || head.next == null) return head;
-            ListNode fast = head;
-            ListNode slow;
-            ListNode stop = null;
-            for (int i = 0; i < k; i++)
+            int[][] dp = new int[grid.Length][];
+            for (int i = 0; i < grid.Length; i++)
             {
-                fast = fast.next;
-                if (fast == null)
+                dp[i] = new int[grid[0].Length];
+            }
+            dp[0][0] = grid[0][0];
+            for (int i = 1; i < grid[0].Length; i++)
+            {
+                dp[0][i] = dp[0][i - 1] + grid[0][i];
+            }
+            for (int i = 1; i < grid.Length; i++)
+            {
+                dp[i][0] = dp[i - 1][0] + grid[i][0];
+            }
+
+            for (int i = 1; i < grid.Length; i++)
+            {
+                for (int j = 1; j < grid[0].Length; j++)
                 {
-                    fast = head;
+                    dp[i][j] = grid[i][j] + Math.Min(dp[i-1][j], dp[i][j-1]);
                 }
             }
 
-            if (fast == head) return head;
-          
-            slow = head;
-            while (fast.next != null)
-            {
-                fast = fast.next;
-                slow = slow.next;
-            }
-            stop = slow.next;
+            return dp[^1][^1];
+        }
 
-            fast.next = head;
-            slow.next = null;
-            return stop;
+        // bruteForce 25 / 61 testcases passed
+        static int Traverse(int[][] grid, int x, int y)
+        {
+            if (x == grid.Length - 1 && y == grid[0].Length - 1) return grid[x][y];
+            if (x >= grid.Length) return int.MaxValue;
+            if (y >= grid[0].Length) return int.MaxValue;
+            return grid[x][y] + Math.Min(Traverse(grid, x+1, y), Traverse(grid, x, y+1));
         }
 
         static void Main(string[] args)
         {
-            var test = RotateRight(new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5))))), 2);
-            var test2 = RotateRight(new ListNode(1, new ListNode(2, new ListNode(3))), 2000000000);
+            var test = MinPathSum(new[] {new[] {1, 3, 1}, new[] {1, 5, 1}, new []{4,2,1}});
         }
     }
 }

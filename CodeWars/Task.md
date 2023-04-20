@@ -1,26 +1,29 @@
-﻿61. Rotate List
+﻿64. Minimum Path Sum
     Medium
-    7.6K
-    1.4K
+    10.7K
+    139
     Companies
-    Given the head of a linked list, rotate the list to the right by k places.
+    Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.
+
+Note: You can only move either down or right at any point in time.
 
 
 
 Example 1:
 
 
-Input: head = [1,2,3,4,5], k = 2
-Output: [4,5,1,2,3]
+Input: grid = [[1,3,1],[1,5,1],[4,2,1]]
+Output: 7
+Explanation: Because the path 1 → 3 → 1 → 1 → 1 minimizes the sum.
 Example 2:
 
-
-Input: head = [0,1,2], k = 4
-Output: [2,0,1]
+Input: grid = [[1,2,3],[4,5,6]]
+Output: 12
 
 
 Constraints:
 
-The number of nodes in the list is in the range [0, 500].
--100 <= Node.val <= 100
-0 <= k <= 2 * 109
+m == grid.length
+n == grid[i].length
+1 <= m, n <= 200
+0 <= grid[i][j] <= 100
