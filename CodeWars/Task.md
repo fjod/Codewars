@@ -1,29 +1,29 @@
-﻿64. Minimum Path Sum
+﻿75. Sort Colors
     Medium
-    10.7K
-    139
+    14.7K
+    524
     Companies
-    Given a m x n grid filled with non-negative numbers, find a path from top left to bottom right, which minimizes the sum of all numbers along its path.
+    Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
 
-Note: You can only move either down or right at any point in time.
+We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
+
+You must solve this problem without using the library's sort function.
 
 
 
 Example 1:
 
-
-Input: grid = [[1,3,1],[1,5,1],[4,2,1]]
-Output: 7
-Explanation: Because the path 1 → 3 → 1 → 1 → 1 minimizes the sum.
+Input: nums = [2,0,2,1,1,0]
+Output: [0,0,1,1,2,2]
 Example 2:
 
-Input: grid = [[1,2,3],[4,5,6]]
-Output: 12
+Input: nums = [2,0,1]
+Output: [0,1,2]
 
 
 Constraints:
 
-m == grid.length
-n == grid[i].length
-1 <= m, n <= 200
-0 <= grid[i][j] <= 100
+n == nums.length
+1 <= n <= 300
+nums[i] is either 0, 1, or 2.
+ 
