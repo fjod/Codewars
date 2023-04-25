@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Data;
 using System.Diagnostics;
 using System.IO.Enumeration;
 using System.Linq;
@@ -13,47 +14,33 @@ namespace CodeWars
 {
     class Program
     {
-        public static void SortColors(int[] nums)
+        public IList<IList<int>> Combine(int n, int k)
         {
-            int zeroes = 0;
-            int ones = 0;
-            for (int i = 0; i < nums.Length; i++)
+            var output = new List<IList<int>>();
+            Generate(output, new List<int>(), n, k, 1);
+            return output;
+        }
+
+        public void Generate(IList<IList<int>> output, List<int> current, int n, int k, int start)
+        {
+            if (current.Count == k)
             {
-                switch (nums[i])
-                {
-                    case 0:
-                    {
-                        zeroes++;
-                        break;
-                    }
-                    case 1:
-                    {
-                        ones++;
-                        break;
-                    }
-                }
+                var temp = new List<int>();
+                temp.AddRange(current);
+                output.Add(temp);
+                return;
             }
 
-            for (int i = 0; i < zeroes; i++)
+            for (int i = start; i <= n; i++)
             {
-                nums[i] = 0;
-            }
-            
-            for (int i = zeroes ; i < zeroes + ones; i++)
-            {
-               nums[i] = 1;
-            }
-            
-            for (int i = zeroes + ones; i < nums.Length; i++)
-            {
-                nums[i] = 2;
+                current.Add(i);
+                Generate(output, current, n, k, i + 1);
+                current.RemoveAt(current.Count - 1);
             }
         }
 
         static void Main(string[] args)
         {
-            var test = new[] {2, 0, 2, 1, 1, 0};
-            SortColors(test);
         }
     }
 }

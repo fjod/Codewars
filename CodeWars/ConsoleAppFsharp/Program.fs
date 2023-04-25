@@ -8,26 +8,27 @@ open ConsoleAppFsharp.Node
 module ConsoleAppFsharp =
 
         
-     let MostCommonWord (p:string) (banned: string[]) =
-         let removeSpecial (s:string) =
-             s.ToCharArray()
-             |> Array.where (fun f -> "!?',;.".Contains(f) |> not)
-             |> Array.fold (fun acc x -> acc + x.ToString()) ""             
-       
-         p.Replace(',',' ').Split(' ')  
-                 |> Array.where (fun f -> String.IsNullOrWhiteSpace(f) |> not)
-                 |> Array.map (fun f -> f.ToLower())
-                 |> Array.map removeSpecial
-                 |> Array.groupBy id
-                 |> Array.sortByDescending (fun (_, values) -> values.Length)
-                 |> Array.find (fun (key, _) -> (banned |> Array.contains key) |> not)
-                 |> fst
-                            
-     let maxAcc(acc : int [][]) =
-         acc |> Array.map Array.sum
-             |> Array.max
+     let Combine(n:int)(k:int) =
+         let rec generate (out:List<IList<int>>) (current:IList<int>) (start:int) =
+             if (current.Count = k) then
+                 let temp = List<int>()
+                 temp.AddRange(current)
+                 out.Add(temp)
+                 ()
+             else
+                 for i = start to n do
+                     current.Add(i)
+                     generate out current (i+1)
+                     current.RemoveAt(current.Count - 1)
+                     ()
+             
+         
+         let output = List<IList<int>>()
+         let current = List<int>()
+         generate output current 1
+         output
+     
          
          
-         
-     let test = MostCommonWord "Bob hit a ball, the hit BALL flew far after it was hit." [|"hit"|]
+     let test = Combine 4 2
      printfn "Hello from F#1"

@@ -1,29 +1,28 @@
-﻿75. Sort Colors
+﻿77. Combinations
     Medium
-    14.7K
-    524
+    5.9K
+    185
     Companies
-    Given an array nums with n objects colored red, white, or blue, sort them in-place so that objects of the same color are adjacent, with the colors in the order red, white, and blue.
+    Given two integers n and k, return all possible combinations of k numbers chosen from the range [1, n].
 
-We will use the integers 0, 1, and 2 to represent the color red, white, and blue, respectively.
-
-You must solve this problem without using the library's sort function.
+You may return the answer in any order.
 
 
 
 Example 1:
 
-Input: nums = [2,0,2,1,1,0]
-Output: [0,0,1,1,2,2]
+Input: n = 4, k = 2
+Output: [[1,2],[1,3],[1,4],[2,3],[2,4],[3,4]]
+Explanation: There are 4 choose 2 = 6 total combinations.
+Note that combinations are unordered, i.e., [1,2] and [2,1] are considered to be the same combination.
 Example 2:
 
-Input: nums = [2,0,1]
-Output: [0,1,2]
+Input: n = 1, k = 1
+Output: [[1]]
+Explanation: There is 1 choose 1 = 1 total combination.
 
 
 Constraints:
 
-n == nums.length
-1 <= n <= 300
-nums[i] is either 0, 1, or 2.
- 
+1 <= n <= 20
+1 <= k <= n
