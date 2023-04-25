@@ -14,43 +14,68 @@ namespace CodeWars
 {
     class Program
     {
-        public ListNode Partition(ListNode head, int x)
+        public static IList<string> RestoreIpAddresses(string s) {
+        
+                List<string> result = new List<string>();
+            RestoreIpAddresses2(s, 0, "", result);
+            return result;
+        }
+
+        private static void RestoreIpAddresses2(string input, int digitsAmount, string current, List<string> result)
         {
-            List<ListNode> smaller = new List<ListNode>();
-            List<ListNode> higher = new List<ListNode>();
-            while (head != null)
+            if (digitsAmount == 4 && input.Length == 0)
             {
-                if (head.val < x) smaller.Add(head);
-                else higher.Add(head);
-                head = head.next;
-            }
-          
-
-            ListNode result = new ListNode();
-            ListNode temp = result;
-            foreach (var item in smaller)
-            {
-                temp.next = item;
-                temp = temp.next;
+                result.Add(current);
+                return;
             }
 
-            foreach (var item in higher)
-            {
-                temp.next = item;
-                temp = temp.next;
-            }
+            if (digitsAmount == 4) return;
 
-            temp.next = null;
+            if (input.Length < 1) return;
+            var one = input.First();
+           
+                string temp1 = "";
+                if (current == string.Empty) temp1 = one.ToString();
+                else
+                {
+                    temp1 = current + $".{one}";
+                }
+
+                RestoreIpAddresses2(input.Substring(1), digitsAmount + 1, temp1, result);
             
-            return result.next;
+
+            if (input.Length < 2) return;
+            var two = int.Parse(input.Substring(0, 2));
+            if (two >= 10 && two <= 99)
+            {
+                string temp = "";
+                if (current == string.Empty) temp = two.ToString();
+                else
+                {
+                    temp = current + $".{two}";
+                }
+
+                RestoreIpAddresses2(input.Substring(2), digitsAmount + 1, temp, result);
+            }
+
+            if (input.Length < 3) return;
+            var three = int.Parse(input.Substring(0, 3));
+            if (three >= 100 && three <= 255)
+            {
+                string temp = "";
+                if (current == string.Empty) temp = three.ToString();
+                else
+                {
+                    temp = current + $".{three}";
+                }
+
+                RestoreIpAddresses2(input.Substring(3), digitsAmount + 1, temp, result);
+            }
         }
 
         static void Main(string[] args)
         {
-                var p = new Program();
-            var result = p.Partition(new ListNode(1, new ListNode(4, new ListNode(3, new ListNode(2, new ListNode(5, new ListNode(2)))))), 3);
-            Console.WriteLine(result);
-            Console.ReadKey();
+            var test = RestoreIpAddresses("25525511135");
         }
     }
 }
