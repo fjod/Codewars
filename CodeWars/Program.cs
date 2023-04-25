@@ -14,33 +14,43 @@ namespace CodeWars
 {
     class Program
     {
-        public IList<IList<int>> Combine(int n, int k)
+        public ListNode Partition(ListNode head, int x)
         {
-            var output = new List<IList<int>>();
-            Generate(output, new List<int>(), n, k, 1);
-            return output;
-        }
-
-        public void Generate(IList<IList<int>> output, List<int> current, int n, int k, int start)
-        {
-            if (current.Count == k)
+            List<ListNode> smaller = new List<ListNode>();
+            List<ListNode> higher = new List<ListNode>();
+            while (head != null)
             {
-                var temp = new List<int>();
-                temp.AddRange(current);
-                output.Add(temp);
-                return;
+                if (head.val < x) smaller.Add(head);
+                else higher.Add(head);
+                head = head.next;
+            }
+          
+
+            ListNode result = new ListNode();
+            ListNode temp = result;
+            foreach (var item in smaller)
+            {
+                temp.next = item;
+                temp = temp.next;
             }
 
-            for (int i = start; i <= n; i++)
+            foreach (var item in higher)
             {
-                current.Add(i);
-                Generate(output, current, n, k, i + 1);
-                current.RemoveAt(current.Count - 1);
+                temp.next = item;
+                temp = temp.next;
             }
+
+            temp.next = null;
+            
+            return result.next;
         }
 
         static void Main(string[] args)
         {
+                var p = new Program();
+            var result = p.Partition(new ListNode(1, new ListNode(4, new ListNode(3, new ListNode(2, new ListNode(5, new ListNode(2)))))), 3);
+            Console.WriteLine(result);
+            Console.ReadKey();
         }
     }
 }
