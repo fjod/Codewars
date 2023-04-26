@@ -14,44 +14,70 @@ namespace CodeWars
 {
     class Program
     {
-        //T:O(M*N)
-        public static bool IsInterleave(string s1, string s2, string s3)
+        public static bool IsValidBST(TreeNode root)
         {
-            if (s1.Length + s2.Length != s3.Length) return false;
-            var dp = new bool[s1.Length + 1][];
-            for (int i = 0; i < dp.Length; i++)
+            return IsValidBST(root, long.MinValue, long.MaxValue);
+        }
+
+        public static bool IsValidBST(TreeNode current, long low, long high)
+        {
+            if (current == null) return true;
+            if (current.val <= low || current.val >= high) return false;
+
+            return IsValidBST(current.left, low, current.val) && IsValidBST(current.right, current.val, high);
+        }
+        //76 / 82 testcases passed
+        public bool IsValidBST2(TreeNode root)
+        {
+            if (root == null) return true;
+            bool left = true;
+            bool right = true;
+            if (root.left != null)
             {
-                dp[i] = new bool[s2.Length + 1];
+                if (root.left.val >= root.val) return false;
+                left = IsValidBST(root.left);
+            }
+            
+            if (root.right != null)
+            {
+                if (root.right.val <= root.val) return false;
+                right = IsValidBST(root.right);
             }
 
-            dp[s1.Length][s2.Length] = true;
-            for (int i = s1.Length; i >= 0; i--)
+            return left && right && isValidSiblings(root.left, root.right);
+        }
+
+        bool isValidSiblings(TreeNode left, TreeNode right)
+        {
+            if(left == null && right == null) return true;
+            if (left != null && right != null)
             {
-                for (int j = s2.Length; j >= 0; j--)
+                int? leftVal = left.val;
+                int? rightVal = right.val;
+                int? leftLeft = left.left?.val;
+                int? leftright = left.right?.val;
+                int? rightLeft = right.left?.val;
+                int? rightRight = right.right?.val;
+                List<int?> lefts = new List<int?> {leftVal, leftLeft, leftright};
+                List<int?> rInts = new List<int?> {rightVal, rightLeft, rightRight};
+                foreach (var l in lefts)
                 {
-                    if (i < s1.Length)
-                    {
-                        if (s1[i] == s3[i + j] && dp[i + 1][j])
-                        {
-                            dp[i][ j] = true;
-                        }
-                    }
-                    if (j < s2.Length)
-                    {
-                        if (s2[j] == s3[i + j] && dp[i][j+1])
-                        {
-                            dp[i][j] = true;
-                        }
-                    }
+                    if (rInts.Any(r => r <= l)) return false;
                 }
             }
-
-            return dp[0][0];
+            
+            return true;
         }
 
         static void Main(string[] args)
         {
-            var test = IsInterleave("aabcc", "dbbca", "aadbbcbcac");
+            var node27 = new TreeNode {val = 27};
+            var node19 = new TreeNode {val = 19};
+            var node26 = new TreeNode {val = 26, left = node19};
+            var node56 = new TreeNode {val = 56, left = node27};
+            var node47 = new TreeNode {val = 47, right = node56};
+            var node32 = new TreeNode {val = 32, right = node47, left = node26};
+            var test = IsValidBST(node32);
         }
     }
 }

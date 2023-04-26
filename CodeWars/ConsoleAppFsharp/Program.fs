@@ -8,26 +8,18 @@ open ConsoleAppFsharp.Node
 module ConsoleAppFsharp =
 
         
-     let Combine(n:int)(k:int) =
-         let rec generate (out:List<IList<int>>) (current:IList<int>) (start:int) =
-             if (current.Count = k) then
-                 let temp = List<int>()
-                 temp.AddRange(current)
-                 out.Add(temp)
-                 ()
+     let isValidBst (root:TreeNode option) :bool =
+         let rec isValid (node:TreeNode option) (min:Int64) (max:Int64) =
+             if (root.IsNone) then true
              else
-                 for i = start to n do
-                     current.Add(i)
-                     generate out current (i+1)
-                     current.RemoveAt(current.Count - 1)
-                     ()
+                 if (int64 root.Value.V <= min || int64 root.Value.V >= max) then false
+                 else
+                     let left = isValid root.Value.Left min root.Value.V
+                     let right = isValid root.Value.Right root.Value.V max
+                     left && right
              
          
-         let output = List<IList<int>>()
-         let current = List<int>()
-         generate output current 1
-         output
-     
+         isValid root Int64.MinValue Int64.MaxValue
          
          
      let test = Combine 4 2
