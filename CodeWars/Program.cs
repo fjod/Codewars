@@ -14,68 +14,44 @@ namespace CodeWars
 {
     class Program
     {
-        public static IList<string> RestoreIpAddresses(string s) {
-        
-                List<string> result = new List<string>();
-            RestoreIpAddresses2(s, 0, "", result);
-            return result;
-        }
-
-        private static void RestoreIpAddresses2(string input, int digitsAmount, string current, List<string> result)
+        //T:O(M*N)
+        public static bool IsInterleave(string s1, string s2, string s3)
         {
-            if (digitsAmount == 4 && input.Length == 0)
+            if (s1.Length + s2.Length != s3.Length) return false;
+            var dp = new bool[s1.Length + 1][];
+            for (int i = 0; i < dp.Length; i++)
             {
-                result.Add(current);
-                return;
+                dp[i] = new bool[s2.Length + 1];
             }
 
-            if (digitsAmount == 4) return;
-
-            if (input.Length < 1) return;
-            var one = input.First();
-           
-                string temp1 = "";
-                if (current == string.Empty) temp1 = one.ToString();
-                else
-                {
-                    temp1 = current + $".{one}";
-                }
-
-                RestoreIpAddresses2(input.Substring(1), digitsAmount + 1, temp1, result);
-            
-
-            if (input.Length < 2) return;
-            var two = int.Parse(input.Substring(0, 2));
-            if (two >= 10 && two <= 99)
+            dp[s1.Length][s2.Length] = true;
+            for (int i = s1.Length; i >= 0; i--)
             {
-                string temp = "";
-                if (current == string.Empty) temp = two.ToString();
-                else
+                for (int j = s2.Length; j >= 0; j--)
                 {
-                    temp = current + $".{two}";
+                    if (i < s1.Length)
+                    {
+                        if (s1[i] == s3[i + j] && dp[i + 1][j])
+                        {
+                            dp[i][ j] = true;
+                        }
+                    }
+                    if (j < s2.Length)
+                    {
+                        if (s2[j] == s3[i + j] && dp[i][j+1])
+                        {
+                            dp[i][j] = true;
+                        }
+                    }
                 }
-
-                RestoreIpAddresses2(input.Substring(2), digitsAmount + 1, temp, result);
             }
 
-            if (input.Length < 3) return;
-            var three = int.Parse(input.Substring(0, 3));
-            if (three >= 100 && three <= 255)
-            {
-                string temp = "";
-                if (current == string.Empty) temp = three.ToString();
-                else
-                {
-                    temp = current + $".{three}";
-                }
-
-                RestoreIpAddresses2(input.Substring(3), digitsAmount + 1, temp, result);
-            }
+            return dp[0][0];
         }
 
         static void Main(string[] args)
         {
-            var test = RestoreIpAddresses("25525511135");
+            var test = IsInterleave("aabcc", "dbbca", "aadbbcbcac");
         }
     }
 }

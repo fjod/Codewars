@@ -1,30 +1,44 @@
-﻿93. Restore IP Addresses
+﻿97. Interleaving String
     Medium
-    4.7K
-    748
+    6.3K
+    389
     Companies
-    A valid IP address consists of exactly four integers separated by single dots. Each integer is between 0 and 255 (inclusive) and cannot have leading zeros.
+    Given strings s1, s2, and s3, find whether s3 is formed by an interleaving of s1 and s2.
 
-For example, "0.1.2.201" and "192.168.1.1" are valid IP addresses, but "0.011.255.245", "192.168.1.312" and "192.168@1.1" are invalid IP addresses.
-Given a string s containing only digits, return all possible valid IP addresses that can be formed by inserting dots into s. You are not allowed to reorder or remove any digits in s. You may return the valid IP addresses in any order.
+An interleaving of two strings s and t is a configuration where s and t are divided into n and m
+substrings
+respectively, such that:
+
+s = s1 + s2 + ... + sn
+t = t1 + t2 + ... + tm
+|n - m| <= 1
+The interleaving is s1 + t1 + s2 + t2 + s3 + t3 + ... or t1 + s1 + t2 + s2 + t3 + s3 + ...
+Note: a + b is the concatenation of strings a and b.
 
 
 
 Example 1:
 
-Input: s = "25525511135"
-Output: ["255.255.11.135","255.255.111.35"]
+
+Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbcbcac"
+Output: true
+Explanation: One way to obtain s3 is:
+Split s1 into s1 = "aa" + "bc" + "c", and s2 into s2 = "dbbc" + "a".
+Interleaving the two splits, we get "aa" + "dbbc" + "bc" + "a" + "c" = "aadbbcbcac".
+Since s3 can be obtained by interleaving s1 and s2, we return true.
 Example 2:
 
-Input: s = "0000"
-Output: ["0.0.0.0"]
+Input: s1 = "aabcc", s2 = "dbbca", s3 = "aadbbbaccc"
+Output: false
+Explanation: Notice how it is impossible to interleave s2 with any other string to obtain s3.
 Example 3:
 
-Input: s = "101023"
-Output: ["1.0.10.23","1.0.102.3","10.1.0.23","10.10.2.3","101.0.2.3"]
+Input: s1 = "", s2 = "", s3 = ""
+Output: true
 
 
 Constraints:
 
-1 <= s.length <= 20
-s consists of digits only.
+0 <= s1.length, s2.length <= 100
+0 <= s3.length <= 200
+s1, s2, and s3 consist of lowercase English letters.
