@@ -1,33 +1,33 @@
-﻿98. Validate Binary Search Tree
-    Medium
-    14.4K
-    1.2K
-    Companies
-    Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+﻿109. Convert Sorted List to Binary Search Tree
+     Medium
+     6.8K
+     147
+     Companies
+     Given the head of a singly linked list where elements are sorted in ascending order, convert it to a
+     height-balanced
+     binary search tree.
 
-A valid BST is defined as follows:
-
-The left
-subtree
-of a node contains only nodes with keys less than the node's key.
-The right subtree of a node contains only nodes with keys greater than the node's key.
-Both the left and right subtrees must also be binary search trees.
 
 
 Example 1:
 
 
-Input: root = [2,1,3]
-Output: true
+Input: head = [-10,-3,0,5,9]
+Output: [0,-3,9,-10,null,5]
+Explanation: One possible answer is [0,-3,9,-10,null,5], which represents the shown height balanced BST.
 Example 2:
 
-
-Input: root = [5,1,4,null,null,3,6]
-Output: false
-Explanation: The root node's value is 5 but its right child's value is 4.
+Input: head = []
+Output: []
 
 
 Constraints:
 
-The number of nodes in the tree is in the range [1, 104].
--231 <= Node.val <= 231 - 1
+The number of nodes in head is in the range [0, 2 * 104].
+-105 <= Node.val <= 105
+Accepted
+473.7K
+Submissions
+785.7K
+Acceptance Rate
+60.3%

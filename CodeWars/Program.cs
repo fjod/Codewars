@@ -8,78 +8,94 @@ using System.IO.Enumeration;
 using System.Linq;
 using System.Numerics;
 using System.Reflection;
+using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
 namespace CodeWars
 {
     class Program
     {
-        public static bool IsValidBST(TreeNode root)
+        private static ListNode head = null;
+        public static TreeNode SortedListToBST(ListNode head)
         {
-            return IsValidBST(root, long.MinValue, long.MaxValue);
-        }
-
-        public static bool IsValidBST(TreeNode current, long low, long high)
-        {
-            if (current == null) return true;
-            if (current.val <= low || current.val >= high) return false;
-
-            return IsValidBST(current.left, low, current.val) && IsValidBST(current.right, current.val, high);
-        }
-        //76 / 82 testcases passed
-        public bool IsValidBST2(TreeNode root)
-        {
-            if (root == null) return true;
-            bool left = true;
-            bool right = true;
-            if (root.left != null)
+            var p = head;
+            var length = 0;
+            while (p != null)
             {
-                if (root.left.val >= root.val) return false;
-                left = IsValidBST(root.left);
+                p = p.next;
+                length++;
             }
+
+            Program.head = head;
+
+            return SortedListToBST(0, length);
+        }
+
+        private static TreeNode SortedListToBST(int left, int right)
+        {
+            if (left >= right) return null;
+            var mid = left + (right - left) / 2;
+            var newLeft = SortedListToBST(left, mid);
+            var center = new TreeNode(head.val);
+            head = head.next;
+            center.left = newLeft;
+            center.right = SortedListToBST(mid + 1, right);
+            return center;
+        }
+
+
+        //inefficient tree
+        public static TreeNode SortedListToBST2(ListNode head)
+        {
+            if (head == null) return null;
+            if (head.next == null) return new TreeNode(head.val);
             
-            if (root.right != null)
+            var temp = head;
+            List<int> leftVals = new List<int>();
+            int len = 0;
+            while (head != null)
             {
-                if (root.right.val <= root.val) return false;
-                right = IsValidBST(root.right);
+                len++;
+                head = head.next;
             }
 
-            return left && right && isValidSiblings(root.left, root.right);
+            var middle = len / 2;
+            head = temp;
+            for (int i = 0; i < middle; i++)
+            {
+                leftVals.Add(head.val);
+                head = head.next;
+            }
+
+            leftVals.Reverse();
+            var root = new TreeNode(head.val);
+            AddLeft(root, leftVals, 0);
+            AddRight(root, head.next);
+
+            return root;
         }
 
-        private const string Test = "test817"; 
-        bool isValidSiblings(TreeNode left, TreeNode right)
+        private static void AddRight(TreeNode root, ListNode right)
         {
-            if(left == null && right == null) return true;
-            if (left != null && right != null)
-            {
-                int? leftVal = left.val;
-                int? rightVal = right.val;
-                int? leftLeft = left.left?.val;
-                int? leftright = left.right?.val;
-                int? rightLeft = right.left?.val;
-                int? rightRight = right.right?.val;
-                List<int?> lefts = new List<int?> {leftVal, leftLeft, leftright};
-                List<int?> rInts = new List<int?> {rightVal, rightLeft, rightRight};
-                foreach (var l in lefts)
-                {
-                    if (rInts.Any(r => r <= l)) return false;
-                }
-            }
-            
-            return true;
+            if (right == null) return;
+            var r = new TreeNode(right.val);
+            root.right = r;
+            AddRight(root.right, right.next);
         }
+
+        private static void AddLeft(TreeNode root, List<int> leftVals, int i)
+        {
+            if (i == leftVals.Count) return;
+            var left = new TreeNode(leftVals[i]);
+            root.left = left;
+            AddLeft(root.left, leftVals, i+1);
+        }
+
 
         static void Main(string[] args)
         {
-            var q = Test + 1;
-            var node27 = new TreeNode {val = 27};
-            var node19 = new TreeNode {val = 19};
-            var node26 = new TreeNode {val = 26, left = node19};
-            var node56 = new TreeNode {val = 56, left = node27};
-            var node47 = new TreeNode {val = 47, right = node56};
-            var node32 = new TreeNode {val = 32, right = node47, left = node26};
-            var test = IsValidBST(node32);
+            var test = new ListNode(0, new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5))))));
+            var q = SortedListToBST(test);
         }
     }
 }
