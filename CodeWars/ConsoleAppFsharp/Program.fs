@@ -22,5 +22,5 @@ module ConsoleAppFsharp =
          isValid root Int64.MinValue Int64.MaxValue
          
          
-     let test = Combine 4 2
+ 
      printfn "Hello from F#1"
