@@ -1,33 +1,25 @@
-﻿109. Convert Sorted List to Binary Search Tree
-     Medium
-     6.8K
-     147
-     Companies
-     Given the head of a singly linked list where elements are sorted in ascending order, convert it to a
-     height-balanced
-     binary search tree.
+﻿108. Convert Sorted Array to Binary Search Tree
+     Easy
+     9.5K
+     474
+
+
+Given an integer array nums where the elements are sorted in ascending order, convert it to a
+height-balanced
+binary search tree.
 
 
 
 Example 1:
 
 
-Input: head = [-10,-3,0,5,9]
+Input: nums = [-10,-3,0,5,9]
 Output: [0,-3,9,-10,null,5]
-Explanation: One possible answer is [0,-3,9,-10,null,5], which represents the shown height balanced BST.
+Explanation: [0,-10,5,null,-3,null,9] is also accepted:
+
 Example 2:
 
-Input: head = []
-Output: []
 
-
-Constraints:
-
-The number of nodes in head is in the range [0, 2 * 104].
--105 <= Node.val <= 105
-Accepted
-473.7K
-Submissions
-785.7K
-Acceptance Rate
-60.3%
+Input: nums = [1,3]
+Output: [3,1]
+Explanation: [1,null,3] and [3,1] are both height-balanced BSTs.
