@@ -1,25 +1,33 @@
-﻿108. Convert Sorted Array to Binary Search Tree
-     Easy
-     9.5K
-     474
+﻿114. Flatten Binary Tree to Linked List
+     Medium
+     10.4K
+     511
+     Companies
+     Given the root of a binary tree, flatten the tree into a "linked list":
 
-
-Given an integer array nums where the elements are sorted in ascending order, convert it to a
-height-balanced
-binary search tree.
-
+The "linked list" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.
+The "linked list" should be in the same order as a pre-order traversal of the binary tree.
 
 
 Example 1:
 
 
-Input: nums = [-10,-3,0,5,9]
-Output: [0,-3,9,-10,null,5]
-Explanation: [0,-10,5,null,-3,null,9] is also accepted:
-
+Input: root = [1,2,5,3,4,null,6]
+Output: [1,null,2,null,3,null,4,null,5,null,6]
 Example 2:
 
+Input: root = []
+Output: []
+Example 3:
 
-Input: nums = [1,3]
-Output: [3,1]
-Explanation: [1,null,3] and [3,1] are both height-balanced BSTs.
+Input: root = [0]
+Output: [0]
+
+
+Constraints:
+
+The number of nodes in the tree is in the range [0, 2000].
+-100 <= Node.val <= 100
+
+
+Follow up: Can you flatten the tree in-place (with O(1) extra space)?

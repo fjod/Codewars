@@ -15,28 +15,38 @@ namespace CodeWars
 {
     class Program
     {
-        
-        public TreeNode SortedArrayToBST(int[] nums)
-        {
 
-            return SortedArrayToBST(0, nums.Length, nums);
+        public static void Flatten(TreeNode root)
+        {
+            if (root == null) return;
+            TreeNode ret = new TreeNode(root.val);
+            prev = ret;
+            TraverseLeft(root.left);
+            TraverseLeft(root.right);
+            root.right = ret.right;
+            root.left = null;
         }
 
-        private TreeNode SortedArrayToBST(int left, int right, int[] nums)
+        private static TreeNode prev = null;
+        private static void TraverseLeft(TreeNode leaf)
         {
-            if (left >= right) return null;
-            var mid = left + (right - left) / 2;
-            var root = new TreeNode(nums[mid]);
-            root.left = SortedArrayToBST(left, mid, nums);
-            root.right = SortedArrayToBST(mid + 1, right, nums);
-            return root;
+            if (leaf == null) return;
+            prev.right = new TreeNode(leaf.val);
+            prev = prev.right;
+            TraverseLeft(leaf.left);
+            TraverseLeft(leaf.right);
         }
 
 
         static void Main(string[] args)
         {
-            var test = new ListNode(0, new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5))))));
-            var q = SortedListToBST(test);
+            var node3 = new TreeNode(3);
+            var node4 = new TreeNode(4);
+            var node2 = new TreeNode(2, node3, node4);
+            var node6 = new TreeNode(6);
+            var node5 = new TreeNode(5, null, node6);
+            var node1 = new TreeNode(1, node2, node5);
+            Flatten(node1);
         }
     }
 }
