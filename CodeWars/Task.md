@@ -1,33 +1,36 @@
-﻿114. Flatten Binary Tree to Linked List
+﻿116. Populating Next Right Pointers in Each Node
      Medium
-     10.4K
-     511
+     8.6K
+     280
      Companies
-     Given the root of a binary tree, flatten the tree into a "linked list":
+     You are given a perfect binary tree where all leaves are on the same level, and every parent has two children. The binary tree has the following definition:
 
-The "linked list" should use the same TreeNode class where the right child pointer points to the next node in the list and the left child pointer is always null.
-The "linked list" should be in the same order as a pre-order traversal of the binary tree.
+struct Node {
+int val;
+Node *left;
+Node *right;
+Node *next;
+}
+Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
+
+Initially, all next pointers are set to NULL.
+
 
 
 Example 1:
 
 
-Input: root = [1,2,5,3,4,null,6]
-Output: [1,null,2,null,3,null,4,null,5,null,6]
+Input: root = [1,2,3,4,5,6,7]
+Output: [1,#,2,3,#,4,5,6,7,#]
+Explanation: Given the above perfect binary tree (Figure A), your function should populate each next pointer to point to its next right node, just like in Figure B. The serialized output is in level order as connected by the next pointers, with '#' signifying the end of each level.
 Example 2:
 
 Input: root = []
 Output: []
-Example 3:
-
-Input: root = [0]
-Output: [0]
 
 
 Constraints:
 
-The number of nodes in the tree is in the range [0, 2000].
--100 <= Node.val <= 100
-
-
-Follow up: Can you flatten the tree in-place (with O(1) extra space)?
+The number of nodes in the tree is in the range [0, 212 - 1].
+-1000 <= Node.val <= 1000
+ 

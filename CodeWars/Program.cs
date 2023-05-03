@@ -16,25 +16,15 @@ namespace CodeWars
     class Program
     {
 
-        public static void Flatten(TreeNode root)
+        public TreeLinkNode Connect(TreeLinkNode  root)
         {
-            if (root == null) return;
-            TreeNode ret = new TreeNode(root.val);
-            prev = ret;
-            TraverseLeft(root.left);
-            TraverseLeft(root.right);
-            root.right = ret.right;
-            root.left = null;
-        }
+            if (root == null || root.left == null) return root;
+            root.left.next = root.right;
+            root.right.next = root.next?.left;
+            Connect(root.left);
+            Connect(root.right);
 
-        private static TreeNode prev = null;
-        private static void TraverseLeft(TreeNode leaf)
-        {
-            if (leaf == null) return;
-            prev.right = new TreeNode(leaf.val);
-            prev = prev.right;
-            TraverseLeft(leaf.left);
-            TraverseLeft(leaf.right);
+            return root;
         }
 
 
