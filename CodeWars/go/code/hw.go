@@ -4,17 +4,17 @@ import (
 	"fmt"
 )
 
-func minimumTotal(triangle [][]int) int {
-	for i := len(triangle) - 2; i >= 0; i-- {
-		for j := 0; j < len(triangle[i]); j++ {
-			triangle[i][j] += min(triangle[i+1][j], triangle[i+1][j+1])
-		}
+func maxProfit(prices []int) int {
+	maxProfitVal := 0
+	for i := 1; i < len(prices); i++ {
+		maxProfitVal += max(0, prices[i]-prices[i-1])
 	}
-	return triangle[0][0]
+
+	return maxProfitVal
 }
 
 func main() {
-	test := [][]int{{1, 2, 3}, {1, 2, 3}}
+	test := []int{7, 1, 5, 3, 6, 4}
 	fmt.Println("test")
-	minimumTotal(test)
+	maxProfit(test)
 }
