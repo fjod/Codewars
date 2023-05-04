@@ -16,15 +16,17 @@ namespace CodeWars
     class Program
     {
 
-        public TreeLinkNode Connect(TreeLinkNode  root)
-        {
-            if (root == null || root.left == null) return root;
-            root.left.next = root.right;
-            root.right.next = root.next?.left;
-            Connect(root.left);
-            Connect(root.right);
+        public int MinimumTotal(IList<IList<int>> triangle) {
+        
+            for (int i = triangle.Count - 2; i >= 0; i--)
+            {
+                for (int j = 0; j < triangle[i].Count; j++)
+                {
+                    triangle[i][j] += Math.Min(triangle[i + 1][j], triangle[i + 1][j + 1]);
+                }
+            }
 
-            return root;
+            return triangle[0][0];
         }
 
 

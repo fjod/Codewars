@@ -1,28 +1,20 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+)
 
-type TreelinkNode struct {
-	Val   int
-	Left  *TreelinkNode
-	Right *TreelinkNode
-	Next  *TreelinkNode
-}
-
-func Connect(root *TreelinkNode) *TreelinkNode {
-	if root == nil || root.Left == nil {
-		return root
+func minimumTotal(triangle [][]int) int {
+	for i := len(triangle) - 2; i >= 0; i-- {
+		for j := 0; j < len(triangle[i]); j++ {
+			triangle[i][j] += min(triangle[i+1][j], triangle[i+1][j+1])
+		}
 	}
-	root.Left.Next = root.Right
-	if root.Next != nil {
-		root.Right.Next = root.Next.Left
-	}
-	Connect(root.Left)
-	Connect(root.Right)
-	return root
+	return triangle[0][0]
 }
 
 func main() {
+	test := [][]int{{1, 2, 3}, {1, 2, 3}}
 	fmt.Println("test")
-	Connect(nil)
+	minimumTotal(test)
 }

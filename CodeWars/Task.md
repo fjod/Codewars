@@ -1,36 +1,36 @@
-﻿116. Populating Next Right Pointers in Each Node
+﻿120. Triangle
      Medium
-     8.6K
-     280
+     8K
+     479
      Companies
-     You are given a perfect binary tree where all leaves are on the same level, and every parent has two children. The binary tree has the following definition:
+     Given a triangle array, return the minimum path sum from top to bottom.
 
-struct Node {
-int val;
-Node *left;
-Node *right;
-Node *next;
-}
-Populate each next pointer to point to its next right node. If there is no next right node, the next pointer should be set to NULL.
-
-Initially, all next pointers are set to NULL.
+For each step, you may move to an adjacent number of the row below. More formally, if you are on index i on the current row, you may move to either index i or index i + 1 on the next row.
 
 
 
 Example 1:
 
-
-Input: root = [1,2,3,4,5,6,7]
-Output: [1,#,2,3,#,4,5,6,7,#]
-Explanation: Given the above perfect binary tree (Figure A), your function should populate each next pointer to point to its next right node, just like in Figure B. The serialized output is in level order as connected by the next pointers, with '#' signifying the end of each level.
+Input: triangle = [[2],[3,4],[6,5,7],[4,1,8,3]]
+Output: 11
+Explanation: The triangle looks like:
+2
+3 4
+6 5 7
+4 1 8 3
+The minimum path sum from top to bottom is 2 + 3 + 5 + 1 = 11 (underlined above).
 Example 2:
 
-Input: root = []
-Output: []
+Input: triangle = [[-10]]
+Output: -10
 
 
 Constraints:
 
-The number of nodes in the tree is in the range [0, 212 - 1].
--1000 <= Node.val <= 1000
- 
+1 <= triangle.length <= 200
+triangle[0].length == 1
+triangle[i].length == triangle[i - 1].length + 1
+-104 <= triangle[i][j] <= 104
+
+
+Follow up: Could you do this using only O(n) extra space, where n is the total number of rows in the triangle?
