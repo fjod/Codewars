@@ -4,17 +4,49 @@ import (
 	"fmt"
 )
 
-func maxProfit(prices []int) int {
-	maxProfitVal := 0
-	for i := 1; i < len(prices); i++ {
-		maxProfitVal += max(0, prices[i]-prices[i-1])
+func sumNumbers(root *TreeNode) int {
+	var sums []int
+	if root == nil {
+		return 0
+	}
+	if root.Left == nil && root.Right == nil {
+		return root.Val
 	}
 
-	return maxProfitVal
+	sum(root.Val, root.Left, &sums)
+	sum(root.Val, root.Right, &sums)
+	return sumArray(&sums)
+}
+
+func sum(rootVal int, node *TreeNode, sums *[]int) {
+	if node == nil {
+		return
+	}
+	if node.Left == nil && node.Right == nil {
+		*sums = append(*sums, rootVal*10+node.Val)
+		return
+	}
+	sum(rootVal*10+node.Val, node.Left, sums)
+	sum(rootVal*10+node.Val, node.Right, sums)
 }
 
 func main() {
-	test := []int{7, 1, 5, 3, 6, 4}
-	fmt.Println("test")
-	maxProfit(test)
+	node2 := TreeNode{
+		Val:   2,
+		Left:  nil,
+		Right: nil,
+	}
+	node3 := TreeNode{
+		Val:   3,
+		Left:  nil,
+		Right: nil,
+	}
+	node1 := TreeNode{
+		Val:   1,
+		Left:  &node2,
+		Right: &node3,
+	}
+
+	t := sumNumbers(&node1)
+	fmt.Println(t)
 }
