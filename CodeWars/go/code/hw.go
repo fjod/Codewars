@@ -4,30 +4,18 @@ import (
 	"fmt"
 )
 
-func sumNumbers(root *TreeNode) int {
-	var sums []int
-	if root == nil {
-		return 0
-	}
-	if root.Left == nil && root.Right == nil {
-		return root.Val
-	}
-
-	sum(root.Val, root.Left, &sums)
-	sum(root.Val, root.Right, &sums)
-	return sumArray(&sums)
+func subsetXORSum(nums []int) int {
+	return helper(nums, 0, 0)
 }
 
-func sum(rootVal int, node *TreeNode, sums *[]int) {
-	if node == nil {
-		return
+func helper(nums []int, index int, currentXor int) int {
+	if index == len(nums) {
+		return currentXor
 	}
-	if node.Left == nil && node.Right == nil {
-		*sums = append(*sums, rootVal*10+node.Val)
-		return
-	}
-	sum(rootVal*10+node.Val, node.Left, sums)
-	sum(rootVal*10+node.Val, node.Right, sums)
+
+	withCurrent := helper(nums, index+1, currentXor^nums[index])
+	withoutCurrent := helper(nums, index+1, currentXor)
+	return withoutCurrent + withCurrent
 }
 
 func main() {

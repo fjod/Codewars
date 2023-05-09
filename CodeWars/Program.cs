@@ -10,38 +10,26 @@ using System.Numerics;
 using System.Reflection;
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
+using System.Xml.Schema;
 
 namespace CodeWars
 {
     class Program
     {
 
-        public int SumNumbers(TreeNode root)
+        //still need more practice with backtracking
+        public static int SubsetXORSum(int[] nums)
         {
-
-            List<int> sums = new List<int>();
-            if (root == null)
-            {
-                return 0;
-            }
-
-            if (root.left == null && root.right == null) return root.val;
-
-            Sum(root.val, root.left, sums);
-            Sum(root.val, root.right, sums);
-            return sums.Sum();
+         return helper(nums, 0, 0);
         }
 
-        private void Sum(int rootVal, TreeNode node, List<int> sums)
+        private static int helper(int[] nums, int index, int currentXor)
         {
-            if (node == null) return;
-            if (node.left == null && node.right == null)
-            {
-                sums.Add(rootVal*10 + node.val);
-                return;
-            }
-            Sum(rootVal*10 +  node.val, node.left, sums);
-            Sum(rootVal*10 +  node.val, node.right, sums);
+            if (index == nums.Length) return currentXor;
+
+            var withCurrent = helper(nums, index + 1, currentXor ^ nums[index]);
+            var withoutCurrent = helper(nums, index + 1, currentXor);
+            return withCurrent + withoutCurrent;
         }
 
 
@@ -49,7 +37,8 @@ namespace CodeWars
         {
        
            // var q = MaxProfit(new []{7,1,5,3,6,4});
-            var q = MaxProfit(new[] {1, 2, 3, 4, 5});
+            var q = SubsetXORSum(new[] {5 ,1, 6});
+            q = SubsetXORSum(new[] {5 , 1, 6});
         }
     }
 }

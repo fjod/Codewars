@@ -1,35 +1,51 @@
-﻿129. Sum Root to Leaf Numbers
-     Medium
-     6.6K
-     101
-     Companies
-     You are given the root of a binary tree containing digits from 0 to 9 only.
+﻿1863. Sum of All Subset XOR Totals
+      Easy
+      1.3K
+      118
+      Companies
+      The XOR total of an array is defined as the bitwise XOR of all its elements, or 0 if the array is empty.
 
-Each root-to-leaf path in the tree represents a number.
+For example, the XOR total of the array [2,5,6] is 2 XOR 5 XOR 6 = 1.
+Given an array nums, return the sum of all XOR totals for every subset of nums.
 
-For example, the root-to-leaf path 1 -> 2 -> 3 represents the number 123.
-Return the total sum of all root-to-leaf numbers. Test cases are generated so that the answer will fit in a 32-bit integer.
+Note: Subsets with the same elements should be counted multiple times.
 
-A leaf node is a node with no children.
+An array a is a subset of an array b if a can be obtained from b by deleting some (possibly zero) elements of b.
 
 
 
 Example 1:
 
+Input: nums = [1,3]
+Output: 6
+Explanation: The 4 subsets of [1,3] are:
+- The empty subset has an XOR total of 0.
+- [1] has an XOR total of 1.
+- [3] has an XOR total of 3.
+- [1,3] has an XOR total of 1 XOR 3 = 2.
+  0 + 1 + 3 + 2 = 6
+  Example 2:
 
-Input: root = [1,2,3]
-Output: 25
-Explanation:
-The root-to-leaf path 1->2 represents the number 12.
-The root-to-leaf path 1->3 represents the number 13.
-Therefore, sum = 12 + 13 = 25.
-Example 2:
+Input: nums = [5,1,6]
+Output: 28
+Explanation: The 8 subsets of [5,1,6] are:
+- The empty subset has an XOR total of 0.
+- [5] has an XOR total of 5.
+- [1] has an XOR total of 1.
+- [6] has an XOR total of 6.
+- [5,1] has an XOR total of 5 XOR 1 = 4.
+- [5,6] has an XOR total of 5 XOR 6 = 3.
+- [1,6] has an XOR total of 1 XOR 6 = 7.
+- [5,1,6] has an XOR total of 5 XOR 1 XOR 6 = 2.
+  0 + 5 + 1 + 6 + 4 + 3 + 7 + 2 = 28
+  Example 3:
+
+Input: nums = [3,4,5,6,7,8]
+Output: 480
+Explanation: The sum of all XOR totals for every subset is 480.
 
 
-Input: root = [4,9,0,5,1]
-Output: 1026
-Explanation:
-The root-to-leaf path 4->9->5 represents the number 495.
-The root-to-leaf path 4->9->1 represents the number 491.
-The root-to-leaf path 4->0 represents the number 40.
-Therefore, sum = 495 + 491 + 40 = 1026.
+Constraints:
+
+1 <= nums.length <= 12
+1 <= nums[i] <= 20
