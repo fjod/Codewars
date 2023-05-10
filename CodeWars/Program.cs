@@ -16,20 +16,55 @@ namespace CodeWars
 {
     class Program
     {
-
-        //still need more practice with backtracking
-        public static int SubsetXORSum(int[] nums)
+        private static List<TimeSpan> _leds = new List<TimeSpan>
         {
-         return helper(nums, 0, 0);
+            TimeSpan.FromMinutes(1),
+            TimeSpan.FromMinutes(2),
+            TimeSpan.FromMinutes(4),
+            TimeSpan.FromMinutes(8),
+            TimeSpan.FromMinutes(16),
+            TimeSpan.FromMinutes(32),
+            TimeSpan.FromHours(1),
+            TimeSpan.FromHours(2),
+            TimeSpan.FromHours(4),
+            TimeSpan.FromHours(8),
+        };
+        
+        public static IList<string> ReadBinaryWatch(int turnedOn)
+        {
+            List<string> output = new List<string>();
+            if (turnedOn>=9) return output;
+            helper(turnedOn, 0, output, _leds, new List<TimeSpan>());
+            return output;
         }
 
-        private static int helper(int[] nums, int index, int currentXor)
+        private static void helper(int turnedOn, int shift, List<string> output, List<TimeSpan> leds, List<TimeSpan> current)
         {
-            if (index == nums.Length) return currentXor;
+            if (turnedOn == shift)
+            {
+                    var totalHours = current.Sum(d => d.Hours);
+                    var totalMinutes = current.Sum(d => d.Minutes);
+                    if (totalHours < 12 && totalMinutes < 60)
+                    {
+                        var item = $"{totalHours}:{totalMinutes:00}";
+                        if (!output.Contains(item)) output.Add(item);
+                    }
+                
+            }
+            else
+            {
+                for (int i = 0; i < leds.Count; i++)
+                {
+                    current.Add(leds[i]);
+                    
+                    var localMinutes = new List<TimeSpan>(leds);
+                    localMinutes.RemoveAt(i);
 
-            var withCurrent = helper(nums, index + 1, currentXor ^ nums[index]);
-            var withoutCurrent = helper(nums, index + 1, currentXor);
-            return withCurrent + withoutCurrent;
+                    helper(turnedOn, shift + 1, output, localMinutes, current);
+
+                    current.Remove(leds[i]);
+                }
+            }
         }
 
 
@@ -37,8 +72,8 @@ namespace CodeWars
         {
        
            // var q = MaxProfit(new []{7,1,5,3,6,4});
-            var q = SubsetXORSum(new[] {5 ,1, 6});
-            q = SubsetXORSum(new[] {5 , 1, 6});
+            var q = ReadBinaryWatch(2);
+         
         }
     }
 }
