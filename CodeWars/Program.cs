@@ -16,54 +16,28 @@ namespace CodeWars
 {
     class Program
     {
-        private static List<TimeSpan> _leds = new List<TimeSpan>
+        public static int NumTilePossibilities(string tiles)
         {
-            TimeSpan.FromMinutes(1),
-            TimeSpan.FromMinutes(2),
-            TimeSpan.FromMinutes(4),
-            TimeSpan.FromMinutes(8),
-            TimeSpan.FromMinutes(16),
-            TimeSpan.FromMinutes(32),
-            TimeSpan.FromHours(1),
-            TimeSpan.FromHours(2),
-            TimeSpan.FromHours(4),
-            TimeSpan.FromHours(8),
-        };
-        
-        public static IList<string> ReadBinaryWatch(int turnedOn)
-        {
-            List<string> output = new List<string>();
-            if (turnedOn>=9) return output;
-            helper(turnedOn, 0, output, _leds, new List<TimeSpan>());
-            return output;
+            HashSet<string> possibilities = new HashSet<string>();
+            helper(tiles, possibilities, string.Empty);
+            return possibilities.Count;
         }
 
-        private static void helper(int turnedOn, int shift, List<string> output, List<TimeSpan> leds, List<TimeSpan> current)
+        
+        private static void helper(string tiles, HashSet<string> possibilities, string current)
         {
-            if (turnedOn == shift)
+            if (current != string.Empty) possibilities.Add(current);
+
+            for (int i = 0; i < tiles.Length; i++)
             {
-                    var totalHours = current.Sum(d => d.Hours);
-                    var totalMinutes = current.Sum(d => d.Minutes);
-                    if (totalHours < 12 && totalMinutes < 60)
-                    {
-                        var item = $"{totalHours}:{totalMinutes:00}";
-                        if (!output.Contains(item)) output.Add(item);
-                    }
+                var letter = tiles[i];
+                possibilities.Add(letter.ToString());
+                var leftTiles = tiles.ToList();
+                leftTiles.RemoveAt(i);
                 
-            }
-            else
-            {
-                for (int i = 0; i < leds.Count; i++)
-                {
-                    current.Add(leds[i]);
-                    
-                    var localMinutes = new List<TimeSpan>(leds);
-                    localMinutes.RemoveAt(i);
-
-                    helper(turnedOn, shift + 1, output, localMinutes, current);
-
-                    current.Remove(leds[i]);
-                }
+                var left = leftTiles.Aggregate(string.Empty, (s, c) => s + c);
+                if (left.Any())  possibilities.Add(left);
+                helper(left, possibilities, current + letter);
             }
         }
 
@@ -72,7 +46,7 @@ namespace CodeWars
         {
        
            // var q = MaxProfit(new []{7,1,5,3,6,4});
-            var q = ReadBinaryWatch(2);
+            var q = NumTilePossibilities("AAB");
          
         }
     }
