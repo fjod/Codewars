@@ -1,24 +1,25 @@
-﻿1079. Letter Tile Possibilities
-      Medium
-      2.2K
-      63
-      Companies
-      You have n  tiles, where each tile has one letter tiles[i] printed on it.
+﻿118. Pascal's Triangle
+     Easy
+     9.9K
+     321
+     Companies
+     Given an integer numRows, return the first numRows of Pascal's triangle.
 
-Return the number of possible non-empty sequences of letters you can make using the letters printed on those tiles.
+In Pascal's triangle, each number is the sum of the two numbers directly above it as shown:
+
 
 
 
 Example 1:
 
-Input: tiles = "AAB"
-Output: 8
-Explanation: The possible sequences are "A", "B", "AA", "AB", "BA", "AAB", "ABA", "BAA".
+Input: numRows = 5
+Output: [[1],[1,1],[1,2,1],[1,3,3,1],[1,4,6,4,1]]
 Example 2:
 
-Input: tiles = "AAABBC"
-Output: 188
-Example 3:
+Input: numRows = 1
+Output: [[1]]
 
-Input: tiles = "V"
-Output: 1
+
+Constraints:
+
+1 <= numRows <= 30

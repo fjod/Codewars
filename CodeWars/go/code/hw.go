@@ -2,44 +2,52 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
 
-func numTilePossibilities(tiles string) int {
-	m := make(map[string]bool)
-	helper(tiles, &m, "")
-	return len(m)
+func generate(numRows int) [][]int {
+	matrix := make([][]int, numRows)
+	for i := range matrix {
+		var slice []int
+		matrix[i] = slice
+	}
+	gen(numRows, 0, &matrix)
+	return matrix
 }
 
-func addToMap(hasSet *map[string]bool, current string) {
-	if current == "" {
+func gen(numRows int, current int, ret *[][]int) {
+	if current == numRows {
 		return
 	}
-	_, ok := (*hasSet)[current]
-	if ok {
+
+	if current == 0 {
+		var slice = (*ret)[current]
+		slice = append(slice, 1)
+		(*ret)[current] = slice
+		gen(numRows, current+1, ret)
 		return
-	} else {
-		(*hasSet)[current] = true
 	}
-}
 
-func helper(tiles string, hasSet *map[string]bool, current string) {
-
-	addToMap(hasSet, current)
-
-	for i := 0; i < len(tiles); i++ {
-		letter := string(tiles[i])
-		addToMap(hasSet, letter)
-		var sb strings.Builder
-		sb.WriteString(tiles[:i])   // write part before index
-		sb.WriteString(tiles[i+1:]) // write part after index
-		leftTiles := sb.String()
-		addToMap(hasSet, leftTiles)
-		helper(leftTiles, hasSet, current+letter)
+	if current == 1 {
+		var slice = (*ret)[current]
+		slice = append(slice, 1)
+		slice = append(slice, 1)
+		(*ret)[current] = slice
+		gen(numRows, current+1, ret)
+		return
 	}
+
+	var slice = (*ret)[current]
+	slice = append(slice, 1)
+	for i := 1; i < current; i++ {
+		var prevSlice = (*ret)[current-1]
+		slice = append(slice, prevSlice[i-1]+prevSlice[i])
+	}
+	slice = append(slice, 1)
+	(*ret)[current] = slice
+	gen(numRows, current+1, ret)
 }
 
 func main() {
-	t := numTilePossibilities("AAB")
+	t := generate(5)
 	fmt.Println(t)
 }
