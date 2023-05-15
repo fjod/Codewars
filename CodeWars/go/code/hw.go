@@ -4,50 +4,30 @@ import (
 	"fmt"
 )
 
-func generate(numRows int) [][]int {
-	matrix := make([][]int, numRows)
-	for i := range matrix {
-		var slice []int
-		matrix[i] = slice
-	}
-	gen(numRows, 0, &matrix)
-	return matrix
-}
+func getMaximumGenerated(n int) int {
 
-func gen(numRows int, current int, ret *[][]int) {
-	if current == numRows {
-		return
+	if n < 2 {
+		return n
 	}
 
-	if current == 0 {
-		var slice = (*ret)[current]
-		slice = append(slice, 1)
-		(*ret)[current] = slice
-		gen(numRows, current+1, ret)
-		return
+	maxRet := 1
+	nums := make([]int, n+1)
+	nums[0] = 0
+	nums[1] = 1
+	for i := 2; i < n+1; i++ {
+		if i%2 == 0 {
+			nums[i] = nums[i/2]
+		}
+		if i%2 != 0 {
+			nums[i] = nums[i/2] + nums[i/2+1]
+		}
+		maxRet = max(maxRet, nums[i])
 	}
 
-	if current == 1 {
-		var slice = (*ret)[current]
-		slice = append(slice, 1)
-		slice = append(slice, 1)
-		(*ret)[current] = slice
-		gen(numRows, current+1, ret)
-		return
-	}
-
-	var slice = (*ret)[current]
-	slice = append(slice, 1)
-	for i := 1; i < current; i++ {
-		var prevSlice = (*ret)[current-1]
-		slice = append(slice, prevSlice[i-1]+prevSlice[i])
-	}
-	slice = append(slice, 1)
-	(*ret)[current] = slice
-	gen(numRows, current+1, ret)
+	return maxRet
 }
 
 func main() {
-	t := generate(5)
+	t := getMaximumGenerated(7)
 	fmt.Println(t)
 }

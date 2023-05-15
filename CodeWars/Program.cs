@@ -16,42 +16,24 @@ namespace CodeWars
 {
     class Program
     {
-        public static IList<IList<int>> Generate(int numRows)
+        public static int GetMaximumGenerated(int n)
         {
-            List<IList<int>> ret = new List<IList<int>>(numRows);
-            for (int i = 0; i < numRows; i++)
+            if (n == 0) return 0;
+            if (n == 1) return 1;
+            var nums = new int[n + 1];
+            nums[0] = 0;
+            nums[1] = 1;
+            for (int i = 2; i < n + 1; i++)
             {
-                ret.Add(new List<int>());
-            }
-
-            generate(numRows, 0, ret);
-            return ret;
-        }
-
-        private static void generate(int numRows, int current, List<IList<int>> ret)
-        {
-            if (current == numRows) return;
-            if (current == 0)
-            {
-                ret[current].Add(1);
-            }
-            else
-            if (current == 1)
-            {
-                ret[current].Add(1);
-                ret[current].Add(1);
-            }
-            else
-            {
-                ret[current].Add(1);
-                for (int i = 1; i < current; i++)
+                if (i%2 == 0) nums[i] = nums[i/2];
+                else
                 {
-                    ret[current].Add(ret[current - 1][i - 1] + ret[current - 1][i]);
+                    nums[i] = nums[i/2] + nums[i/2 + 1];    
                 }
-                ret[current].Add(1);
+                
             }
             
-            generate(numRows, current + 1, ret);
+            return nums.Max();
         }
 
 
@@ -59,7 +41,7 @@ namespace CodeWars
         {
        
            // var q = MaxProfit(new []{7,1,5,3,6,4});
-            var q = Generate(5);
+            var q = GetMaximumGenerated(7);
          
         }
     }
