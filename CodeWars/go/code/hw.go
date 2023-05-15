@@ -4,30 +4,54 @@ import (
 	"fmt"
 )
 
-func getMaximumGenerated(n int) int {
+func allPossibleFBT(n int) []*TreeNode {
+	var myMap map[int][]*TreeNode     // declares an uninitialized map
+	myMap = make(map[int][]*TreeNode) // initializes an empty map with the make() function
+	n0 := make([]*TreeNode, 0, 0)
+	myMap[0] = n0
 
-	if n < 2 {
-		return n
+	n1 := make([]*TreeNode, 0, 0)
+	newNode := TreeNode{
+		Val:   0,
+		Left:  nil,
+		Right: nil,
+	}
+	n1 = append(n1, &newNode)
+	myMap[1] = n1
+
+	for i := 2; i <= n; i++ {
+		var current = CreateNewNode()
+		myMap[i] = current
+
+		for left := 1; left < i; left++ {
+			right := i - left - 1
+			forwardTree := myMap[left]
+			backwardTree := myMap[right]
+			if len(forwardTree) > 0 && len(backwardTree) > 0 {
+				for _, leftNode := range forwardTree {
+					for _, rightNode := range backwardTree {
+						newNode := TreeNode{
+							Val:   0,
+							Left:  leftNode,
+							Right: rightNode,
+						}
+						current = append(current, &newNode)
+						myMap[i] = current
+					}
+				}
+			}
+		}
 	}
 
-	maxRet := 1
-	nums := make([]int, n+1)
-	nums[0] = 0
-	nums[1] = 1
-	for i := 2; i < n+1; i++ {
-		if i%2 == 0 {
-			nums[i] = nums[i/2]
-		}
-		if i%2 != 0 {
-			nums[i] = nums[i/2] + nums[i/2+1]
-		}
-		maxRet = max(maxRet, nums[i])
-	}
+	return myMap[n]
+}
 
-	return maxRet
+func CreateNewNode() []*TreeNode {
+	n1 := make([]*TreeNode, 0, 0)
+	return n1
 }
 
 func main() {
-	t := getMaximumGenerated(7)
+	t := allPossibleFBT(7)
 	fmt.Println(t)
 }
