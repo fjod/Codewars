@@ -4,20 +4,48 @@ import (
 	"fmt"
 )
 
-func repeatedNTimes(nums []int) int {
+func rotateGrid(grid [][]int, k int) [][]int {
+	bottom := len(grid) - 1
+	right := len(grid[0]) - 1
+	top := 0
+	left := 0
 
-	dict := make(map[int]int)
-	for _, v := range nums {
-		dict[v]++
-	}
-	n := len(nums) / 2
-	for k, v := range dict {
-		if v == n {
-			return k
+	for true {
+
+		totalLayerElements := 2*(bottom-top) + 2*(right-left)
+		numOfRotations := k % totalLayerElements
+
+		for i := 0; i < numOfRotations; i++ {
+			temp := grid[top][left]
+			for j := left; j < right; j++ {
+				grid[top][j] = grid[top][j+1]
+			}
+
+			for j := top; j < bottom; j++ {
+				grid[j][right] = grid[j+1][right]
+			}
+
+			for j := right; j > left; j-- {
+				grid[bottom][j] = grid[bottom][j-1]
+			}
+
+			for j := bottom; j > top; j-- {
+				grid[j][left] = grid[j-1][left]
+			}
+
+			grid[top+1][left] = temp
+
+		}
+
+		top++
+		left++
+		bottom--
+		right--
+		if bottom <= top || right <= left {
+			break
 		}
 	}
-
-	return 0
+	return grid
 }
 
 func main() {
