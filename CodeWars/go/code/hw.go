@@ -4,32 +4,20 @@ import (
 	"fmt"
 )
 
-func combinationSum(candidates []int, target int) [][]int {
-	var test [][]int
-	var path []int
-	backTrack(0, 0, candidates, target, path, &test)
-	return test
-}
+func repeatedNTimes(nums []int) int {
 
-func backTrack(index int, total int, candidates []int, target int, path []int, result *[][]int) {
-	if total == target {
-		tmp := make([]int, len(path))
-		copy(tmp, path)
-		*result = append(*result, tmp)
-		return
+	dict := make(map[int]int)
+	for _, v := range nums {
+		dict[v]++
+	}
+	n := len(nums) / 2
+	for k, v := range dict {
+		if v == n {
+			return k
+		}
 	}
 
-	if total > target {
-		return
-	}
-	if index >= len(candidates) {
-		return
-	}
-	prevPath := path
-	path = append(path, candidates[index])
-	backTrack(index, total+candidates[index], candidates, target, path, result)
-	path = prevPath
-	backTrack(index+1, total, candidates, target, path, result)
+	return 0
 }
 
 func main() {

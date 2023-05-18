@@ -18,56 +18,9 @@ namespace CodeWars
     {
         public class Solution
         {
-            public static int CountVowelStrings(int n)
+            public int RepeatedNTimes(int[] nums)
             {
-                List<int> vowels = new List<int> {1,1,1,1,1};
-                if (n == 0) return 0;
-                if (n == 1) return 5;
-              
-                for (int i = 2; i <= n; i++)
-                {
-                    vowels[0]=vowels[0]+vowels[1]+vowels[2]+vowels[3]+vowels[4];
-                    vowels[1]=vowels[1]+vowels[2]+vowels[3]+vowels[4];
-                    vowels[2]=vowels[2]+vowels[3]+vowels[4];
-                    vowels[3]=vowels[3]+vowels[4];       
-                }
-
-                return vowels.Sum();
-            }
-            
-            // bruteforce exceeds time limit for 35
-            public int CountVowelStrings2(int n) {
-                List<string> vowels = new List<string> {"a","e","i","o","u"};
-                if (n == 0) return 0;
-                if (n == 1) return 5;
-                var result = 0;
-                for (int i = 2; i <= n; i++)
-                {
-                    vowels = CountVowelStrings(vowels);
-                    result = vowels.Count;
-                }
-
-                return result;
-            }
-
-            private  List<string> CountVowelStrings(List<string> input)
-            {
-                List<string> temp = new List<string>();
-                List<string> zero = new List<string> {"a","e","i","o","u"};
-                for (int i = 0; i < zero.Count; i++)
-                {
-                    var vowel = zero[i];
-                    for (int j = 0; j < input.Count; j++)
-                    {
-                        var prevVowel = input[j];
-                        if (prevVowel.Last() <= vowel.First())
-                        {
-                            temp.Add(prevVowel + vowel);
-                        }
-                    }
-                }
-
-                return temp;
+                return nums.GroupBy(n => n).First(g => g.Count() ==nums.Length/2).First();
             }
 
           
