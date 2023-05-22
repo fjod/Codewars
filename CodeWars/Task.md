@@ -1,32 +1,32 @@
-﻿2357. Make Array Zero by Subtracting Equal Amounts
-      Easy
-      872
-      34
+﻿1711. Count Good Meals
+      Medium
+      877
+      223
       Companies
-      You are given a non-negative integer array nums. In one operation, you must:
+      A good meal is a meal that contains exactly two different food items with a sum of deliciousness equal to a power of two.
 
-Choose a positive integer x such that x is less than or equal to the smallest non-zero element in nums.
-Subtract x from every positive element in nums.
-Return the minimum number of operations to make every element in nums equal to 0.
+You can pick any two different foods to make a good meal.
+
+Given an array of integers deliciousness where deliciousness[i] is the deliciousness of the i​​​​​​th​​​​​​​​ item of food, return the number of different good meals you can make from this list modulo 109 + 7.
+
+Note that items with different indices are considered different even if they have the same deliciousness value.
 
 
 
 Example 1:
 
-Input: nums = [1,5,0,3,5]
-Output: 3
-Explanation:
-In the first operation, choose x = 1. Now, nums = [0,4,0,2,4].
-In the second operation, choose x = 2. Now, nums = [0,2,0,0,2].
-In the third operation, choose x = 2. Now, nums = [0,0,0,0,0].
+Input: deliciousness = [1,3,5,7,9]
+Output: 4
+Explanation: The good meals are (1,3), (1,7), (3,5) and, (7,9).
+Their respective sums are 4, 8, 8, and 16, all of which are powers of 2.
 Example 2:
 
-Input: nums = [0]
-Output: 0
-Explanation: Each element in nums is already 0 so no operations are needed.
+Input: deliciousness = [1,1,1,3,3,3,7]
+Output: 15
+Explanation: The good meals are (1,1) with 3 ways, (1,3) with 9 ways, and (1,7) with 3 ways.
 
 
 Constraints:
 
-1 <= nums.length <= 100
-0 <= nums[i] <= 100
+1 <= deliciousness.length <= 105
+0 <= deliciousness[i] <= 220

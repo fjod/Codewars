@@ -4,54 +4,42 @@ import (
 	"fmt"
 )
 
-func checkIfAllZeroes(nums []int) bool {
-	for _, num := range nums {
-		if num != 0 {
-			return false
-		}
+func sumPrev(start int) int64 {
+	var sum int64 = 0
+	for i := 0; i < start; i++ {
+		sum += int64(i)
 	}
-	return true
+	return sum
 }
+func countPairs(deliciousness []int) int {
 
-func findLowestNonZero(nums []int) int {
-	lowest := 1000
-	for _, num := range nums {
-		if num != 0 && num < lowest {
-			lowest = num
-		}
+	var count int64 = 0
+	dictionary := make(map[int]int)
+	for _, num := range deliciousness {
+		dictionary[num]++
 	}
-	return lowest
-}
 
-func minimumOperations(nums []int) int {
-
-	if len(nums) == 0 {
-		return 0
+	powersOfTwo := make(map[int]int)
+	for i := 0; i <= 21; i++ {
+		powersOfTwo[i] = 1 << i
 	}
-	count := 0
-	for true {
-		zeroes := checkIfAllZeroes(nums)
-		if zeroes {
-			return count
-		}
 
-		min := findLowestNonZero(nums)
+	for inputValue, amountOfInputValue := range dictionary {
+		for _, powerOfTwo := range powersOfTwo {
+			target := powerOfTwo - inputValue
+			if target == inputValue {
+				count += sumPrev(amountOfInputValue)
+			}
 
-		if min == -1 {
-			return count
-		}
-
-		for i := 0; i < len(nums); i++ {
-			nums[i] = nums[i] - min
-			if nums[i] < 0 {
-				nums[i] = 0
+			amountOfCurrent, ok := dictionary[target]
+			if target > inputValue && ok {
+				var temp int64 = int64(amountOfCurrent) * int64(amountOfInputValue)
+				count += temp
 			}
 		}
-
-		count++
 	}
 
-	return count
+	return (int)(count % 1000000007)
 }
 
 func main() {
