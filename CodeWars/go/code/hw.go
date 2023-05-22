@@ -4,48 +4,54 @@ import (
 	"fmt"
 )
 
-func rotateGrid(grid [][]int, k int) [][]int {
-	bottom := len(grid) - 1
-	right := len(grid[0]) - 1
-	top := 0
-	left := 0
-
-	for true {
-
-		totalLayerElements := 2*(bottom-top) + 2*(right-left)
-		numOfRotations := k % totalLayerElements
-
-		for i := 0; i < numOfRotations; i++ {
-			temp := grid[top][left]
-			for j := left; j < right; j++ {
-				grid[top][j] = grid[top][j+1]
-			}
-
-			for j := top; j < bottom; j++ {
-				grid[j][right] = grid[j+1][right]
-			}
-
-			for j := right; j > left; j-- {
-				grid[bottom][j] = grid[bottom][j-1]
-			}
-
-			for j := bottom; j > top; j-- {
-				grid[j][left] = grid[j-1][left]
-			}
-
-			grid[top+1][left] = temp
-
-		}
-
-		top++
-		left++
-		bottom--
-		right--
-		if bottom <= top || right <= left {
-			break
+func checkIfAllZeroes(nums []int) bool {
+	for _, num := range nums {
+		if num != 0 {
+			return false
 		}
 	}
-	return grid
+	return true
+}
+
+func findLowestNonZero(nums []int) int {
+	lowest := 1000
+	for _, num := range nums {
+		if num != 0 && num < lowest {
+			lowest = num
+		}
+	}
+	return lowest
+}
+
+func minimumOperations(nums []int) int {
+
+	if len(nums) == 0 {
+		return 0
+	}
+	count := 0
+	for true {
+		zeroes := checkIfAllZeroes(nums)
+		if zeroes {
+			return count
+		}
+
+		min := findLowestNonZero(nums)
+
+		if min == -1 {
+			return count
+		}
+
+		for i := 0; i < len(nums); i++ {
+			nums[i] = nums[i] - min
+			if nums[i] < 0 {
+				nums[i] = 0
+			}
+		}
+
+		count++
+	}
+
+	return count
 }
 
 func main() {
