@@ -1,32 +1,26 @@
-﻿1711. Count Good Meals
+﻿2579. Count Total Number of Colored Cells
       Medium
-      877
       223
+      14
       Companies
-      A good meal is a meal that contains exactly two different food items with a sum of deliciousness equal to a power of two.
+      There exists an infinitely large two-dimensional grid of uncolored unit cells. You are given a positive integer n, indicating that you must do the following routine for n minutes:
 
-You can pick any two different foods to make a good meal.
+At the first minute, color any arbitrary unit cell blue.
+Every minute thereafter, color blue every uncolored cell that touches a blue cell.
+Below is a pictorial representation of the state of the grid after minutes 1, 2, and 3.
 
-Given an array of integers deliciousness where deliciousness[i] is the deliciousness of the i​​​​​​th​​​​​​​​ item of food, return the number of different good meals you can make from this list modulo 109 + 7.
 
-Note that items with different indices are considered different even if they have the same deliciousness value.
+Return the number of colored cells at the end of n minutes.
 
 
 
 Example 1:
 
-Input: deliciousness = [1,3,5,7,9]
-Output: 4
-Explanation: The good meals are (1,3), (1,7), (3,5) and, (7,9).
-Their respective sums are 4, 8, 8, and 16, all of which are powers of 2.
+Input: n = 1
+Output: 1
+Explanation: After 1 minute, there is only 1 blue cell, so we return 1.
 Example 2:
 
-Input: deliciousness = [1,1,1,3,3,3,7]
-Output: 15
-Explanation: The good meals are (1,1) with 3 ways, (1,3) with 9 ways, and (1,7) with 3 ways.
-
-
-Constraints:
-
-1 <= deliciousness.length <= 105
-0 <= deliciousness[i] <= 220
+Input: n = 2
+Output: 5
+Explanation: After 2 minutes, there are 4 colored cells on the boundary and 1 in the center, so we return 5. 
