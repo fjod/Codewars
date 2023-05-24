@@ -2,24 +2,23 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
-func finalValueAfterOperations(operations []string) int {
+func numJewelsInStones(jewels string, stones string) int {
 
-	i := 0
-	for _, operation := range operations {
-		switch operation {
-		case "--X":
-			i = i - 1
-		case "++X":
-			i = i + 1
-		case "X--":
-			i = i - 1
-		case "X++":
-			i = i + 1
+	var count int
+	for i := 0; i < len(stones); i++ {
+		if contains(jewels, stones[i]) {
+			count++
 		}
 	}
-	return i
+
+	return count
+}
+
+func contains(jewels string, u uint8) bool {
+	return strings.Contains(jewels, string(u))
 }
 
 func main() {

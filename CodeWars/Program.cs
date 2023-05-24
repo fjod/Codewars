@@ -18,27 +18,9 @@ namespace CodeWars
     {
         public class Solution
         {
-            public int FinalValueAfterOperations(string[] operations)
-            {
-                int i = 0;
-                foreach (var s in operations)
-                {
-                    i = calc(s, i);
-                }
-
-                return i;
-            }
-
-            int calc(string input, int i)
-            {
-                return input switch
-                {
-                    "--X" => i - 1,
-                    "X--" => i - 1,
-                    "++X" => i + 1,
-                    "X++" => i + 1,
-                    _ => i
-                };
+            public int NumJewelsInStones(string jewels, string stones) {
+        
+                return stones.Count(jewels.Contains);
             }
 
             static void Main(string[] args)

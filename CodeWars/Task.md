@@ -1,49 +1,32 @@
-﻿2011. Final Value of Variable After Performing Operations
-      Easy
-      1.2K
-      156
-      Companies
-      There is a programming language with only four operations and one variable X:
+﻿771. Jewels and Stones
+     Easy
+     4.6K
+     546
+     Companies
+     You're given strings jewels representing the types of stones that are jewels, and stones representing the stones you have. Each character in stones is a type of stone you have. You want to know how many of the stones you have are also jewels.
 
-++X and X++ increments the value of the variable X by 1.
---X and X-- decrements the value of the variable X by 1.
-Initially, the value of X is 0.
-
-Given an array of strings operations containing a list of operations, return the final value of X after performing all the operations.
+Letters are case sensitive, so "a" is considered a different type of stone from "A".
 
 
 
 Example 1:
 
-Input: operations = ["--X","X++","X++"]
-Output: 1
-Explanation: The operations are performed as follows:
-Initially, X = 0.
---X: X is decremented by 1, X =  0 - 1 = -1.
-X++: X is incremented by 1, X = -1 + 1 =  0.
-X++: X is incremented by 1, X =  0 + 1 =  1.
+Input: jewels = "aA", stones = "aAAbbbb"
+Output: 3
 Example 2:
 
-Input: operations = ["++X","++X","X++"]
-Output: 3
-Explanation: The operations are performed as follows:
-Initially, X = 0.
-++X: X is incremented by 1, X = 0 + 1 = 1.
-++X: X is incremented by 1, X = 1 + 1 = 2.
-X++: X is incremented by 1, X = 2 + 1 = 3.
-Example 3:
-
-Input: operations = ["X++","++X","--X","X--"]
+Input: jewels = "z", stones = "ZZ"
 Output: 0
-Explanation: The operations are performed as follows:
-Initially, X = 0.
-X++: X is incremented by 1, X = 0 + 1 = 1.
-++X: X is incremented by 1, X = 1 + 1 = 2.
---X: X is decremented by 1, X = 2 - 1 = 1.
-X--: X is decremented by 1, X = 1 - 1 = 0.
 
 
 Constraints:
 
-1 <= operations.length <= 100
-operations[i] will be either "++X", "X++", "--X", or "X--".
+1 <= jewels.length, stones.length <= 50
+jewels and stones consist of only English letters.
+All the characters of jewels are unique.
+Accepted
+879.1K
+Submissions
+996.5K
+Acceptance Rate
+88.2%
