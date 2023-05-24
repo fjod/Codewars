@@ -1,42 +1,49 @@
-﻿1742. Maximum Number of Balls in a Box
+﻿2011. Final Value of Variable After Performing Operations
       Easy
-      533
-      124
+      1.2K
+      156
       Companies
-      You are working in a ball factory where you have n balls numbered from lowLimit up to highLimit inclusive (i.e., n == highLimit - lowLimit + 1), and an infinite number of boxes numbered from 1 to infinity.
+      There is a programming language with only four operations and one variable X:
 
-Your job at this factory is to put each ball in the box with a number equal to the sum of digits of the ball's number. For example, the ball number 321 will be put in the box number 3 + 2 + 1 = 6 and the ball number 10 will be put in the box number 1 + 0 = 1.
+++X and X++ increments the value of the variable X by 1.
+--X and X-- decrements the value of the variable X by 1.
+Initially, the value of X is 0.
 
-Given two integers lowLimit and highLimit, return the number of balls in the box with the most balls.
+Given an array of strings operations containing a list of operations, return the final value of X after performing all the operations.
 
 
 
 Example 1:
 
-Input: lowLimit = 1, highLimit = 10
-Output: 2
-Explanation:
-Box Number:  1 2 3 4 5 6 7 8 9 10 11 ...
-Ball Count:  2 1 1 1 1 1 1 1 1 0  0  ...
-Box 1 has the most number of balls with 2 balls.
+Input: operations = ["--X","X++","X++"]
+Output: 1
+Explanation: The operations are performed as follows:
+Initially, X = 0.
+--X: X is decremented by 1, X =  0 - 1 = -1.
+X++: X is incremented by 1, X = -1 + 1 =  0.
+X++: X is incremented by 1, X =  0 + 1 =  1.
 Example 2:
 
-Input: lowLimit = 5, highLimit = 15
-Output: 2
-Explanation:
-Box Number:  1 2 3 4 5 6 7 8 9 10 11 ...
-Ball Count:  1 1 1 1 2 2 1 1 1 0  0  ...
-Boxes 5 and 6 have the most number of balls with 2 balls in each.
+Input: operations = ["++X","++X","X++"]
+Output: 3
+Explanation: The operations are performed as follows:
+Initially, X = 0.
+++X: X is incremented by 1, X = 0 + 1 = 1.
+++X: X is incremented by 1, X = 1 + 1 = 2.
+X++: X is incremented by 1, X = 2 + 1 = 3.
 Example 3:
 
-Input: lowLimit = 19, highLimit = 28
-Output: 2
-Explanation:
-Box Number:  1 2 3 4 5 6 7 8 9 10 11 12 ...
-Ball Count:  0 1 1 1 1 1 1 1 1 2  0  0  ...
-Box 10 has the most number of balls with 2 balls.
+Input: operations = ["X++","++X","--X","X--"]
+Output: 0
+Explanation: The operations are performed as follows:
+Initially, X = 0.
+X++: X is incremented by 1, X = 0 + 1 = 1.
+++X: X is incremented by 1, X = 1 + 1 = 2.
+--X: X is decremented by 1, X = 2 - 1 = 1.
+X--: X is decremented by 1, X = 1 - 1 = 0.
 
 
 Constraints:
 
-1 <= lowLimit <= highLimit <= 105
+1 <= operations.length <= 100
+operations[i] will be either "++X", "X++", "--X", or "X--".

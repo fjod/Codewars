@@ -18,10 +18,27 @@ namespace CodeWars
     {
         public class Solution
         {
-            public string DefangIPaddr(string address)
+            public int FinalValueAfterOperations(string[] operations)
             {
-                var s = address.Split(".");
-                return string.Join("[.]", s);
+                int i = 0;
+                foreach (var s in operations)
+                {
+                    i = calc(s, i);
+                }
+
+                return i;
+            }
+
+            int calc(string input, int i)
+            {
+                return input switch
+                {
+                    "--X" => i - 1,
+                    "X--" => i - 1,
+                    "++X" => i + 1,
+                    "X++" => i + 1,
+                    _ => i
+                };
             }
 
             static void Main(string[] args)

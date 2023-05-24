@@ -3,11 +3,23 @@ package main
 import (
 	"fmt"
 )
-import "strings"
 
-func defangIPaddr(address string) string {
-	arr := strings.Split(address, ".")
-	return strings.Join(arr, "[.]")
+func finalValueAfterOperations(operations []string) int {
+
+	i := 0
+	for _, operation := range operations {
+		switch operation {
+		case "--X":
+			i = i - 1
+		case "++X":
+			i = i + 1
+		case "X--":
+			i = i - 1
+		case "X++":
+			i = i + 1
+		}
+	}
+	return i
 }
 
 func main() {
