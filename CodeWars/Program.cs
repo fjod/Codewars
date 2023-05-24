@@ -18,29 +18,10 @@ namespace CodeWars
     {
         public class Solution
         {
-            public int CountBalls(int lowLimit, int highLimit)
+            public string DefangIPaddr(string address)
             {
-                Dictionary<int, int> map = new Dictionary<int, int>();
-                for (int i = lowLimit; i <= highLimit; i++)
-                {
-                    int sum = 0;
-                    int num = i;
-                    while (num > 0)
-                    {
-                        sum += num % 10;
-                        num /= 10;
-                    }
-
-                    if (map.ContainsKey(sum))
-                    {
-                        map[sum]++;
-                    }
-                    else
-                    {
-                        map.Add(sum, 1);
-                    }
-                }
-                return map.Values.Max();
+                var s = address.Split(".");
+                return string.Join("[.]", s);
             }
 
             static void Main(string[] args)

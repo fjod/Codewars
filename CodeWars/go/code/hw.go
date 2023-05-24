@@ -3,24 +3,11 @@ package main
 import (
 	"fmt"
 )
+import "strings"
 
-func countBalls(lowLimit int, highLimit int) int {
-	dict := make(map[int]int)
-	for i := lowLimit; i <= highLimit; i++ {
-		sum := 0
-		for j := i; j > 0; j /= 10 {
-			sum += j % 10
-		}
-		dict[sum]++
-	}
-	max := 0
-	for _, v := range dict {
-		if v > max {
-			max = v
-		}
-	}
-
-	return max
+func defangIPaddr(address string) string {
+	arr := strings.Split(address, ".")
+	return strings.Join(arr, "[.]")
 }
 
 func main() {
