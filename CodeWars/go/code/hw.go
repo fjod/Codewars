@@ -4,42 +4,23 @@ import (
 	"fmt"
 )
 
-func sumPrev(start int) int64 {
-	var sum int64 = 0
-	for i := 0; i < start; i++ {
-		sum += int64(i)
+func countBalls(lowLimit int, highLimit int) int {
+	dict := make(map[int]int)
+	for i := lowLimit; i <= highLimit; i++ {
+		sum := 0
+		for j := i; j > 0; j /= 10 {
+			sum += j % 10
+		}
+		dict[sum]++
 	}
-	return sum
-}
-func countPairs(deliciousness []int) int {
-
-	var count int64 = 0
-	dictionary := make(map[int]int)
-	for _, num := range deliciousness {
-		dictionary[num]++
-	}
-
-	powersOfTwo := make(map[int]int)
-	for i := 0; i <= 21; i++ {
-		powersOfTwo[i] = 1 << i
-	}
-
-	for inputValue, amountOfInputValue := range dictionary {
-		for _, powerOfTwo := range powersOfTwo {
-			target := powerOfTwo - inputValue
-			if target == inputValue {
-				count += sumPrev(amountOfInputValue)
-			}
-
-			amountOfCurrent, ok := dictionary[target]
-			if target > inputValue && ok {
-				var temp int64 = int64(amountOfCurrent) * int64(amountOfInputValue)
-				count += temp
-			}
+	max := 0
+	for _, v := range dict {
+		if v > max {
+			max = v
 		}
 	}
 
-	return (int)(count % 1000000007)
+	return max
 }
 
 func main() {

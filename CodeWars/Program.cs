@@ -18,23 +18,29 @@ namespace CodeWars
     {
         public class Solution
         {
-            public static long ColoredCells(int n)
+            public int CountBalls(int lowLimit, int highLimit)
             {
-                if (n == 0) return 0;
-                if (n == 1) return 1;
-                if (n == 2) return 5;
-                
-                // n >= 3
-                long horizontal = n - 2;
-                long center = 1;
-                long leftOverSides = 4;
-                long ladder = 0;
-                for (long i = 1; i <= horizontal; i++)
+                Dictionary<int, int> map = new Dictionary<int, int>();
+                for (int i = lowLimit; i <= highLimit; i++)
                 {
-                    ladder += i;
-                }
+                    int sum = 0;
+                    int num = i;
+                    while (num > 0)
+                    {
+                        sum += num % 10;
+                        num /= 10;
+                    }
 
-                return horizontal * 4 + center + leftOverSides + ladder * 4;
+                    if (map.ContainsKey(sum))
+                    {
+                        map[sum]++;
+                    }
+                    else
+                    {
+                        map.Add(sum, 1);
+                    }
+                }
+                return map.Values.Max();
             }
 
             static void Main(string[] args)
