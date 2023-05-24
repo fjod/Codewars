@@ -18,22 +18,34 @@ namespace CodeWars
     {
         public class Solution
         {
-            public static int CountWords(string[] words1, string[] words2)
+            public string[] FindWords(string[] words)
             {
-                Dictionary<string, int> fst = new Dictionary<string, int>();
-                foreach (var w in words1)
+                var rows = new[] {"qwertyuiop", "asdfghjkl", "zxcvbnm"};
+                List<string> output = new List<string>();
+                foreach (var word in words)
                 {
-                    if (fst.ContainsKey(w)) fst[w]++;
-                    else fst.Add(w, 1);
-                }
-            
+                    foreach (var row in rows)
+                    {
+                        bool okRow = false;
+                        foreach (var letter in word.ToLower())
+                        {
+                            if (!row.Contains(letter))
+                            {
+                                okRow = false;
+                                break;
+                            };
+                            okRow = true;
+                        }
 
-                foreach (var w in words2)
-                {
-                    if (fst.ContainsKey(w) && fst[w] <= 1) fst[w]--;
+                        if (okRow)
+                        {
+                            output.Add(word);
+                            break;
+                        }
+                    }
                 }
 
-                return fst.Values.Count(x => x == 0);
+                return output.ToArray();
             }
 
             static void Main(string[] args)

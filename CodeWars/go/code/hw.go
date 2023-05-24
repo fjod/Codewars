@@ -2,27 +2,29 @@ package main
 
 import (
 	"fmt"
+	"strings"
 )
 
-func countWords(words1 []string, words2 []string) int {
+func findWords(words []string) []string {
+	var res []string
+	checkString(words, &res, "qwertyuiop")
+	checkString(words, &res, "asdfghjkl")
+	checkString(words, &res, "zxcvbnm")
+	return res
+}
 
-	dict := make(map[string]int)
-	for _, word := range words1 {
-		dict[word]++
-	}
-	for _, word := range words2 {
-		v, ok := dict[word]
-		if ok && v <= 1 {
-			dict[word]--
+func checkString(words []string, i *[]string, keys string) {
+	for _, word := range words {
+		var flag = true
+		for _, letter := range word {
+			if !strings.Contains(keys, strings.ToLower(string(letter))) {
+				flag = false
+			}
+		}
+		if flag {
+			*i = append(*i, word)
 		}
 	}
-	count := 0
-	for _, v := range dict {
-		if v == 0 {
-			count += 1
-		}
-	}
-	return count
 }
 
 func main() {

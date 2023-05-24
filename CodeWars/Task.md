@@ -1,29 +1,34 @@
-﻿2085. Count Common Words With One Occurrence
-      Easy
-      650
-      14
-      Companies
-      Given two string arrays words1 and words2, return the number of strings that appear exactly once in each of the two arrays.
+﻿500. Keyboard Row
+     Easy
+     1.3K
+     1.1K
+     Companies
+     Given an array of strings words, return the words that can be typed using letters of the alphabet on only one row of American keyboard like the image below.
+
+In the American keyboard:
+
+the first row consists of the characters "qwertyuiop",
+the second row consists of the characters "asdfghjkl", and
+the third row consists of the characters "zxcvbnm".
 
 
 
 Example 1:
 
-Input: words1 = ["leetcode","is","amazing","as","is"], words2 = ["amazing","leetcode","is"]
-Output: 2
-Explanation:
-- "leetcode" appears exactly once in each of the two arrays. We count this string.
-- "amazing" appears exactly once in each of the two arrays. We count this string.
-- "is" appears in each of the two arrays, but there are 2 occurrences of it in words1. We do not count this string.
-- "as" appears once in words1, but does not appear in words2. We do not count this string.
-  Thus, there are 2 strings that appear exactly once in each of the two arrays.
-  Example 2:
+Input: words = ["Hello","Alaska","Dad","Peace"]
+Output: ["Alaska","Dad"]
+Example 2:
 
-Input: words1 = ["b","bb","bbb"], words2 = ["a","aa","aaa"]
-Output: 0
-Explanation: There are no strings that appear in each of the two arrays.
+Input: words = ["omk"]
+Output: []
 Example 3:
 
-Input: words1 = ["a","ab"], words2 = ["a","a","a","ab"]
-Output: 1
-Explanation: The only string that appears exactly once in each of the two arrays is "ab".
+Input: words = ["adsdf","sfd"]
+Output: ["adsdf","sfd"]
+
+
+Constraints:
+
+1 <= words.length <= 20
+1 <= words[i].length <= 100
+words[i] consists of English letters (both lowercase and uppercase). 
