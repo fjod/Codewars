@@ -1,32 +1,29 @@
-﻿771. Jewels and Stones
-     Easy
-     4.6K
-     546
-     Companies
-     You're given strings jewels representing the types of stones that are jewels, and stones representing the stones you have. Each character in stones is a type of stone you have. You want to know how many of the stones you have are also jewels.
-
-Letters are case sensitive, so "a" is considered a different type of stone from "A".
+﻿2085. Count Common Words With One Occurrence
+      Easy
+      650
+      14
+      Companies
+      Given two string arrays words1 and words2, return the number of strings that appear exactly once in each of the two arrays.
 
 
 
 Example 1:
 
-Input: jewels = "aA", stones = "aAAbbbb"
-Output: 3
-Example 2:
+Input: words1 = ["leetcode","is","amazing","as","is"], words2 = ["amazing","leetcode","is"]
+Output: 2
+Explanation:
+- "leetcode" appears exactly once in each of the two arrays. We count this string.
+- "amazing" appears exactly once in each of the two arrays. We count this string.
+- "is" appears in each of the two arrays, but there are 2 occurrences of it in words1. We do not count this string.
+- "as" appears once in words1, but does not appear in words2. We do not count this string.
+  Thus, there are 2 strings that appear exactly once in each of the two arrays.
+  Example 2:
 
-Input: jewels = "z", stones = "ZZ"
+Input: words1 = ["b","bb","bbb"], words2 = ["a","aa","aaa"]
 Output: 0
+Explanation: There are no strings that appear in each of the two arrays.
+Example 3:
 
-
-Constraints:
-
-1 <= jewels.length, stones.length <= 50
-jewels and stones consist of only English letters.
-All the characters of jewels are unique.
-Accepted
-879.1K
-Submissions
-996.5K
-Acceptance Rate
-88.2%
+Input: words1 = ["a","ab"], words2 = ["a","a","a","ab"]
+Output: 1
+Explanation: The only string that appears exactly once in each of the two arrays is "ab".

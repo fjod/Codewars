@@ -2,27 +2,32 @@ package main
 
 import (
 	"fmt"
-	"strings"
 )
 
-func numJewelsInStones(jewels string, stones string) int {
+func countWords(words1 []string, words2 []string) int {
 
-	var count int
-	for i := 0; i < len(stones); i++ {
-		if contains(jewels, stones[i]) {
-			count++
+	dict := make(map[string]int)
+	for _, word := range words1 {
+		dict[word]++
+	}
+	for _, word := range words2 {
+		v, ok := dict[word]
+		if ok && v <= 1 {
+			dict[word]--
 		}
 	}
-
+	count := 0
+	for _, v := range dict {
+		if v == 0 {
+			count += 1
+		}
+	}
 	return count
 }
 
-func contains(jewels string, u uint8) bool {
-	return strings.Contains(jewels, string(u))
-}
-
 func main() {
-	candidates := []int{2, 3, 6, 7}
-	t := combinationSum(candidates, 7)
+	w1 := []string{"leetcode", "is", "amazing", "as", "is"}
+	w2 := []string{"amazing", "leetcode", "is"}
+	t := countWords(w1, w2)
 	fmt.Println(t)
 }
