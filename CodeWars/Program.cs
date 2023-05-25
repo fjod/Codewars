@@ -18,24 +18,32 @@ namespace CodeWars
     {
         public class Solution
         {
-            public static int TitleToNumber(string columnTitle)
+            public static char SlowestKey(int[] releaseTimes, string keysPressed)
             {
-                int ret = 0;
+                List<(char, int)> durations = new List<(char, int)>();
                 int current = 0;
-                foreach (var c in columnTitle.Reverse())
+                int longest = 0;
+                foreach (var c in keysPressed)
                 {
-                    var weight = c - 'A' + 1;
-                    ret += weight * (int)Math.Pow(26, current);
+                    var dur = releaseTimes[current];
+                    if (current != 0) dur = releaseTimes[current] - releaseTimes[current - 1];
+                    if (current >= longest)
+                    {
+                        durations.Add((c, dur));
+                    }
+                    
                     current++;
                 }
 
-                return ret;
+                var maxDur = durations.Max(d => d.Item2);
+                var durationsWithMaxTime = durations.Where(d => d.Item2 == maxDur).OrderByDescending(d => d.Item1).First();
+                return durationsWithMaxTime.Item1;
             }
 
             static void Main(string[] args)
             {
                 int[] arr = new int[] {1, 3, 5, 7, 9};
-                var q = TitleToNumber("ZY");
+                var q = SlowestKey(new []{9,29,49,50}, "cbcd");
             }
         }
     }
