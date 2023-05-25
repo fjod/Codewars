@@ -1,44 +1,31 @@
-﻿171. Excel Sheet Column Number
-     Easy
-     4.2K
-     331
-     Companies
-     Given a string columnTitle that represents the column title as appears in an Excel sheet, return its corresponding column number.
+﻿1422. Maximum Score After Splitting a String
+      Easy
+      593
+      34
+      Companies
+      Given a string s of zeros and ones, return the maximum score after splitting the string into two non-empty substrings (i.e. left substring and right substring).
 
-For example:
+The score after splitting a string is the number of zeros in the left substring plus the number of ones in the right substring.
 
-A -> 1
-B -> 2
-C -> 3
-...
-Z -> 26
-AA -> 27
-AB -> 28
-...
 
 
 Example 1:
 
-Input: columnTitle = "A"
-Output: 1
+Input: s = "011101"
+Output: 5
+Explanation:
+All possible ways of splitting s into two non-empty substrings are:
+left = "0" and right = "11101", score = 1 + 4 = 5
+left = "01" and right = "1101", score = 1 + 3 = 4
+left = "011" and right = "101", score = 1 + 2 = 3
+left = "0111" and right = "01", score = 1 + 1 = 2
+left = "01110" and right = "1", score = 2 + 1 = 3
 Example 2:
 
-Input: columnTitle = "AB"
-Output: 28
+Input: s = "00111"
+Output: 5
+Explanation: When left = "00" and right = "111", we get the maximum score = 2 + 3 = 5
 Example 3:
 
-Input: columnTitle = "ZY"
-Output: 701
-
-
-Constraints:
-
-1 <= columnTitle.length <= 7
-columnTitle consists only of uppercase English letters.
-columnTitle is in the range ["A", "FXSHRXW"].
-Accepted
-600K
-Submissions
-963.8K
-Acceptance Rate
-62.3%
+Input: s = "1111"
+Output: 3

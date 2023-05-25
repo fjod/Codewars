@@ -2,20 +2,38 @@ package main
 
 import (
 	"fmt"
-	"math"
 )
 
-func titleToNumber(columnTitle string) int {
+func maxScore(s string) int {
 
-	ret := 0
-	current := len(columnTitle) - 1
-	for _, char := range columnTitle {
-		var weight = int(char) - 'A' + 1
-		pow := math.Pow(26, float64(current))
-		ret += weight * int(pow)
-		current--
+	ones := 0
+	for _, v := range s {
+		if v == '1' {
+			ones++
+		}
 	}
-	return ret
+	if ones == len(s) {
+		return ones - 1
+	}
+	if ones == 0 {
+		return len(s) - 1
+	}
+	max := 0
+	zeroes := 0
+
+	for i := 0; i < len(s)-1; i++ {
+		c := s[i]
+		if c == '0' {
+			zeroes++
+		} else {
+			ones--
+		}
+		if zeroes+ones > max {
+			max = zeroes + ones
+		}
+	}
+
+	return max
 }
 
 func main() {

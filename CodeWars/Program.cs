@@ -18,32 +18,35 @@ namespace CodeWars
     {
         public class Solution
         {
-            public static char SlowestKey(int[] releaseTimes, string keysPressed)
+            public static int MaxScore(string s)
             {
-                List<(char, int)> durations = new List<(char, int)>();
-                int current = 0;
-                int longest = 0;
-                foreach (var c in keysPressed)
+                var amountOfOnes = s.Count(c => c == '1');
+                if (amountOfOnes == s.Length) return amountOfOnes - 1;
+                if (amountOfOnes == 0) return s.Length - 1;
+                
+                var max = int.MinValue;
+                var amountOfZeroes = 0;
+              
+                for (var i = 0; i < s.Length - 1; i++)
                 {
-                    var dur = releaseTimes[current];
-                    if (current != 0) dur = releaseTimes[current] - releaseTimes[current - 1];
-                    if (current >= longest)
+                    if (s[i] == '0')
                     {
-                        durations.Add((c, dur));
+                        amountOfZeroes++;
                     }
-                    
-                    current++;
+                    else
+                    {
+                        amountOfOnes--;
+                    }
+                    max = Math.Max(max, amountOfZeroes + amountOfOnes);
                 }
 
-                var maxDur = durations.Max(d => d.Item2);
-                var durationsWithMaxTime = durations.Where(d => d.Item2 == maxDur).OrderByDescending(d => d.Item1).First();
-                return durationsWithMaxTime.Item1;
+                return max;
             }
 
             static void Main(string[] args)
             {
                 int[] arr = new int[] {1, 3, 5, 7, 9};
-                var q = SlowestKey(new []{9,29,49,50}, "cbcd");
+                var q = MaxScore("0100");
             }
         }
     }
