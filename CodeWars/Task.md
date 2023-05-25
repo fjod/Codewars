@@ -1,34 +1,44 @@
-﻿500. Keyboard Row
+﻿171. Excel Sheet Column Number
      Easy
-     1.3K
-     1.1K
+     4.2K
+     331
      Companies
-     Given an array of strings words, return the words that can be typed using letters of the alphabet on only one row of American keyboard like the image below.
+     Given a string columnTitle that represents the column title as appears in an Excel sheet, return its corresponding column number.
 
-In the American keyboard:
+For example:
 
-the first row consists of the characters "qwertyuiop",
-the second row consists of the characters "asdfghjkl", and
-the third row consists of the characters "zxcvbnm".
-
+A -> 1
+B -> 2
+C -> 3
+...
+Z -> 26
+AA -> 27
+AB -> 28
+...
 
 
 Example 1:
 
-Input: words = ["Hello","Alaska","Dad","Peace"]
-Output: ["Alaska","Dad"]
+Input: columnTitle = "A"
+Output: 1
 Example 2:
 
-Input: words = ["omk"]
-Output: []
+Input: columnTitle = "AB"
+Output: 28
 Example 3:
 
-Input: words = ["adsdf","sfd"]
-Output: ["adsdf","sfd"]
+Input: columnTitle = "ZY"
+Output: 701
 
 
 Constraints:
 
-1 <= words.length <= 20
-1 <= words[i].length <= 100
-words[i] consists of English letters (both lowercase and uppercase). 
+1 <= columnTitle.length <= 7
+columnTitle consists only of uppercase English letters.
+columnTitle is in the range ["A", "FXSHRXW"].
+Accepted
+600K
+Submissions
+963.8K
+Acceptance Rate
+62.3%

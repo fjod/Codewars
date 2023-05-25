@@ -2,29 +2,20 @@ package main
 
 import (
 	"fmt"
-	"strings"
+	"math"
 )
 
-func findWords(words []string) []string {
-	var res []string
-	checkString(words, &res, "qwertyuiop")
-	checkString(words, &res, "asdfghjkl")
-	checkString(words, &res, "zxcvbnm")
-	return res
-}
+func titleToNumber(columnTitle string) int {
 
-func checkString(words []string, i *[]string, keys string) {
-	for _, word := range words {
-		var flag = true
-		for _, letter := range word {
-			if !strings.Contains(keys, strings.ToLower(string(letter))) {
-				flag = false
-			}
-		}
-		if flag {
-			*i = append(*i, word)
-		}
+	ret := 0
+	current := len(columnTitle) - 1
+	for _, char := range columnTitle {
+		var weight = int(char) - 'A' + 1
+		pow := math.Pow(26, float64(current))
+		ret += weight * int(pow)
+		current--
 	}
+	return ret
 }
 
 func main() {
