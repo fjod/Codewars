@@ -4,17 +4,19 @@ import (
 	"fmt"
 )
 
-func truncateSentence(s string, k int) string {
-	spaces := 0
-	for i := 0; i < len(s); i++ {
-		if s[i] == ' ' {
-			spaces++
-		}
-		if spaces == k {
-			return s[:i]
+func largestAltitude(gain []int) int {
+	current := 0
+	max := -999999
+	for i := 0; i < len(gain); i++ {
+		current += gain[i]
+		if current > max {
+			max = current
 		}
 	}
-	return s
+	if max > 0 {
+		return max
+	}
+	return 0
 }
 
 func main() {

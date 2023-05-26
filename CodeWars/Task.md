@@ -1,41 +1,28 @@
-﻿1816. Truncate Sentence
+﻿1732. Find the Highest Altitude
       Easy
-      875
-      25
+      1.4K
+      120
       Companies
-      A sentence is a list of words that are separated by a single space with no leading or trailing spaces. Each of the words consists of only uppercase and lowercase English letters (no punctuation).
+      There is a biker going on a road trip. The road trip consists of n + 1 points at different altitudes. The biker starts his trip on point 0 with altitude equal 0.
 
-For example, "Hello World", "HELLO", and "hello world hello world" are all sentences.
-You are given a sentence s​​​​​​ and an integer k​​​​​​. You want to truncate s​​​​​​ such that it contains only the first k​​​​​​ words. Return s​​​​​​ after truncating it.
+You are given an integer array gain of length n where gain[i] is the net gain in altitude between points i​​​​​​ and i + 1 for all (0 <= i < n). Return the highest altitude of a point.
 
 
 
 Example 1:
 
-Input: s = "Hello how are you Contestant", k = 4
-Output: "Hello how are you"
-Explanation:
-The words in s are ["Hello", "how" "are", "you", "Contestant"].
-The first 4 words are ["Hello", "how", "are", "you"].
-Hence, you should return "Hello how are you".
+Input: gain = [-5,1,5,0,-7]
+Output: 1
+Explanation: The altitudes are [0,-5,-4,1,1,-6]. The highest is 1.
 Example 2:
 
-Input: s = "What is the solution to this problem", k = 4
-Output: "What is the solution"
-Explanation:
-The words in s are ["What", "is" "the", "solution", "to", "this", "problem"].
-The first 4 words are ["What", "is", "the", "solution"].
-Hence, you should return "What is the solution".
-Example 3:
-
-Input: s = "chopper is not a tanuki", k = 5
-Output: "chopper is not a tanuki"
+Input: gain = [-4,-3,-2,-1,4,3,2]
+Output: 0
+Explanation: The altitudes are [0,-4,-7,-9,-10,-6,-3,-1]. The highest is 0.
 
 
 Constraints:
 
-1 <= s.length <= 500
-k is in the range [1, the number of words in s].
-s consist of only lowercase and uppercase English letters and spaces.
-The words in s are separated by a single space.
-There are no leading or trailing spaces.
+n == gain.length
+1 <= n <= 100
+-100 <= gain[i] <= 100

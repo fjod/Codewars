@@ -18,23 +18,17 @@ namespace CodeWars
     {
         public class Solution
         {
-            public string TruncateSentence(string s, int k)
+            public int LargestAltitude(int[] gain)
             {
-                int spaces = 0;
-                for (int i = 0; i < s.Length; i++)
+                int current = 0;
+                int max = int.MinValue;
+                for (int i = 0; i < gain.Length; i++)
                 {
-                    var current = s[i];
-                    if (current == ' ')
-                    {
-                        spaces++;
-                    }
-
-                    if (spaces == k)
-                    {
-                        return s.Substring(0, i);
-                    }
+                    current = current + gain[i];
+                    max = Math.Max(max, current);
                 }
-                return s;
+                
+                return Math.Max(max, 0);
             }
 
             static void Main(string[] args)
