@@ -4,19 +4,23 @@ import (
 	"fmt"
 )
 
-func largestAltitude(gain []int) int {
-	current := 0
-	max := -999999
-	for i := 0; i < len(gain); i++ {
-		current += gain[i]
-		if current > max {
-			max = current
+func kthDistinct(arr []string, k int) string {
+
+	dict := make(map[string]int)
+	for _, v := range arr {
+		dict[v]++
+	}
+	for _, v := range arr {
+		if dict[v] == 1 {
+			k--
+		}
+		if k == 0 {
+			return v
 		}
 	}
-	if max > 0 {
-		return max
-	}
-	return 0
+
+	return ""
+
 }
 
 func main() {
