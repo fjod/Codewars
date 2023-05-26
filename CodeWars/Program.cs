@@ -18,17 +18,21 @@ namespace CodeWars
     {
         public class Solution
         {
-            public int LargestAltitude(int[] gain)
+            public int ArrayPairSum(int[] nums)
             {
-                int current = 0;
-                int max = int.MinValue;
-                for (int i = 0; i < gain.Length; i++)
+                List<(int, int)> arr = new List<(int, int)>(nums.Length / 2);
+                List<int> temp = new List<int>(2);
+                foreach (var current in nums.OrderBy(n => n))
                 {
-                    current = current + gain[i];
-                    max = Math.Max(max, current);
+                    temp.Add(current);
+                    if (temp.Count == 2)
+                    {
+                        arr.Add((temp[0], temp[1]));
+                        temp.Clear();
+                    }
                 }
-                
-                return Math.Max(max, 0);
+
+                return arr.Select(tuple => tuple.Item1).Sum();
             }
 
             static void Main(string[] args)
