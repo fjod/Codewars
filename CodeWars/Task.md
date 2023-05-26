@@ -1,28 +1,41 @@
-﻿520. Detect Capital
-     Easy
-     3.2K
-     446
-     Companies
-     We define the usage of capitals in a word to be right when one of the following cases holds:
+﻿1816. Truncate Sentence
+      Easy
+      875
+      25
+      Companies
+      A sentence is a list of words that are separated by a single space with no leading or trailing spaces. Each of the words consists of only uppercase and lowercase English letters (no punctuation).
 
-All letters in this word are capitals, like "USA".
-All letters in this word are not capitals, like "leetcode".
-Only the first letter in this word is capital, like "Google".
-Given a string word, return true if the usage of capitals in it is right.
+For example, "Hello World", "HELLO", and "hello world hello world" are all sentences.
+You are given a sentence s​​​​​​ and an integer k​​​​​​. You want to truncate s​​​​​​ such that it contains only the first k​​​​​​ words. Return s​​​​​​ after truncating it.
 
 
 
 Example 1:
 
-Input: word = "USA"
-Output: true
+Input: s = "Hello how are you Contestant", k = 4
+Output: "Hello how are you"
+Explanation:
+The words in s are ["Hello", "how" "are", "you", "Contestant"].
+The first 4 words are ["Hello", "how", "are", "you"].
+Hence, you should return "Hello how are you".
 Example 2:
 
-Input: word = "FlaG"
-Output: false
+Input: s = "What is the solution to this problem", k = 4
+Output: "What is the solution"
+Explanation:
+The words in s are ["What", "is" "the", "solution", "to", "this", "problem"].
+The first 4 words are ["What", "is", "the", "solution"].
+Hence, you should return "What is the solution".
+Example 3:
+
+Input: s = "chopper is not a tanuki", k = 5
+Output: "chopper is not a tanuki"
 
 
 Constraints:
 
-1 <= word.length <= 100
-word consists of lowercase and uppercase English letters.
+1 <= s.length <= 500
+k is in the range [1, the number of words in s].
+s consist of only lowercase and uppercase English letters and spaces.
+The words in s are separated by a single space.
+There are no leading or trailing spaces.

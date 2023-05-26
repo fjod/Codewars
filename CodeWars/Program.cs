@@ -18,37 +18,23 @@ namespace CodeWars
     {
         public class Solution
         {
-            public bool DetectCapitalUse(string word)
+            public string TruncateSentence(string s, int k)
             {
-                if (word.Length == 1)
+                int spaces = 0;
+                for (int i = 0; i < s.Length; i++)
                 {
-                    return true;
-                }
-
-                if (char.IsUpper(word[0]) && char.IsUpper(word[1]))
-                {
-                    for (int i = 2; i < word.Length; i++)
+                    var current = s[i];
+                    if (current == ' ')
                     {
-                        if (char.IsLower(word[i]))
-                        {
-                            return false;
-                        }
+                        spaces++;
                     }
 
-                    return true;
-                }
-
-
-                for (int i = 1; i < word.Length; i++)
-                {
-                    if (char.IsUpper(word[i]))
+                    if (spaces == k)
                     {
-                        return false;
+                        return s.Substring(0, i);
                     }
                 }
-
-
-                return true;
+                return s;
             }
 
             static void Main(string[] args)

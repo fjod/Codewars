@@ -2,33 +2,19 @@ package main
 
 import (
 	"fmt"
-	"unicode"
 )
 
-func detectCapitalUse(word string) bool {
-
-	if len(word) == 1 {
-		return true
-	}
-	if unicode.IsUpper(rune(word[0])) {
-		if unicode.IsUpper(rune(word[1])) {
-			for i := 2; i < len(word); i++ {
-				if unicode.IsLower(rune(word[i])) {
-					return false
-				}
-			}
-
-			return true
+func truncateSentence(s string, k int) string {
+	spaces := 0
+	for i := 0; i < len(s); i++ {
+		if s[i] == ' ' {
+			spaces++
+		}
+		if spaces == k {
+			return s[:i]
 		}
 	}
-
-	for i := 1; i < len(word); i++ {
-		if unicode.IsUpper(rune(word[i])) {
-			return false
-		}
-	}
-
-	return true
+	return s
 }
 
 func main() {
