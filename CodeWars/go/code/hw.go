@@ -2,43 +2,36 @@ package main
 
 import (
 	"fmt"
+	"unicode"
 )
 
-func maxScore(s string) int {
+func detectCapitalUse(word string) bool {
 
-	ones := 0
-	for _, v := range s {
-		if v == '1' {
-			ones++
-		}
+	if len(word) == 1 {
+		return true
 	}
-	if ones == len(s) {
-		return ones - 1
-	}
-	if ones == 0 {
-		return len(s) - 1
-	}
-	max := 0
-	zeroes := 0
+	if unicode.IsUpper(rune(word[0])) {
+		if unicode.IsUpper(rune(word[1])) {
+			for i := 2; i < len(word); i++ {
+				if unicode.IsLower(rune(word[i])) {
+					return false
+				}
+			}
 
-	for i := 0; i < len(s)-1; i++ {
-		c := s[i]
-		if c == '0' {
-			zeroes++
-		} else {
-			ones--
-		}
-		if zeroes+ones > max {
-			max = zeroes + ones
+			return true
 		}
 	}
 
-	return max
+	for i := 1; i < len(word); i++ {
+		if unicode.IsUpper(rune(word[i])) {
+			return false
+		}
+	}
+
+	return true
 }
 
 func main() {
-	w1 := []string{"leetcode", "is", "amazing", "as", "is"}
-	w2 := []string{"amazing", "leetcode", "is"}
-	t := countWords(w1, w2)
+	t := detectCapitalUse("USA")
 	fmt.Println(t)
 }

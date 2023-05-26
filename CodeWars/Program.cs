@@ -18,29 +18,37 @@ namespace CodeWars
     {
         public class Solution
         {
-            public static int MaxScore(string s)
+            public bool DetectCapitalUse(string word)
             {
-                var amountOfOnes = s.Count(c => c == '1');
-                if (amountOfOnes == s.Length) return amountOfOnes - 1;
-                if (amountOfOnes == 0) return s.Length - 1;
-                
-                var max = int.MinValue;
-                var amountOfZeroes = 0;
-              
-                for (var i = 0; i < s.Length - 1; i++)
+                if (word.Length == 1)
                 {
-                    if (s[i] == '0')
-                    {
-                        amountOfZeroes++;
-                    }
-                    else
-                    {
-                        amountOfOnes--;
-                    }
-                    max = Math.Max(max, amountOfZeroes + amountOfOnes);
+                    return true;
                 }
 
-                return max;
+                if (char.IsUpper(word[0]) && char.IsUpper(word[1]))
+                {
+                    for (int i = 2; i < word.Length; i++)
+                    {
+                        if (char.IsLower(word[i]))
+                        {
+                            return false;
+                        }
+                    }
+
+                    return true;
+                }
+
+
+                for (int i = 1; i < word.Length; i++)
+                {
+                    if (char.IsUpper(word[i]))
+                    {
+                        return false;
+                    }
+                }
+
+
+                return true;
             }
 
             static void Main(string[] args)
