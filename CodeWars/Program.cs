@@ -18,31 +18,51 @@ namespace CodeWars
     {
         public class Solution
         {
-            public int FindLHS(int[] nums)
+            public static int DistanceBetweenBusStops(int[] distance, int start, int destination)
             {
-                int ret = 0;
-                Dictionary<int, int> dictionary = new Dictionary<int, int>();
-                for (int i = 0; i < nums.Length; i++)
+
+                var forward = 0;
+                var backward = 0;
+
+                if (start < destination)
                 {
-                    if (dictionary.ContainsKey(nums[i])) dictionary[nums[i]]++;
-                    else
+                    for (int i = start; i < destination; i++)
                     {
-                        dictionary.Add(nums[i], 1);
+                        forward += distance[i];
+                    }
+
+                    for (int i = destination; i < distance.Length; i++)
+                    {
+                        backward += distance[i];
+                    }
+                    for (int i = 0; i < start; i++)
+                    {
+                        backward += distance[i];
+                    }
+                }
+                else
+                {
+                    for (int i = destination; i < start; i++)
+                    {
+                        backward += distance[i];
+                    }
+
+                    for (int i = start; i < distance.Length; i++)
+                    {
+                        forward += distance[i];
+                    }
+                    for (int i = 0; i < destination; i++)
+                    {
+                        forward += distance[i];
                     }
                 }
 
-                foreach (var (key, value) in dictionary)
-                {
-                    if (dictionary.ContainsKey(key + 1))
-                        ret = Math.Max(ret, value + dictionary[key + 1]);
-                }
-
-                return ret;
+                return Math.Min(forward, backward);
             }
 
             static void Main(string[] args)
             {
-                var arr = IsAlienSorted(new []{"apple", "app"}, "abcdefghijklmnopqrstuvwxyz");
+                var arr = DistanceBetweenBusStops(new []{7,10,1,12,11,14,5,0}, 7 , 2);
             }
         }
     }
