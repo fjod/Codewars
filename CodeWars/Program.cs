@@ -18,20 +18,35 @@ namespace CodeWars
     {
         public class Solution
         {
-            public static int SmallestEqual(int[] nums) {
-
-                for (int i = 0; i < nums.Length; i++)
+            public static IList<int> LuckyNumbers (int[][] matrix)
+            {
+                List<int> ret = new List<int>();
+          
+                for (int i = 0; i < matrix[0].Length; i++)
                 {
-                    var mod = i % 10;
-                    if (mod == nums[i]) return i;
+                    int max = 0;
+                    int col = 0;
+                    for (int j = 0; j < matrix.Length; j++)
+                    {
+                        if (matrix[j][i] > max)
+                        {
+                            max = matrix[j][i];
+                            col = j;
+                        }
+                    }
+
+                    if (matrix[col].Min() == max)
+                    {
+                        ret.Add(max);
+                    }
                 }
 
-                return -1;
+                return ret;
             }
 
             static void Main(string[] args)
             {
-                var arr = SmallestEqual(new[] {0, 1, 2});
+                var arr = LuckyNumbers(new[] {new []{1,10,4,2}, new []{9,3,8,7}, new []{15,16,17,12}});
             }
         }
     }
