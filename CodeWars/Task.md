@@ -1,34 +1,41 @@
-﻿2053. Kth Distinct String in an Array
+﻿2057. Smallest Index With Equal Value
       Easy
-      627
-      23
+      314
+      111
       Companies
-      A distinct string is a string that is present only once in an array.
+      Given a 0-indexed integer array nums, return the smallest index i of nums such that i mod 10 == nums[i], or -1 if such index does not exist.
 
-Given an array of strings arr, and an integer k, return the kth distinct string present in arr. If there are fewer than k distinct strings, return an empty string "".
-
-Note that the strings are considered in the order in which they appear in the array.
+x mod y denotes the remainder when x is divided by y.
 
 
 
 Example 1:
 
-Input: arr = ["d","b","c","b","c","a"], k = 2
-Output: "a"
+Input: nums = [0,1,2]
+Output: 0
 Explanation:
-The only distinct strings in arr are "d" and "a".
-"d" appears 1st, so it is the 1st distinct string.
-"a" appears 2nd, so it is the 2nd distinct string.
-Since k == 2, "a" is returned.
+i=0: 0 mod 10 = 0 == nums[0].
+i=1: 1 mod 10 = 1 == nums[1].
+i=2: 2 mod 10 = 2 == nums[2].
+All indices have i mod 10 == nums[i], so we return the smallest index 0.
 Example 2:
 
-Input: arr = ["aaa","aa","a"], k = 1
-Output: "aaa"
+Input: nums = [4,3,2,1]
+Output: 2
 Explanation:
-All strings in arr are distinct, so the 1st string "aaa" is returned.
+i=0: 0 mod 10 = 0 != nums[0].
+i=1: 1 mod 10 = 1 != nums[1].
+i=2: 2 mod 10 = 2 == nums[2].
+i=3: 3 mod 10 = 3 != nums[3].
+2 is the only index which has i mod 10 == nums[i].
 Example 3:
 
-Input: arr = ["a","b","a"], k = 3
-Output: ""
-Explanation:
-The only distinct string is "b". Since there are fewer than 3 distinct strings, we return an empty string "".
+Input: nums = [1,2,3,4,5,6,7,8,9,0]
+Output: -1
+Explanation: No index satisfies i mod 10 == nums[i].
+
+
+Constraints:
+
+1 <= nums.length <= 100
+0 <= nums[i] <= 9

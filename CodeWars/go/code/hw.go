@@ -4,23 +4,14 @@ import (
 	"fmt"
 )
 
-func kthDistinct(arr []string, k int) string {
+func smallestEqual(nums []int) int {
 
-	dict := make(map[string]int)
-	for _, v := range arr {
-		dict[v]++
-	}
-	for _, v := range arr {
-		if dict[v] == 1 {
-			k--
-		}
-		if k == 0 {
-			return v
+	for i := 0; i < len(nums); i++ {
+		if i%10 == nums[i] {
+			return i
 		}
 	}
-
-	return ""
-
+	return -1
 }
 
 func main() {
