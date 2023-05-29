@@ -18,35 +18,21 @@ namespace CodeWars
     {
         public class Solution
         {
-            public static IList<int> LuckyNumbers (int[][] matrix)
+            public int MaxCount(int m, int n, int[][] ops)
             {
-                List<int> ret = new List<int>();
-          
-                for (int i = 0; i < matrix[0].Length; i++)
+                if (ops.Length == 0)
                 {
-                    int max = 0;
-                    int col = 0;
-                    for (int j = 0; j < matrix.Length; j++)
-                    {
-                        if (matrix[j][i] > max)
-                        {
-                            max = matrix[j][i];
-                            col = j;
-                        }
-                    }
-
-                    if (matrix[col].Min() == max)
-                    {
-                        ret.Add(max);
-                    }
+                    return m * n;
                 }
 
-                return ret;
+                var minX = ops.Select(x => x[0]).Min();
+                var minY = ops.Select(x => x[1]).Min();
+                return minX * minY;
             }
 
             static void Main(string[] args)
             {
-                var arr = LuckyNumbers(new[] {new []{1,10,4,2}, new []{9,3,8,7}, new []{15,16,17,12}});
+                var arr = LuckyNumbers(new[] {new[] {1, 10, 4, 2}, new[] {9, 3, 8, 7}, new[] {15, 16, 17, 12}});
             }
         }
     }

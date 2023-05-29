@@ -4,14 +4,19 @@ import (
 	"fmt"
 )
 
-func smallestEqual(nums []int) int {
+func maxCount(m int, n int, ops [][]int) int {
 
-	for i := 0; i < len(nums); i++ {
-		if i%10 == nums[i] {
-			return i
-		}
+	if len(ops) == 0 {
+		return m * n
 	}
-	return -1
+	
+	m = ops[0][0]
+	n = ops[0][1]
+	for _, op := range ops {
+		m = min(m, op[0])
+		n = min(n, op[1])
+	}
+	return m * n
 }
 
 func main() {

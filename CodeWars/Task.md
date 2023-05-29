@@ -1,26 +1,25 @@
-﻿1380. Lucky Numbers in a Matrix
-      Easy
-      1.4K
-      75
-      Companies
-      Given an m x n matrix of distinct numbers, return all lucky numbers in the matrix in any order.
+﻿598. Range Addition II
+     Easy
+     834
+     909
+     Companies
+     You are given an m x n matrix M initialized with all 0's and an array of operations ops, where ops[i] = [ai, bi] means M[x][y] should be incremented by one for all 0 <= x < ai and 0 <= y < bi.
 
-A lucky number is an element of the matrix such that it is the minimum element in its row and maximum in its column.
+Count and return the number of maximum integers in the matrix after performing all the operations.
 
 
 
 Example 1:
 
-Input: matrix = [[3,7,8],[9,11,13],[15,16,17]]
-Output: [15]
-Explanation: 15 is the only lucky number since it is the minimum in its row and the maximum in its column.
+
+Input: m = 3, n = 3, ops = [[2,2],[3,3]]
+Output: 4
+Explanation: The maximum integer in M is 2, and there are four of it in M. So return 4.
 Example 2:
 
-Input: matrix = [[1,10,4,2],[9,3,8,7],[15,16,17,12]]
-Output: [12]
-Explanation: 12 is the only lucky number since it is the minimum in its row and the maximum in its column.
+Input: m = 3, n = 3, ops = [[2,2],[3,3],[3,3],[3,3],[2,2],[3,3],[3,3],[3,3],[2,2],[3,3],[3,3],[3,3]]
+Output: 4
 Example 3:
 
-Input: matrix = [[7,8],[1,2]]
-Output: [7]
-Explanation: 7 is the only lucky number since it is the minimum in its row and the maximum in its column.
+Input: m = 3, n = 3, ops = []
+Output: 9
