@@ -18,26 +18,26 @@ namespace CodeWars
     {
         public class Solution
         {
-            public static bool IsAlienSorted(string[] words, string order) {
-
-                for (int i = 1; i < words.Length; i++)
+            public int FindLHS(int[] nums)
+            {
+                int ret = 0;
+                Dictionary<int, int> dictionary = new Dictionary<int, int>();
+                for (int i = 0; i < nums.Length; i++)
                 {
-                    var prev = words[i - 1];
-                    var curr = words[i];
-                    for (int j = 0; j < prev.Length; j++)
+                    if (dictionary.ContainsKey(nums[i])) dictionary[nums[i]]++;
+                    else
                     {
-                        var prevChar = prev[j];
-                        if (j >= curr.Length)return false;
-                        var currChar = curr[j];
-                        if (prevChar != currChar)
-                        {
-                            if (order.IndexOf(prevChar) > order.IndexOf(currChar)) return false;
-                            break;
-                        }
+                        dictionary.Add(nums[i], 1);
                     }
                 }
 
-                return true;
+                foreach (var (key, value) in dictionary)
+                {
+                    if (dictionary.ContainsKey(key + 1))
+                        ret = Math.Max(ret, value + dictionary[key + 1]);
+                }
+
+                return ret;
             }
 
             static void Main(string[] args)

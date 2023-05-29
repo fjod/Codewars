@@ -1,34 +1,26 @@
-﻿953. Verifying an Alien Dictionary
+﻿594. Longest Harmonious Subsequence
      Easy
-     4.6K
-     1.5K
+     1.9K
+     184
      Companies
-     In an alien language, surprisingly, they also use English lowercase letters, but possibly in a different order. The order of the alphabet is some permutation of lowercase letters.
+     We define a harmonious array as an array where the difference between its maximum value and its minimum value is exactly 1.
 
-Given a sequence of words written in the alien language, and the order of the alphabet, return true if and only if the given words are sorted lexicographically in this alien language.
+Given an integer array nums, return the length of its longest harmonious subsequence among all its possible subsequences.
+
+A subsequence of array is a sequence that can be derived from the array by deleting some or no elements without changing the order of the remaining elements.
 
 
 
 Example 1:
 
-Input: words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
-Output: true
-Explanation: As 'h' comes before 'l' in this language, then the sequence is sorted.
+Input: nums = [1,3,2,2,5,2,3,7]
+Output: 5
+Explanation: The longest harmonious subsequence is [3,2,2,2,3].
 Example 2:
 
-Input: words = ["word","world","row"], order = "worldabcefghijkmnpqstuvxyz"
-Output: false
-Explanation: As 'd' comes after 'l' in this language, then words[0] > words[1], hence the sequence is unsorted.
+Input: nums = [1,2,3,4]
+Output: 2
 Example 3:
 
-Input: words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
-Output: false
-Explanation: The first three characters "app" match, and the second string is shorter (in size.) According to lexicographical rules "apple" > "app", because 'l' > '∅', where '∅' is defined as the blank character which is less than any other character (More info).
-
-
-Constraints:
-
-1 <= words.length <= 100
-1 <= words[i].length <= 20
-order.length == 26
-All characters in words[i] and order are English lowercase letters.
+Input: nums = [1,1,1,1]
+Output: 0

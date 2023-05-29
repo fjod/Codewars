@@ -7,26 +7,23 @@ import (
 	"strings"
 )
 
-func isAlienSorted(words []string, order string) bool {
+func findLHS(nums []int) int {
 
-	for i := 1; i < len(words); i++ {
-		prev := words[i-1]
-		curr := words[i]
-		for j := 0; j < len(prev); j++ {
-			prevChar := prev[j]
-			if j >= len(curr) {
-				return false
-			}
-			currChar := curr[j]
-			if prevChar != currChar {
-				if strings.Index(order, string(prevChar)) > strings.Index(order, string(currChar)){
-					return false
-				}
-				break
+	var max int
+	dict := make(map[int]int)
+	for _, v := range nums {
+		dict[v]++
+	}
+
+	for k, v := range dict {
+		next, ok := dict[k + 1]
+		if ok {
+			if v+next > max {
+				max = v + next
 			}
 		}
 	}
-	return true
+	return max
 }
 
 func main() {
