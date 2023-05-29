@@ -18,21 +18,31 @@ namespace CodeWars
     {
         public class Solution
         {
-            public int MaxCount(int m, int n, int[][] ops)
-            {
-                if (ops.Length == 0)
+            public static bool IsAlienSorted(string[] words, string order) {
+
+                for (int i = 1; i < words.Length; i++)
                 {
-                    return m * n;
+                    var prev = words[i - 1];
+                    var curr = words[i];
+                    for (int j = 0; j < prev.Length; j++)
+                    {
+                        var prevChar = prev[j];
+                        if (j >= curr.Length)return false;
+                        var currChar = curr[j];
+                        if (prevChar != currChar)
+                        {
+                            if (order.IndexOf(prevChar) > order.IndexOf(currChar)) return false;
+                            break;
+                        }
+                    }
                 }
 
-                var minX = ops.Select(x => x[0]).Min();
-                var minY = ops.Select(x => x[1]).Min();
-                return minX * minY;
+                return true;
             }
 
             static void Main(string[] args)
             {
-                var arr = LuckyNumbers(new[] {new[] {1, 10, 4, 2}, new[] {9, 3, 8, 7}, new[] {15, 16, 17, 12}});
+                var arr = IsAlienSorted(new []{"apple", "app"}, "abcdefghijklmnopqrstuvwxyz");
             }
         }
     }

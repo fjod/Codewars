@@ -1,25 +1,34 @@
-﻿598. Range Addition II
+﻿953. Verifying an Alien Dictionary
      Easy
-     834
-     909
+     4.6K
+     1.5K
      Companies
-     You are given an m x n matrix M initialized with all 0's and an array of operations ops, where ops[i] = [ai, bi] means M[x][y] should be incremented by one for all 0 <= x < ai and 0 <= y < bi.
+     In an alien language, surprisingly, they also use English lowercase letters, but possibly in a different order. The order of the alphabet is some permutation of lowercase letters.
 
-Count and return the number of maximum integers in the matrix after performing all the operations.
+Given a sequence of words written in the alien language, and the order of the alphabet, return true if and only if the given words are sorted lexicographically in this alien language.
 
 
 
 Example 1:
 
-
-Input: m = 3, n = 3, ops = [[2,2],[3,3]]
-Output: 4
-Explanation: The maximum integer in M is 2, and there are four of it in M. So return 4.
+Input: words = ["hello","leetcode"], order = "hlabcdefgijkmnopqrstuvwxyz"
+Output: true
+Explanation: As 'h' comes before 'l' in this language, then the sequence is sorted.
 Example 2:
 
-Input: m = 3, n = 3, ops = [[2,2],[3,3],[3,3],[3,3],[2,2],[3,3],[3,3],[3,3],[2,2],[3,3],[3,3],[3,3]]
-Output: 4
+Input: words = ["word","world","row"], order = "worldabcefghijkmnpqstuvxyz"
+Output: false
+Explanation: As 'd' comes after 'l' in this language, then words[0] > words[1], hence the sequence is unsorted.
 Example 3:
 
-Input: m = 3, n = 3, ops = []
-Output: 9
+Input: words = ["apple","app"], order = "abcdefghijklmnopqrstuvwxyz"
+Output: false
+Explanation: The first three characters "app" match, and the second string is shorter (in size.) According to lexicographical rules "apple" > "app", because 'l' > '∅', where '∅' is defined as the blank character which is less than any other character (More info).
+
+
+Constraints:
+
+1 <= words.length <= 100
+1 <= words[i].length <= 20
+order.length == 26
+All characters in words[i] and order are English lowercase letters.

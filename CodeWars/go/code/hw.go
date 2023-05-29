@@ -2,21 +2,31 @@ package main
 
 import (
 	"fmt"
+	"strings"
+),
+	"strings"
 )
 
-func maxCount(m int, n int, ops [][]int) int {
+func isAlienSorted(words []string, order string) bool {
 
-	if len(ops) == 0 {
-		return m * n
+	for i := 1; i < len(words); i++ {
+		prev := words[i-1]
+		curr := words[i]
+		for j := 0; j < len(prev); j++ {
+			prevChar := prev[j]
+			if j >= len(curr) {
+				return false
+			}
+			currChar := curr[j]
+			if prevChar != currChar {
+				if strings.Index(order, string(prevChar)) > strings.Index(order, string(currChar)){
+					return false
+				}
+				break
+			}
+		}
 	}
-	
-	m = ops[0][0]
-	n = ops[0][1]
-	for _, op := range ops {
-		m = min(m, op[0])
-		n = min(n, op[1])
-	}
-	return m * n
+	return true
 }
 
 func main() {
