@@ -18,24 +18,12 @@ namespace CodeWars
     {
         public class Solution
         {
-            public class NumArray
-            {
-                private int[] _nums;
-
-                public NumArray(int[] nums)
-                {
-                    _nums = new int[nums.Length];
-                    _nums[0] = nums[0];
-                    for (int i = 1; i < nums.Length; ++i)
-                        _nums[i] = _nums[i - 1] + nums[i];
-                }
-
-                public int SumRange(int left, int right)
-                {
-                    var leftSum = _nums[right];
-                    if (left == 0) return leftSum;
-                    return leftSum - _nums[left - 1];
-                }
+            public bool IsPowerOfThree(int n) {
+                if(n<=0)
+                    return false;
+                if(n==1)
+                    return true;
+                return n%3==0 && IsPowerOfThree(n/3);
             }
 
             static void Main(string[] args)
