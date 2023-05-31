@@ -18,46 +18,27 @@ namespace CodeWars
     {
         public class Solution
         {
-            public static int DistanceBetweenBusStops(int[] distance, int start, int destination)
+            public bool WordPattern(string pattern, string s)
             {
-
-                var forward = 0;
-                var backward = 0;
-
-                if (start < destination)
+                var splitted = s.Split(' ');
+                var dict = new Dictionary<char, string>();
+                if (splitted.Length != pattern.Length) return false;
+                for (var i = 0; i < pattern.Length; i++)
                 {
-                    for (int i = start; i < destination; i++)
+                    var currentChar = pattern[i];
+                    var currentWord = splitted[i];
+                    if (!dict.ContainsKey(currentChar))
                     {
-                        forward += distance[i];
+                        if (dict.ContainsValue(currentWord)) return false;
+                        dict.Add(currentChar, currentWord);
                     }
-
-                    for (int i = destination; i < distance.Length; i++)
+                    else
                     {
-                        backward += distance[i];
-                    }
-                    for (int i = 0; i < start; i++)
-                    {
-                        backward += distance[i];
-                    }
-                }
-                else
-                {
-                    for (int i = destination; i < start; i++)
-                    {
-                        backward += distance[i];
-                    }
-
-                    for (int i = start; i < distance.Length; i++)
-                    {
-                        forward += distance[i];
-                    }
-                    for (int i = 0; i < destination; i++)
-                    {
-                        forward += distance[i];
+                        if (dict[currentChar] != currentWord) return false;
                     }
                 }
 
-                return Math.Min(forward, backward);
+                return true;
             }
 
             static void Main(string[] args)
