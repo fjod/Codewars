@@ -2,40 +2,26 @@ package main
 
 import (
 	"fmt"
-	"strings"
-),
-	"strings"
 )
 
-func distanceBetweenBusStops(distance []int, start int, destination int) int {
+func vowelStrings(words []string, left int, right int) int {
+	count := 0
+	vowels := make(map[rune]bool)
+	vowels['a'] = true
+	vowels['e'] = true
+	vowels['i'] = true
+	vowels['o'] = true
+	vowels['u'] = true
+	for i := left; i < right; i++ {
+		currentWord := words[i]
+		_, okFirst := vowels[rune(currentWord[0])]
+		_, okLast := vowels[rune(currentWord[len(currentWord)])]
+		if okLast && okFirst {
+			count++
+		}
+	}
 
-	forward := 0
-	backward := 0
-	if start < destination{
-		for i:=start;i<destination;i++{
-			forward += distance[i]
-		}
-		for i:=destination;i<len(distance);i++{
-			backward += distance[i]
-		}
-		for i:=0;i<start;i++{
-			backward += distance[i]
-		}
-	} else {
-		for i:=destination;i<start;i++{
-			backward += distance[i]
-		}
-		for i:=start;i<len(distance);i++{
-			forward += distance[i]
-		}
-		for i:=0;i<destination;i++{
-			forward += distance[i]
-		}
-	}
-	if forward < backward{
-		return forward
-	}
-	return backward
+	return count
 }
 
 func main() {
