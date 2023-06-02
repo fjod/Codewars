@@ -4,27 +4,19 @@ import (
 	"fmt"
 )
 
-func vowelStrings(words []string, left int, right int) int {
-	count := 0
-	vowels := make(map[rune]bool)
-	vowels['a'] = true
-	vowels['e'] = true
-	vowels['i'] = true
-	vowels['o'] = true
-	vowels['u'] = true
-	for i := left; i < right; i++ {
-		currentWord := words[i]
-		_, okFirst := vowels[rune(currentWord[0])]
-		_, okLast := vowels[rune(currentWord[len(currentWord)])]
-		if okLast && okFirst {
-			count++
-		}
-	}
+func kItemsWithMaximumSum(numOnes int, numZeros int, numNegOnes int, k int) int {
 
-	return count
+	if k <= numOnes {
+		return k
+	}
+	if k <= numOnes+numZeros {
+		return numOnes
+	}
+	left := k - (numZeros + numOnes)
+	return numOnes - left
 }
 
 func main() {
-	t := detectCapitalUse("USA")
+	t := kItemsWithMaximumSum(6, 6, 6, 13)
 	fmt.Println(t)
 }
