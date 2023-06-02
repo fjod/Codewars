@@ -1,36 +1,25 @@
-﻿2600. K Items With the Maximum Sum
+﻿2605. Form Smallest Number From Two Digit Arrays
       Easy
-      194
-      20
+      209
+      9
       Companies
-      There is a bag that consists of items, each item has a number 1, 0, or -1 written on it.
-
-You are given four non-negative integers numOnes, numZeros, numNegOnes, and k.
-
-The bag initially contains:
-
-numOnes items with 1s written on them.
-numZeroes items with 0s written on them.
-numNegOnes items with -1s written on them.
-We want to pick exactly k items among the available items. Return the maximum possible sum of numbers written on the items.
-
+      Given two arrays of unique digits nums1 and nums2, return the smallest number that contains at least one digit from each array.
 
 
 Example 1:
 
-Input: numOnes = 3, numZeros = 2, numNegOnes = 0, k = 2
-Output: 2
-Explanation: We have a bag of items with numbers written on them {1, 1, 1, 0, 0}. We take 2 items with 1 written on them and get a sum in a total of 2.
-It can be proven that 2 is the maximum possible sum.
+Input: nums1 = [4,1,3], nums2 = [5,7]
+Output: 15
+Explanation: The number 15 contains the digit 1 from nums1 and the digit 5 from nums2. It can be proven that 15 is the smallest number we can have.
 Example 2:
 
-Input: numOnes = 3, numZeros = 2, numNegOnes = 0, k = 4
+Input: nums1 = [3,5,2,6], nums2 = [3,1,7]
 Output: 3
-Explanation: We have a bag of items with numbers written on them {1, 1, 1, 0, 0}. We take 3 items with 1 written on them, and 1 item with 0 written on it, and get a sum in a total of 3.
-It can be proven that 3 is the maximum possible sum.
+Explanation: The number 3 contains the digit 3 which exists in both arrays.
 
 
 Constraints:
 
-0 <= numOnes, numZeros, numNegOnes <= 50
-0 <= k <= numOnes + numZeros + numNegOnes
+1 <= nums1.length, nums2.length <= 9
+1 <= nums1[i], nums2[i] <= 9
+All digits in each array are unique.
