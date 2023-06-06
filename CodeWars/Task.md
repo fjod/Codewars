@@ -1,38 +1,30 @@
-﻿112. Path Sum
+﻿617. Merge Two Binary Trees
      Easy
-     8.4K
-     941
+     8.2K
+     279
      Companies
-     Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.
+     You are given two binary trees root1 and root2.
 
-A leaf is a node with no children.
+Imagine that when you put one of them to cover the other, some nodes of the two trees are overlapped while the others are not. You need to merge the two trees into a new binary tree. The merge rule is that if two nodes overlap, then sum node values up as the new value of the merged node. Otherwise, the NOT null node will be used as the node of the new tree.
+
+Return the merged tree.
+
+Note: The merging process must start from the root nodes of both trees.
 
 
 
 Example 1:
 
 
-Input: root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
-Output: true
-Explanation: The root-to-leaf path with the target sum is shown.
+Input: root1 = [1,3,2,5], root2 = [2,1,3,null,4,null,7]
+Output: [3,4,5,5,4,null,7]
 Example 2:
 
-
-Input: root = [1,2,3], targetSum = 5
-Output: false
-Explanation: There two root-to-leaf paths in the tree:
-(1 --> 2): The sum is 3.
-(1 --> 3): The sum is 4.
-There is no root-to-leaf path with sum = 5.
-Example 3:
-
-Input: root = [], targetSum = 0
-Output: false
-Explanation: Since the tree is empty, there are no root-to-leaf paths.
+Input: root1 = [1], root2 = [1,2]
+Output: [2,2]
 
 
 Constraints:
 
-The number of nodes in the tree is in the range [0, 5000].
--1000 <= Node.val <= 1000
--1000 <= targetSum <= 1000
+The number of nodes in both trees is in the range [0, 2000].
+-104 <= Node.val <= 104

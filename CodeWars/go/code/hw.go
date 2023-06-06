@@ -4,16 +4,40 @@ import (
 	"fmt"
 )
 
-func hasPathSum(root *TreeNode, targetSum int) bool {
-	if root == nil {
-		return false
+func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
+
+	if root1 == nil {
+		return root2
 	}
-	if root.Left == nil && root.Right == nil {
-		return targetSum == root.Val
+
+	if root2 == nil {
+		return root1
 	}
-	left := hasPathSum(root.Left, targetSum-root.Val)
-	right := hasPathSum(root.Right, targetSum-root.Val)
-	return left || right
+
+	mergeInner(root1, root2)
+	return root1
+}
+
+func mergeInner(root1 *TreeNode, root2 *TreeNode) {
+	if root1 == nil {
+		root1 = root2
+		return
+	}
+	if root2 != nil {
+		root1.Val += root2.Val
+		if root1.Left == nil {
+			root1.Left = root2.Left
+		} else {
+			mergeInner(root1.Left, root2.Left)
+		}
+
+		if root1.Right == nil {
+			root1.Right = root2.Right
+		} else {
+			mergeInner(root1.Right, root2.Right)
+		}
+
+	}
 }
 
 func main() {
