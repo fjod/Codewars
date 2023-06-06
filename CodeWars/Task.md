@@ -1,25 +1,38 @@
-﻿2605. Form Smallest Number From Two Digit Arrays
-      Easy
-      209
-      9
-      Companies
-      Given two arrays of unique digits nums1 and nums2, return the smallest number that contains at least one digit from each array.
+﻿112. Path Sum
+     Easy
+     8.4K
+     941
+     Companies
+     Given the root of a binary tree and an integer targetSum, return true if the tree has a root-to-leaf path such that adding up all the values along the path equals targetSum.
+
+A leaf is a node with no children.
+
 
 
 Example 1:
 
-Input: nums1 = [4,1,3], nums2 = [5,7]
-Output: 15
-Explanation: The number 15 contains the digit 1 from nums1 and the digit 5 from nums2. It can be proven that 15 is the smallest number we can have.
+
+Input: root = [5,4,8,11,null,13,4,7,2,null,null,null,1], targetSum = 22
+Output: true
+Explanation: The root-to-leaf path with the target sum is shown.
 Example 2:
 
-Input: nums1 = [3,5,2,6], nums2 = [3,1,7]
-Output: 3
-Explanation: The number 3 contains the digit 3 which exists in both arrays.
+
+Input: root = [1,2,3], targetSum = 5
+Output: false
+Explanation: There two root-to-leaf paths in the tree:
+(1 --> 2): The sum is 3.
+(1 --> 3): The sum is 4.
+There is no root-to-leaf path with sum = 5.
+Example 3:
+
+Input: root = [], targetSum = 0
+Output: false
+Explanation: Since the tree is empty, there are no root-to-leaf paths.
 
 
 Constraints:
 
-1 <= nums1.length, nums2.length <= 9
-1 <= nums1[i], nums2[i] <= 9
-All digits in each array are unique.
+The number of nodes in the tree is in the range [0, 5000].
+-1000 <= Node.val <= 1000
+-1000 <= targetSum <= 1000
