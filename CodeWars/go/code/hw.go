@@ -4,40 +4,38 @@ import (
 	"fmt"
 )
 
-func mergeTrees(root1 *TreeNode, root2 *TreeNode) *TreeNode {
+func numUniqueEmails(emails []string) int {
 
-	if root1 == nil {
-		return root2
+	emailDict := make(map[string]int)
+	for _, email := range emails {
+		converted := conv(email)
+		emailDict[converted]++
 	}
-
-	if root2 == nil {
-		return root1
-	}
-
-	mergeInner(root1, root2)
-	return root1
+	return len(emailDict)
 }
 
-func mergeInner(root1 *TreeNode, root2 *TreeNode) {
-	if root1 == nil {
-		root1 = root2
-		return
-	}
-	if root2 != nil {
-		root1.Val += root2.Val
-		if root1.Left == nil {
-			root1.Left = root2.Left
-		} else {
-			mergeInner(root1.Left, root2.Left)
+func conv(email string) string {
+	ignoreCurrent := false
+	conv := make([]rune, 0, len(email))
+	for i := 0; i < len(email); i++ {
+		current := email[i]
+		if current == '.' {
+			continue
 		}
-
-		if root1.Right == nil {
-			root1.Right = root2.Right
-		} else {
-			mergeInner(root1.Right, root2.Right)
+		if current == '+' {
+			ignoreCurrent = true
 		}
-
+		if current == '@' {
+			for j := i; j < len(email); j++ {
+				conv = append(conv, rune(email[j]))
+			}
+			return string(conv)
+		}
+		if ignoreCurrent == false {
+			conv = append(conv, rune(current))
+		}
 	}
+	return string(conv)
 }
 
 func main() {
