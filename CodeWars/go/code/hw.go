@@ -4,43 +4,35 @@ import (
 	"fmt"
 )
 
-func numUniqueEmails(emails []string) int {
+func diagonalSum(mat [][]int) int {
 
-	emailDict := make(map[string]int)
-	for _, email := range emails {
-		converted := conv(email)
-		emailDict[converted]++
+	if len(mat) == 1 {
+		return mat[0][0]
 	}
-	return len(emailDict)
-}
+	sum := 0
+	for i := 0; i < len(mat); i++ {
+		sum += mat[i][i]
+	}
 
-func conv(email string) string {
-	ignoreCurrent := false
-	conv := make([]rune, 0, len(email))
-	for i := 0; i < len(email); i++ {
-		current := email[i]
-		if current == '.' {
-			continue
-		}
-		if current == '+' {
-			ignoreCurrent = true
-		}
-		if current == '@' {
-			for j := i; j < len(email); j++ {
-				conv = append(conv, rune(email[j]))
-			}
-			return string(conv)
-		}
-		if ignoreCurrent == false {
-			conv = append(conv, rune(current))
-		}
+	for i := len(mat) - 1; i >= 0; i-- {
+		sum += mat[i][len(mat)-i-1]
 	}
-	return string(conv)
+
+	if len(mat)%2 == 0 {
+		return sum
+	}
+
+	mid := len(mat) / 2
+	return sum - mat[mid][mid]
 }
 
 func main() {
-	n2 := []int{3, 5, 2, 6}
-	n1 := []int{3, 1, 7}
-	t := minNumber(n1, n2)
+
+	n1 := []int{7, 3, 1, 9}
+	n2 := []int{3, 4, 6, 9}
+	n3 := []int{6, 9, 6, 6}
+	n4 := []int{9, 5, 8, 5}
+	n5 := [][]int{n1, n2, n3, n4}
+	t := diagonalSum(n5)
 	fmt.Println(t)
 }
