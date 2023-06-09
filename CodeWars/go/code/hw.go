@@ -4,22 +4,22 @@ import (
 	"fmt"
 )
 
-func numWaterBottles(numBottles int, numExchange int) int {
-
-	total := numBottles
-	empties := numBottles
-	for empties >= numExchange {
-		exchanged := empties / numExchange
-		total += exchanged
-		empties = exchanged + empties%numExchange
-
+func shuffle(nums []int, n int) []int {
+	ret := make([]int, n*2)
+	for i := 0; i < n; i++ {
+		ret[i*2] = nums[i]
 	}
-
-	return total
+	index := 1
+	for i := n; i < len(nums); i++ {
+		ret[index] = nums[i]
+		index += 2
+	}
+	return ret
 }
 
 func main() {
 
-	t := numWaterBottles(15, 4)
+	test := []int{2, 5, 1, 3, 4, 7}
+	t := shuffle(test, 3)
 	fmt.Println(t)
 }

@@ -1,10 +1,8 @@
-﻿1518. Water Bottles
+﻿1470. Shuffle the Array
       Easy
-      890
-      71
+      4.9K
+      254
       Companies
-      There are numBottles water bottles that are initially full of water. You can exchange numExchange empty water bottles from the market with one full water bottle.
+      Given the array nums consisting of 2n elements in the form [x1,x2,...,xn,y1,y2,...,yn].
 
-The operation of drinking a full water bottle turns it into an empty bottle.
-
-Given the two integers numBottles and numExchange, return the maximum number of water bottles you can drink.
+Return the array in the form [x1,y1,x2,y2,...,xn,yn].
