@@ -4,20 +4,22 @@ import (
 	"fmt"
 )
 
-func checkIfExist(arr []int) bool {
-	dict := make(map[float32]bool)
-	for _, num := range arr {
-		if dict[float32(num)/2] || dict[float32(num)*2] {
-			return true
-		}
-		dict[float32(num)] = true
+func numWaterBottles(numBottles int, numExchange int) int {
+
+	total := numBottles
+	empties := numBottles
+	for empties >= numExchange {
+		exchanged := empties / numExchange
+		total += exchanged
+		empties = exchanged + empties%numExchange
+
 	}
-	return false
+
+	return total
 }
 
 func main() {
 
-	n1 := []int{3, 1, 7, 11}
-	t := checkIfExist(n1)
+	t := numWaterBottles(15, 4)
 	fmt.Println(t)
 }
