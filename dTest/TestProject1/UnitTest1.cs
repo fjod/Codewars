@@ -50,19 +50,19 @@ public class UnitTest1
     private void CheckOrder(IDictionary<Guid, string> dict, int max)
     {
         var sut = dict;
-        List<Guid> stack = new List<Guid>();
+        List<Guid> order = new List<Guid>();
         for (int i = 0; i < max; i++) //add many
         {
             var g = Guid.NewGuid();
             sut.Add(g, g.ToString());
-            stack.Add(g);
+            order.Add(g);
         }
 
         var rand = new Random();
         for (int i = 0; i < max/100; i++) //delete 1%
         {
             var v = rand.Next(0, max);
-            var index = stack[v];
+            var index = order[v];
             sut.Remove(index);
         }
         
@@ -70,7 +70,7 @@ public class UnitTest1
         {
             var g = Guid.NewGuid();
             sut.Add(g, g.ToString());
-            stack.Add(g);
+            order.Add(g);
         }
 
         Guid? prev = null;
@@ -83,8 +83,8 @@ public class UnitTest1
                 continue;
             }
 
-            var previndex = stack.IndexOf(prev.Value);
-            var cur = stack.IndexOf(current);
+            var previndex = order.IndexOf(prev.Value);
+            var cur = order.IndexOf(current);
             Assert.True(previndex < cur);
             prev = current;
         }
