@@ -1,8 +1,1 @@
-﻿1470. Shuffle the Array
-      Easy
-      4.9K
-      254
-      Companies
-      Given the array nums consisting of 2n elements in the form [x1,x2,...,xn,y1,y2,...,yn].
-
-Return the array in the form [x1,y1,x2,y2,...,xn,yn].
+﻿В качестве тестового задания мы предлагаем реализовать IDictionary<,> таким образом, чтобы перечисление его элементов сохраняло порядок, соответствующий порядку вставки, при этом не изменяя алгоритмическую сложность операций относительно обычного Dictionary<,>.

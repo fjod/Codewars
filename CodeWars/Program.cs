@@ -28,9 +28,8 @@ namespace CodeWars
 
             static void Main(string[] args)
             {
-                var test = new NumArray(new[] {-2, 0, 3, -5, 2, -1});
-                test.SumRange(0, 2);
             }
         }
+
     }
 }

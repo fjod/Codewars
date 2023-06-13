@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeWars", "CodeWars.csproj
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "ConsoleAppFsharp", "ConsoleAppFsharp\ConsoleAppFsharp.fsproj", "{144A0AA9-8BEB-414B-84C7-5D0246F31B35}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestProject1", "..\dTest\TestProject1\TestProject1.csproj", "{379C4292-8A41-45E6-93C7-503C9E661374}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{144A0AA9-8BEB-414B-84C7-5D0246F31B35}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{144A0AA9-8BEB-414B-84C7-5D0246F31B35}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{144A0AA9-8BEB-414B-84C7-5D0246F31B35}.Release|Any CPU.Build.0 = Release|Any CPU
+		{379C4292-8A41-45E6-93C7-503C9E661374}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{379C4292-8A41-45E6-93C7-503C9E661374}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{379C4292-8A41-45E6-93C7-503C9E661374}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{379C4292-8A41-45E6-93C7-503C9E661374}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
