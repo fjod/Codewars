@@ -8,9 +8,9 @@ namespace CodeWars;
 public class OrderedDict<TKey, TValue> : IDictionary<TKey, TValue>
     where TKey : notnull
 {
-    private readonly Dictionary<TKey, ValueTuple<int,TValue>> _valuesDict = new Dictionary<TKey, ValueTuple<int,TValue>>();
-    private readonly Dictionary<int, TKey> _indexesDict = new Dictionary<int, TKey>();
-    private int _currentIndex = 0;
+    private readonly Dictionary<TKey, ValueTuple<long,TValue>> _valuesDict = new Dictionary<TKey, ValueTuple<long,TValue>>();
+    private readonly Dictionary<long, TKey> _indexesDict = new Dictionary<long, TKey>();
+    private long _currentIndex = 0;
     public IEnumerator<KeyValuePair<TKey, TValue>> GetEnumerator()
     {
         for (int i = 0; i < _currentIndex; i++)
@@ -75,7 +75,7 @@ public class OrderedDict<TKey, TValue> : IDictionary<TKey, TValue>
         return false;
     }
 
-    public int Count => _currentIndex;
+    public int Count => _valuesDict.Count;
     public bool IsReadOnly => false;
     public void Add(TKey key, TValue value)
     {
@@ -133,16 +133,16 @@ public class OrderedDict<TKey, TValue> : IDictionary<TKey, TValue>
 
 public class ValCollection<TKey, TValue> : ICollection<TValue>
 {
-    private readonly Dictionary<TKey, (int, TValue)> _valuesDict;
+    private readonly Dictionary<TKey, (long, TValue)> _valuesDict;
 
-    public ValCollection(Dictionary<TKey, ValueTuple<int,TValue>> valuesDict)
+    public ValCollection(Dictionary<TKey, ValueTuple<long,TValue>> valuesDict)
     {
         _valuesDict = valuesDict;
     }
 
     public IEnumerator<TValue> GetEnumerator()
     {
-        foreach (KeyValuePair<TKey,(int, TValue)> kvp in _valuesDict)
+        foreach (KeyValuePair<TKey,(long, TValue)> kvp in _valuesDict)
         {
             yield return kvp.Value.Item2;
         }
