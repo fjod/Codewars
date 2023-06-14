@@ -43,7 +43,12 @@ public class OrderedDict<TKey, TValue> : IDictionary<TKey, TValue>
 
     public bool Contains(KeyValuePair<TKey, TValue> item)
     {
-       return _valuesDict.ContainsKey(item.Key);
+        if (_valuesDict.TryGetValue(item.Key, out var value))
+        {
+            return value.Item2.Equals(item.Value);
+        }
+
+        return false;
     }
 
     public void CopyTo(KeyValuePair<TKey, TValue>[] array, int arrayIndex)
@@ -56,15 +61,17 @@ public class OrderedDict<TKey, TValue> : IDictionary<TKey, TValue>
 
     public bool Remove(KeyValuePair<TKey, TValue> item)
     {
-        if (_valuesDict.ContainsKey(item.Key))
+        if (_valuesDict.TryGetValue(item.Key, out var value))
         {
-            var key = item.Key;
-            var index = _valuesDict[key];
-            _valuesDict.Remove(key);
-            _indexesDict.Remove(index.Item1);
-            return true;
+            if (value.Item2.Equals(item.Value))
+            {
+                var key = item.Key;
+                var index = _valuesDict[key];
+                _valuesDict.Remove(key);
+                _indexesDict.Remove(index.Item1);
+                return true;
+            }
         }
-
         return false;
     }
 
@@ -97,9 +104,9 @@ public class OrderedDict<TKey, TValue> : IDictionary<TKey, TValue>
 
     public bool TryGetValue(TKey key, out TValue value)
     {
-        if (_valuesDict.ContainsKey(key))
+        if (_valuesDict.TryGetValue(key, out var v1))
         {
-            value = _valuesDict[key].Item2;
+            value = v1.Item2;
             return true;
         }
 
@@ -121,5 +128,60 @@ public class OrderedDict<TKey, TValue> : IDictionary<TKey, TValue>
     }
 
     public ICollection<TKey> Keys => _valuesDict.Keys;
-    public ICollection<TValue> Values => _valuesDict.Values.Select(v => v.Item2).ToList();
+    public ICollection<TValue> Values => new ValCollection<TKey, TValue>(_valuesDict);
 }
+
+public class ValCollection<TKey, TValue> : ICollection<TValue>
+{
+    private readonly Dictionary<TKey, (int, TValue)> _valuesDict;
+
+    public ValCollection(Dictionary<TKey, ValueTuple<int,TValue>> valuesDict)
+    {
+        _valuesDict = valuesDict;
+    }
+
+    public IEnumerator<TValue> GetEnumerator()
+    {
+        foreach (KeyValuePair<TKey,(int, TValue)> kvp in _valuesDict)
+        {
+            yield return kvp.Value.Item2;
+        }
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
+    }
+
+    public void Add(TValue item)
+    {
+        throw new NotImplementedException("Values are read only");
+    }
+
+    public void Clear()
+    {
+        throw new NotImplementedException("Values are read only");
+    }
+
+    public bool Contains(TValue item)
+    {
+        return _valuesDict.Any(w => w.Value.Item2.Equals(item)); // O(n) instead of O(1)
+    }
+
+    public void CopyTo(TValue[] array, int arrayIndex)
+    {
+        foreach (var kvp in _valuesDict)
+        {
+            array[arrayIndex++] = kvp.Value.Item2;
+        }
+    }
+
+    public bool Remove(TValue item)
+    {
+        throw new NotImplementedException("Values are read only");
+    }
+
+    public int Count => _valuesDict.Count;
+    public bool IsReadOnly => true;
+}
+
