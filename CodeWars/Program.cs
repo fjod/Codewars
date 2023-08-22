@@ -16,8 +16,10 @@ namespace CodeWars
 {
     class Program
     {
+        private static Dictionary<Object, List<Object>> dict = new Dictionary<object, List<object>>();
         public class Solution
         {
+            
             public bool IsPowerOfThree(int n) {
                 if(n<=0)
                     return false;
@@ -26,11 +28,53 @@ namespace CodeWars
                 return n%3==0 && IsPowerOfThree(n/3);
             }
 
+            private static Random rand = new Random();
+            private static void CreateString()
+            {
+
+                string test = rand.Next().ToString();
+                if (dict.TryGetValue(test, out var list))
+                {
+                    list.Add(test);
+                }
+                else
+                {
+                    dict.TryAdd(
+                        test,
+                        new List<Object>()
+                        {
+                            test
+                        });
+                }
+            }
+            
+            private static void CreateInt()
+            {
+                int test = rand.Next();
+                if (dict.TryGetValue(test, out var list))
+                {
+                    list.Add(test);
+                }
+                else
+                {
+                    dict.TryAdd(
+                        test,
+                        new List<Object>()
+                        {
+                            test
+                        });
+                }
+            }
+
             static void Main(string[] args)
             {
-                var sut = new Dictionary<Guid, ValueTuple<int,int>>();
-                CheckOrder(sut, 100000);
-                
+                for (int i = 0; i < 10; i++)
+                {
+                    CreateString();
+                    CreateInt();
+                }
+
+                dict.TryGetValue("zyc", out var ret);
             }
             
             private static void CheckOrder(IDictionary<Guid, ValueTuple<int,int>> dict, int max)
