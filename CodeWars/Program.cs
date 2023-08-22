@@ -16,21 +16,24 @@ namespace CodeWars
 {
     class Program
     {
-        public class Solution
+        static void Main(string[] args)
         {
-            public bool IsPowerOfThree(int n) {
-                if(n<=0)
-                    return false;
-                if(n==1)
-                    return true;
-                return n%3==0 && IsPowerOfThree(n/3);
+            var a = SumOfSquares(new[] {2,7,1,19,18,3});
+            Console.Write(1);
+        }
+        
+        static public int SumOfSquares(int[] nums)
+        {
+            int sum = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums.Length % (i + 1) == 0)
+                {
+                    sum += nums[i] * nums[i];
+                }
             }
 
-            static void Main(string[] args)
-            {
-                var test = new NumArray(new[] {-2, 0, 3, -5, 2, -1});
-                test.SumRange(0, 2);
-            }
+            return sum;
         }
     }
 }
