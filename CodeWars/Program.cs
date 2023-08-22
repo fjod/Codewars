@@ -18,11 +18,22 @@ namespace CodeWars
     {
         static void Main(string[] args)
         {
+            var a = SumOfSquares(new[] {2,7,1,19,18,3});
             Console.Write(1);
         }
         
-        public int TheMaximumAchievableX(int num, int t) {
-            return num + t*2;
+        static public int SumOfSquares(int[] nums)
+        {
+            int sum = 0;
+            for (int i = 0; i < nums.Length; i++)
+            {
+                if (nums.Length % (i + 1) == 0)
+                {
+                    sum += nums[i] * nums[i];
+                }
+            }
+
+            return sum;
         }
     }
 }
