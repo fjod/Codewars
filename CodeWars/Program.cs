@@ -18,22 +18,42 @@ namespace CodeWars
     {
         static void Main(string[] args)
         {
-            var a = SumOfSquares(new[] {2,7,1,19,18,3});
+            var a = IsGood(new[] {1, 3, 3, 2});
             Console.Write(1);
         }
         
-        static public int SumOfSquares(int[] nums)
+        public static bool IsGood(int[] nums)
         {
-            int sum = 0;
+            var ordered = nums.OrderBy(n => n).GetEnumerator();
+            var max = nums.Max();
+            var en = Create(Enumerable.Range(1, max), max);
+            var z = en.GetEnumerator();
+            
+            ordered.MoveNext();
+            z.MoveNext();
             for (int i = 0; i < nums.Length; i++)
             {
-                if (nums.Length % (i + 1) == 0)
-                {
-                    sum += nums[i] * nums[i];
-                }
+                var fromOrdered = ordered.Current;
+                var fromPattern = z.Current;
+                if (fromOrdered != fromPattern) return false;
+                var okOrdered = ordered.MoveNext();
+                var okPatter = z.MoveNext();
+                if (!okOrdered && !okPatter) return true;
+                if (!(okOrdered && okPatter))
+                    return false;
             }
 
-            return sum;
+            return true;
+        }
+
+        static IEnumerable<int> Create(IEnumerable<int> input, int max)
+        {
+            foreach (var VARIABLE in input)
+            {
+                yield return VARIABLE;
+            }
+
+            yield return max;
         }
     }
 }
