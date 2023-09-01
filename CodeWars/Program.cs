@@ -18,42 +18,30 @@ namespace CodeWars
     {
         static void Main(string[] args)
         {
-            var a = IsGood(new[] {1, 3, 3, 2});
+            var a = MinTimeToType("bza");
             Console.Write(1);
         }
         
-        public static bool IsGood(int[] nums)
+        static List<char> letters = new() {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+        public static int MinTimeToType(string word)
         {
-            var ordered = nums.OrderBy(n => n).GetEnumerator();
-            var max = nums.Max();
-            var en = Create(Enumerable.Range(1, max), max);
-            var z = en.GetEnumerator();
-            
-            ordered.MoveNext();
-            z.MoveNext();
-            for (int i = 0; i < nums.Length; i++)
+            int pointer = 0;
+            int counter = 0;
+            for (int i = 0; i < word.Length; i++)
             {
-                var fromOrdered = ordered.Current;
-                var fromPattern = z.Current;
-                if (fromOrdered != fromPattern) return false;
-                var okOrdered = ordered.MoveNext();
-                var okPatter = z.MoveNext();
-                if (!okOrdered && !okPatter) return true;
-                if (!(okOrdered && okPatter))
-                    return false;
+                var current = word[i];
+                var fromPointer = letters[pointer];
+                if (current != fromPointer)
+                {
+                    var targetIndex = letters.IndexOf(current);
+                    var diff = Math.Abs(pointer - targetIndex);
+                    counter += Math.Min(diff, 26 - diff);
+                    pointer = targetIndex;
+                }
+                counter += 1;
             }
 
-            return true;
-        }
-
-        static IEnumerable<int> Create(IEnumerable<int> input, int max)
-        {
-            foreach (var VARIABLE in input)
-            {
-                yield return VARIABLE;
-            }
-
-            yield return max;
+            return counter;
         }
     }
 }
