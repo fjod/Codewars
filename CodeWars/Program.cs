@@ -18,22 +18,36 @@ namespace CodeWars
     {
         static void Main(string[] args)
         {
-            IsPalindrome(121);
+            var test = LongestCommonPrefix(new string[] {"flower", "flower"});
             Console.Write(1);
         }
        
-        public static bool IsPalindrome(int x)
+        public static string LongestCommonPrefix(string[] strs)
         {
-            if (x < 0) return false;
-            if (x !=0 && x%10==0) return false;
-            int reverse = 0;
-            while ( x > reverse)
+            if (!strs.Any()) return "";
+            if (strs.Length == 1) return strs[0];
+            
+            var shortest = strs.Min(s => s.Length);
+            if (shortest == 0) return "";
+            var charIndex = 0;
+            var prefix = strs[0][charIndex].ToString();
+            while (true)
             {
-                reverse = reverse * 10 + x % 10;
-                x = x / 10;
+                for (int i = 1; i < strs.Length; i++)
+                {
+                    var current = strs[i];
+                    if (!current.StartsWith(prefix))
+                    {
+                        return prefix.Length > 0 ? prefix.Substring(0, prefix.Length - 1) : String.Empty;
+                    }
+                }
+                charIndex++;
+                if (charIndex == shortest)
+                    break;
+                prefix += strs[0][charIndex].ToString();
             }
 
-            return x == reverse || x == reverse / 10;
+            return prefix;
         }
     }
 }
