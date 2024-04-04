@@ -1,26 +1,16 @@
-﻿14. Longest Common Prefix
-    Easy
-    Topics
-    Companies
-    Write a function to find the longest common prefix string amongst an array of strings.
+﻿
+Code
+Testcase
+Test Result
+Test Result
+141. Linked List Cycle
+     Easy
+     Topics
+     Companies
+     Given head, the head of a linked list, determine if the linked list has a cycle in it.
 
-If there is no common prefix, return an empty string "".
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
 
+Return true if there is a cycle in the linked list. Otherwise, return false.
 
-
-Example 1:
-
-Input: strs = ["flower","flow","flight"]
-Output: "fl"
-Example 2:
-
-Input: strs = ["dog","racecar","car"]
-Output: ""
-Explanation: There is no common prefix among the input strings.
-
-
-Constraints:
-
-1 <= strs.length <= 200
-0 <= strs[i].length <= 200
-strs[i] consists of only lowercase English letters.
+ 

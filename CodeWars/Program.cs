@@ -18,36 +18,35 @@ namespace CodeWars
     {
         static void Main(string[] args)
         {
-            var test = LongestCommonPrefix(new string[] {"flower", "flower"});
+            var l2 = new ListNode(2);
+
+            var test = new ListNode(1, new ListNode(2));
             Console.Write(1);
         }
-       
-        public static string LongestCommonPrefix(string[] strs)
+
+        public bool HasCycle(ListNode head)
         {
-            if (!strs.Any()) return "";
-            if (strs.Length == 1) return strs[0];
-            
-            var shortest = strs.Min(s => s.Length);
-            if (shortest == 0) return "";
-            var charIndex = 0;
-            var prefix = strs[0][charIndex].ToString();
-            while (true)
+            if (head == null)
             {
-                for (int i = 1; i < strs.Length; i++)
-                {
-                    var current = strs[i];
-                    if (!current.StartsWith(prefix))
-                    {
-                        return prefix.Length > 0 ? prefix.Substring(0, prefix.Length - 1) : String.Empty;
-                    }
-                }
-                charIndex++;
-                if (charIndex == shortest)
-                    break;
-                prefix += strs[0][charIndex].ToString();
+                return false;
             }
 
-            return prefix;
+            if (head.next == null)
+            {
+                return false;
+            }
+
+            ListNode fast = head.next, slow = head;
+
+            while (fast != slow)
+            {
+                if (fast == null || fast.next == null)
+                    return false;
+                fast = fast.next.next;
+                slow = slow.next;
+            }
+
+            return true;
         }
     }
 }
