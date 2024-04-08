@@ -1,16 +1,29 @@
-﻿
-Code
-Testcase
-Test Result
-Test Result
-141. Linked List Cycle
-     Easy
-     Topics
-     Companies
-     Given head, the head of a linked list, determine if the linked list has a cycle in it.
+﻿2160. Minimum Sum of Four Digit Number After Splitting Digits
+      Easy
+      Topics
+      Companies
+      Hint
+      You are given a positive integer num consisting of exactly four digits. Split num into two new integers new1 and new2 by using the digits found in num. Leading zeros are allowed in new1 and new2, and all the digits found in num must be used.
 
-There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+For example, given num = 2932, you have the following digits: two 2's, one 9 and one 3. Some of the possible pairs [new1, new2] are [22, 93], [23, 92], [223, 9] and [2, 329].
+Return the minimum possible sum of new1 and new2.
 
-Return true if there is a cycle in the linked list. Otherwise, return false.
 
- 
+
+Example 1:
+
+Input: num = 2932
+Output: 52
+Explanation: Some possible pairs [new1, new2] are [29, 23], [223, 9], etc.
+The minimum sum can be obtained by the pair [29, 23]: 29 + 23 = 52.
+Example 2:
+
+Input: num = 4009
+Output: 13
+Explanation: Some possible pairs [new1, new2] are [0, 49], [490, 0], etc.
+The minimum sum can be obtained by the pair [4, 9]: 4 + 9 = 13.
+
+
+Constraints:
+
+1000 <= num <= 9999
