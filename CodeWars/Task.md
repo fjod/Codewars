@@ -1,29 +1,37 @@
-﻿2160. Minimum Sum of Four Digit Number After Splitting Digits
+﻿1221. Split a String in Balanced Strings
       Easy
       Topics
       Companies
       Hint
-      You are given a positive integer num consisting of exactly four digits. Split num into two new integers new1 and new2 by using the digits found in num. Leading zeros are allowed in new1 and new2, and all the digits found in num must be used.
+      Balanced strings are those that have an equal quantity of 'L' and 'R' characters.
 
-For example, given num = 2932, you have the following digits: two 2's, one 9 and one 3. Some of the possible pairs [new1, new2] are [22, 93], [23, 92], [223, 9] and [2, 329].
-Return the minimum possible sum of new1 and new2.
+Given a balanced string s, split it into some number of substrings such that:
+
+Each substring is balanced.
+Return the maximum number of balanced strings you can obtain.
 
 
 
 Example 1:
 
-Input: num = 2932
-Output: 52
-Explanation: Some possible pairs [new1, new2] are [29, 23], [223, 9], etc.
-The minimum sum can be obtained by the pair [29, 23]: 29 + 23 = 52.
+Input: s = "RLRRLLRLRL"
+Output: 4
+Explanation: s can be split into "RL", "RRLL", "RL", "RL", each substring contains same number of 'L' and 'R'.
 Example 2:
 
-Input: num = 4009
-Output: 13
-Explanation: Some possible pairs [new1, new2] are [0, 49], [490, 0], etc.
-The minimum sum can be obtained by the pair [4, 9]: 4 + 9 = 13.
+Input: s = "RLRRRLLRLL"
+Output: 2
+Explanation: s can be split into "RL", "RRRLLRLL", each substring contains same number of 'L' and 'R'.
+Note that s cannot be split into "RL", "RR", "RL", "LR", "LL", because the 2nd and 5th substrings are not balanced.
+Example 3:
+
+Input: s = "LLLLRRRR"
+Output: 1
+Explanation: s can be split into "LLLLRRRR".
 
 
 Constraints:
 
-1000 <= num <= 9999
+2 <= s.length <= 1000
+s[i] is either 'L' or 'R'.
+s is a balanced string.

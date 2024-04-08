@@ -18,33 +18,40 @@ namespace CodeWars
     {
         static void Main(string[] args)
         {
-            var l2 = MinimumSum(2932);
             Console.Write(1);
         }
 
-        public static int MinimumSum(int num)
+        public int BalancedStringSplit(string s)
         {
-            List<int> numbers = new List<int>(4);
-            numbers.AddRange(GetDigits2(num).ToList().OrderDescending().Reverse());
-            int n1 = numbers[0]*10 + numbers[3];
-            int n2 = numbers[1]*10 + numbers[2];
+            int r = 0;
+            int l = 0;
+            int total = 0;
+            for (int i = 0; i < s.Length; i++)
+            {
+                if (r > 0 && l > 0 && r == l)
+                {
+                    total += 1;
+                    r = 0;
+                    l = 0;
+                }
 
-            int n3 = numbers[0] * 10 + numbers[2];
-            int n4 = numbers[1]*10 + numbers[3];
+                if (s[i] == 'R')
+                {
+                    r++;
+                }
+                if (s[i] == 'L')
+                {
+                    l++;
+                }
+            }
 
-            var q1 = n1 + n2;
-            var q2 = n3 + n4;
-            return q1 > q2 ? q2 : q1;
+            if (r > 0 && l > 0 && r == l)
+            {
+                total += 1;
+            }
+            return total;
         }
         
-        public static IEnumerable<int> GetDigits2(int source)
-        {
-            while (source > 0)
-            {
-                var digit = source % 10;
-                source /= 10;
-                yield return digit;
-            }
-        }
+      
     }
 }
