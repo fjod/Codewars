@@ -21,37 +21,16 @@ namespace CodeWars
             Console.Write(1);
         }
 
-        public int BalancedStringSplit(string s)
+        public bool IsSameTree(TreeNode p, TreeNode q)
         {
-            int r = 0;
-            int l = 0;
-            int total = 0;
-            for (int i = 0; i < s.Length; i++)
-            {
-                if (r > 0 && l > 0 && r == l)
-                {
-                    total += 1;
-                    r = 0;
-                    l = 0;
-                }
-
-                if (s[i] == 'R')
-                {
-                    r++;
-                }
-                if (s[i] == 'L')
-                {
-                    l++;
-                }
-            }
-
-            if (r > 0 && l > 0 && r == l)
-            {
-                total += 1;
-            }
-            return total;
+            if (p == null && q == null) return true;
+            if (p == null) return false;
+            if (q == null) return false;
+            if (p.val != q.val) return false;
+            var left = IsSameTree(p.left, q.left);
+            if (!left) return false;
+            var right = IsSameTree(p.right, q.right);
+            return right;
         }
-        
-      
     }
 }
