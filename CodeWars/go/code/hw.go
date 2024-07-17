@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"math/rand"
 )
 
 func shuffle(nums []int, n int) []int {
@@ -17,9 +18,32 @@ func shuffle(nums []int, n int) []int {
 	return ret
 }
 
-func main() {
+func bubbleSort(nums []int) {
+	l := len(nums)
+	inner := l - 1
+	for i := 0; i < l; i++ {
+		for j := 0; j < inner; j++ {
+			if nums[j] > nums[i] {
+				temp := nums[j]
+				nums[j] = nums[i]
+				nums[i] = temp
+			}
+		}
+	}
+}
 
-	test := []int{2, 5, 1, 3, 4, 7}
-	t := shuffle(test, 3)
-	fmt.Println(t)
+func main() {
+	test := make([]int, 30)
+	for i := 0; i < len(test); i++ {
+		test[i] = rand.Intn(100)
+	}
+
+	fmt.Println(test)
+	bubbleSort(test)
+	fmt.Println(test)
+	for i := 0; i < len(test)-1; i++ {
+		if test[i] > test[i+1] {
+			fmt.Printf("err %d > %d\n", test[i], test[i+1])
+		}
+	}
 }
