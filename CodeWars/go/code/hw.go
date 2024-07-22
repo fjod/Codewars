@@ -5,16 +5,17 @@ import (
 	"math/rand"
 )
 
-func shuffle(nums []int, n int) []int {
-	ret := make([]int, n*2)
-	for i := 0; i < n; i++ {
-		ret[i*2] = nums[i]
+func findDelayedArrivalTime(arrivalTime int, delayedTime int) int {
+
+	if delayedTime >= 24 {
+		delayedTime = delayedTime % 24
 	}
-	index := 1
-	for i := n; i < len(nums); i++ {
-		ret[index] = nums[i]
-		index += 2
+
+	ret := arrivalTime + delayedTime
+	if ret >= 24 {
+		return ret - 24
 	}
+
 	return ret
 }
 
