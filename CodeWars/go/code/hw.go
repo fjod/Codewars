@@ -5,18 +5,25 @@ import (
 	"math/rand"
 )
 
-func findDelayedArrivalTime(arrivalTime int, delayedTime int) int {
+func sumOfMultiples(n int) int {
 
-	if delayedTime >= 24 {
-		delayedTime = delayedTime % 24
+	sum := 0
+	for i := 1; i < n; i++ {
+		if i%3 == 0 {
+			sum += i
+			continue
+		}
+		if i%5 == 0 {
+			sum += i
+			continue
+		}
+		if i%7 == 0 {
+			sum += i
+			continue
+		}
 	}
 
-	ret := arrivalTime + delayedTime
-	if ret >= 24 {
-		return ret - 24
-	}
-
-	return ret
+	return sum
 }
 
 func bubbleSort(nums []int) {
