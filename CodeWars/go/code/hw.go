@@ -5,25 +5,14 @@ import (
 	"math/rand"
 )
 
-func sumOfMultiples(n int) int {
-
-	sum := 0
-	for i := 1; i < n; i++ {
-		if i%3 == 0 {
-			sum += i
-			continue
-		}
-		if i%5 == 0 {
-			sum += i
-			continue
-		}
-		if i%7 == 0 {
-			sum += i
-			continue
+func minOperations(nums []int, k int) int {
+	ops := 0
+	for i := 0; i < len(nums); i++ {
+		if nums[i] < k {
+			ops++
 		}
 	}
-
-	return sum
+	return ops
 }
 
 func bubbleSort(nums []int) {
