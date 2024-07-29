@@ -2,17 +2,35 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
 )
 
-func minOperations(nums []int, k int) int {
-	ops := 0
-	for i := 0; i < len(nums); i++ {
-		if nums[i] < k {
-			ops++
+func resultArray(nums []int) []int {
+	arr1 := make([]int, len(nums))
+	arr1Counter := 0
+	arr2 := make([]int, len(nums))
+	arr2Counter := 0
+	arr1[arr1Counter] = nums[0]
+	arr1Counter++
+	arr2[arr2Counter] = nums[1]
+	arr2Counter++
+	for i := 2; i < len(nums); i++ {
+		if arr1[arr1Counter-1] > arr2[arr2Counter-1] {
+			arr1[arr1Counter] = nums[i]
+			arr1Counter++
+		} else {
+			arr2[arr2Counter] = nums[i]
+			arr2Counter++
 		}
 	}
-	return ops
+
+	ret := make([]int, len(nums))
+	for i := 0; i < arr1Counter; i++ {
+		ret[i] = arr1[i]
+	}
+	for i := 0; i < arr2Counter; i++ {
+		ret[i+arr1Counter] = arr2[i]
+	}
+	return ret
 }
 
 func bubbleSort(nums []int) {
@@ -30,17 +48,8 @@ func bubbleSort(nums []int) {
 }
 
 func main() {
-	test := make([]int, 30)
-	for i := 0; i < len(test); i++ {
-		test[i] = rand.Intn(100)
-	}
+	slice := []int{1, 2, 5, 15, 20}
 
-	fmt.Println(test)
-	bubbleSort(test)
-	fmt.Println(test)
-	for i := 0; i < len(test)-1; i++ {
-		if test[i] > test[i+1] {
-			fmt.Printf("err %d > %d\n", test[i], test[i+1])
-		}
-	}
+	fmt.Println(slice)
+	fmt.Println(resultArray(slice))
 }
