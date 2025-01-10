@@ -1,16 +1,21 @@
 fn main() {
-    let jewels = String::from("aA");
-    let stones = String::from("aAAbbbb");
-    let test = num_jewels_in_stones(jewels, stones);
+    let vec_mut = vec![4,1,2,1,2];
+    let test = single_number(vec_mut);
     println!("result is {test}")
 }
 
-pub fn num_jewels_in_stones(jewels: String, stones: String) -> i32 {
-    let mut c = 0;
-    for stone in (&stones).chars() {
-        if  jewels.contains(stone) {
-            c += 1;
+pub fn single_number(nums: Vec<i32>) -> i32 {
+    let mut map = std::collections::HashMap::new();
+    for item in &nums {
+        map.entry(item)
+            .and_modify(|counter| *counter += 1)
+            .or_insert(1);
+    }
+
+    for (&key, &value) in &map {
+        if value == 1 {
+            return *key;
         }
     }
-    c
+    -1
 }
