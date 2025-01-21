@@ -1,20 +1,14 @@
 fn main() {
-    let vec = vec![1, 2, 3];
-    let test = get_concatenation(vec);
+    let vec = vec![5,0,1,2,3,4];
+    let test = build_array(vec);
     println!("All elements: {:?}", test);
 }
 
-pub fn get_concatenation(mut nums: Vec<i32>) -> Vec<i32> {
-  /*  let mut vec: Vec<i32> = Vec::with_capacity(nums.len() * 2);
-    for _ in 0..2 {
-        for i in 0..nums.len() {
-            vec.push(nums[i])
-        }
+pub fn build_array(nums: Vec<i32>) -> Vec<i32> {
+   let mut result: Vec<i32> = Vec::with_capacity(nums.len());
+    for i in 0..nums.len() {
+        let index = nums[i] as usize;
+        result.push(nums[index]);
     }
-    vec*/
-    let len = nums.len();
-    for i in 0..len {
-        nums.push(nums[i])
-    }
-    nums
+    result
 }
