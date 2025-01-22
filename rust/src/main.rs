@@ -1,14 +1,11 @@
 fn main() {
-    let vec = vec![5,0,1,2,3,4];
-    let test = build_array(vec);
+    let test = convert_temperature(36.5);
     println!("All elements: {:?}", test);
 }
 
-pub fn build_array(nums: Vec<i32>) -> Vec<i32> {
-   let mut result: Vec<i32> = Vec::with_capacity(nums.len());
-    for i in 0..nums.len() {
-        let index = nums[i] as usize;
-        result.push(nums[index]);
-    }
+pub fn convert_temperature(celsius: f64) -> Vec<f64> {
+    let mut result: Vec<f64> = Vec::with_capacity(2);
+    result.push(celsius + 273.15);
+    result.push(celsius * 1.8 + 32.0);
     result
 }
