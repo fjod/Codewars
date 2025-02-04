@@ -1,11 +1,17 @@
 fn main() {
-    let test = convert_temperature(36.5);
-    println!("All elements: {:?}", test);
+    let test = num_identical_pairs(vec![1,2,3,1,1,3]);
+    println!("Amount of pairs {:?}", test);
 }
 
-pub fn convert_temperature(celsius: f64) -> Vec<f64> {
-    let mut result: Vec<f64> = Vec::with_capacity(2);
-    result.push(celsius + 273.15);
-    result.push(celsius * 1.8 + 32.0);
-    result
+pub fn num_identical_pairs(nums: Vec<i32>) -> i32 {
+    let mut count = 0;
+
+    for current in 0..nums.len() - 1 {
+        for next in current + 1..nums.len() {
+            if nums[current] == nums[next] {
+                count += 1;
+            }
+        }
+    }
+    count
 }
