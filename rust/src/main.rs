@@ -1,18 +1,20 @@
 fn main() {
-    let test = difference_of_sums(10 ,3);
+    let test = two_sum(vec![3,2,4] ,6);
     println!("result {:?}", test);
 }
 
-pub fn difference_of_sums(n: i32, m: i32) -> i32 {
-    let mut sum1 = 0;
-    let mut sum2 = 0;
-    for i in 1..n + 1 {
-        if i % m == 0 {
-            sum2 += i;
+pub fn two_sum(nums: Vec<i32>, target: i32) -> Vec<i32> {
+    let mut dict = std::collections::HashMap::with_capacity(nums.len());
+    dict.insert(nums[0], 0);
+    for i in 1..nums.len() {
+        let current = nums[i];
+        let diff = target - current;
+        if dict.contains_key(&diff) {
+            return vec![dict[&diff], i as i32];
         }
         else {
-            sum1 += i;
+            dict.insert(nums[i], i as i32);
         }
     }
-    sum1 - sum2
+    vec![]
 }
