@@ -1,56 +1,41 @@
 fn main() {
-    let test = roman_to_int(String::from("MCMXCIV"));
+    let strs = vec![ String::from("flower")
+    , String::from("flight"),
+    String::from("flow"),];
+    let test = longest_common_prefix(strs);
+
 
     println!("result {:?}", test);
 }
 
-
-pub fn roman_to_int(s: String) -> i32 {
-    let mut result : i32 = 0;
-    let mut roman_to_numeric: std::collections::HashMap<char, i32> = std::collections::HashMap::new();
-
-    // Insert key-value pairs into the HashMap
-    roman_to_numeric.insert('I', 1);
-    roman_to_numeric.insert('V', 5);
-    roman_to_numeric.insert('X', 10);
-    roman_to_numeric.insert('L', 50);
-    roman_to_numeric.insert('C', 100);
-    roman_to_numeric.insert('D', 500);
-    roman_to_numeric.insert('M', 1000);
-
-    let mut substracts: std::collections::HashMap<String, i32> = std::collections::HashMap::new();
-
-    // Insert key-value pairs into the HashMap
-    substracts.insert(String::from("IV"), 4);
-    substracts.insert(String::from("IX"), 9);
-    substracts.insert(String::from("XL"), 40);
-    substracts.insert(String::from("XC"), 90);
-    substracts.insert(String::from("CD"), 400);
-    substracts.insert(String::from("CM"), 900);
-
-    for (i, current) in s.chars().rev().enumerate() {
-        let prev = get_prev(&s, i);
-        match prev {
-            None => result += roman_to_numeric[&current],
-            Some(prev) => {
-                let two_chars = format!("{}{}", current, prev);
-                if substracts.contains_key(&two_chars) {
-                    result -= roman_to_numeric[&prev];
-                    result += substracts[&two_chars]
-                }
-                else {
-                    // предыдущий символ не подразумевает вычитания, добавляем текущий
-                    result += roman_to_numeric[&current]
-                }
+pub fn longest_common_prefix(strs: Vec<String>) -> String {
+    let min_len_index = find_shortest_string(&strs);
+    let shortest_str = strs.get(min_len_index).unwrap();
+    for i in 0..shortest_str.len() {
+        let current_char_short = shortest_str.chars().nth(i).unwrap();
+        for j in 0..strs.len() {
+            if j == min_len_index {
+                continue;
+            }
+            let current_char_other = strs.get(j).unwrap().chars().nth(i).unwrap();
+            if current_char_short != current_char_other {
+                return String::from(&shortest_str[0..i]);
             }
         }
     }
-    result
+
+    strs.get(min_len_index).unwrap().to_string()
 }
 
-fn get_prev(s: &String, current :  usize) -> Option<char> {
-    if current == 0 {
-        return None;
+pub fn find_shortest_string(strs: &Vec<String>) -> usize {
+    let mut len : usize = 99999999;
+    let mut index : usize = 0;
+    for i in 0..strs.len() {
+        let current_str = strs[i].len();
+        if current_str < len {
+            len = current_str;
+            index = i
+        }
     }
-    s.chars().rev().nth(current - 1)
+    index
 }
