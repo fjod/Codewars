@@ -1,41 +1,51 @@
 fn main() {
-    let strs = vec![ String::from("flower")
-    , String::from("flight"),
-    String::from("flow"),];
-    let test = longest_common_prefix(strs);
-
+    let test = is_valid(String::from("()"));
 
     println!("result {:?}", test);
 }
 
-pub fn longest_common_prefix(strs: Vec<String>) -> String {
-    let min_len_index = find_shortest_string(&strs);
-    let shortest_str = strs.get(min_len_index).unwrap();
-    for i in 0..shortest_str.len() {
-        let current_char_short = shortest_str.chars().nth(i).unwrap();
-        for j in 0..strs.len() {
-            if j == min_len_index {
-                continue;
-            }
-            let current_char_other = strs.get(j).unwrap().chars().nth(i).unwrap();
-            if current_char_short != current_char_other {
-                return String::from(&shortest_str[0..i]);
+pub fn is_valid(s: String) -> bool {
+    if s.len() == 0 {
+        return true;
+    }
+    if s.len() % 2 != 0 {
+        return false;
+    }
+    let mut v: Vec<char> = Vec::with_capacity(s.len());
+
+    let pairs = [('(', ')'),('{', '}'),('[', ']')];
+    for c in s.chars() {
+        // check if c is open bracket
+        let is_open = check_open(&pairs, &c);
+        if is_open {
+            v.push(c);
+        }
+        else {
+            // it is closed bracket, pop last one
+            match v.pop() {
+                None => {
+                    // Stack is empty - invalid anyway
+                    return false;
+                }
+                Some(last) => {
+                    // ')' is current, so '(' must be prev
+                    let prev_ok = check_prev(last, c, &pairs);
+                    if !prev_ok {
+                        return false;
+                    }
+                }
             }
         }
     }
 
-    strs.get(min_len_index).unwrap().to_string()
+    // if stack is not empty - there are some open brackets that were not closed
+    v.len() == 0
 }
 
-pub fn find_shortest_string(strs: &Vec<String>) -> usize {
-    let mut len : usize = 99999999;
-    let mut index : usize = 0;
-    for i in 0..strs.len() {
-        let current_str = strs[i].len();
-        if current_str < len {
-            len = current_str;
-            index = i
-        }
-    }
-    index
+fn check_prev(prev: char, current: char, p0: &[(char, char); 3]) -> bool {
+    p0.iter().find(|&&(start, end)| start == prev && end == current).is_some()
+}
+
+fn check_open(p0: &[(char, char); 3], p1: &char) -> bool {
+    p0.iter().find(|(x, _)| x == p1).is_some()
 }
