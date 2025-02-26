@@ -1,51 +1,57 @@
+// Definition for singly-linked list.
+#[derive(PartialEq, Eq, Clone, Debug)]
+pub struct ListNode {
+  pub val: i32,
+  pub next: Option<Box<ListNode>>
+}
+
+impl ListNode {
+  #[inline]
+  fn new(val: i32) -> Self {
+   ListNode {
+     next: None,
+     val
+   }
+  }
+}
+
 fn main() {
-    let test = is_valid(String::from("()"));
+    // Create first list: 1 -> 3
+    let node1_3 = ListNode::new(3);
+    let mut node1_2 = ListNode::new(2);
+    let mut node1_1 = ListNode::new(1);
+    node1_2.next = Some(Box::new(node1_3));
+    node1_1.next = Some(Box::new(node1_2));
+    let list1 = Some(Box::new(node1_1));
 
-    println!("result {:?}", test);
+    // Create second list: 2 -> 4
+    let node2_3 = ListNode::new(4);
+    let mut node2_2 = ListNode::new(3);
+    let mut node2_1 = ListNode::new(1);
+    node2_2.next = Some(Box::new(node2_3));
+    node2_1.next = Some(Box::new(node2_2));
+    let list2 = Some(Box::new(node2_1));
+
+    // Call merge_two_lists with both lists
+    let merged_list = merge_two_lists(list1, list2);        // Links node1 to node2
+
+    println!("result {:?}", merged_list);
 }
-
-pub fn is_valid(s: String) -> bool {
-    if s.len() == 0 {
-        return true;
-    }
-    if s.len() % 2 != 0 {
-        return false;
-    }
-    let mut v: Vec<char> = Vec::with_capacity(s.len());
-
-    let pairs = [('(', ')'),('{', '}'),('[', ']')];
-    for c in s.chars() {
-        // check if c is open bracket
-        let is_open = check_open(&pairs, &c);
-        if is_open {
-            v.push(c);
+pub fn merge_two_lists(
+    list1: Option<Box<ListNode>>,
+    list2: Option<Box<ListNode>>) -> Option<Box<ListNode>>
+{
+    match (list1, list2) {
+        (Some(mut node1), Some(node2)) if node1.val <= node2.val => {
+            node1.next = merge_two_lists(node1.next, Some(node2));
+            Some(node1)
         }
-        else {
-            // it is closed bracket, pop last one
-            match v.pop() {
-                None => {
-                    // Stack is empty - invalid anyway
-                    return false;
-                }
-                Some(last) => {
-                    // ')' is current, so '(' must be prev
-                    let prev_ok = check_prev(last, c, &pairs);
-                    if !prev_ok {
-                        return false;
-                    }
-                }
-            }
-        }
+        (Some(node1), Some(mut node2)) => {
+            node2.next = merge_two_lists(Some(node1), node2.next);
+            Some(node2)
+        },
+        (Some(node1), None) => { Some(node1) },
+        (None, Some(node2)) => { Some(node2) },
+        (None, None) => { None }
     }
-
-    // if stack is not empty - there are some open brackets that were not closed
-    v.len() == 0
-}
-
-fn check_prev(prev: char, current: char, p0: &[(char, char); 3]) -> bool {
-    p0.iter().find(|&&(start, end)| start == prev && end == current).is_some()
-}
-
-fn check_open(p0: &[(char, char); 3], p1: &char) -> bool {
-    p0.iter().find(|(x, _)| x == p1).is_some()
 }
