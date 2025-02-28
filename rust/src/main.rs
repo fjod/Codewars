@@ -1,57 +1,40 @@
-// Definition for singly-linked list.
-#[derive(PartialEq, Eq, Clone, Debug)]
-pub struct ListNode {
-  pub val: i32,
-  pub next: Option<Box<ListNode>>
-}
-
-impl ListNode {
-  #[inline]
-  fn new(val: i32) -> Self {
-   ListNode {
-     next: None,
-     val
-   }
-  }
-}
+mod data;
+use data::list::ListNode; // Refers to ListNode in src/data/data.rs
 
 fn main() {
-    // Create first list: 1 -> 3
-    let node1_3 = ListNode::new(3);
-    let mut node1_2 = ListNode::new(2);
-    let mut node1_1 = ListNode::new(1);
-    node1_2.next = Some(Box::new(node1_3));
-    node1_1.next = Some(Box::new(node1_2));
-    let list1 = Some(Box::new(node1_1));
-
-    // Create second list: 2 -> 4
-    let node2_3 = ListNode::new(4);
-    let mut node2_2 = ListNode::new(3);
-    let mut node2_1 = ListNode::new(1);
-    node2_2.next = Some(Box::new(node2_3));
-    node2_1.next = Some(Box::new(node2_2));
-    let list2 = Some(Box::new(node2_1));
-
-    // Call merge_two_lists with both lists
-    let merged_list = merge_two_lists(list1, list2);        // Links node1 to node2
-
-    println!("result {:?}", merged_list);
+    let mut node1 = ListNode::new(1);
+    let mut insert = vec![1,1,1,2,2,3];
+    let result = remove_duplicates(&mut insert);
+    println!("result {:?} {:?}", insert, result);
 }
-pub fn merge_two_lists(
-    list1: Option<Box<ListNode>>,
-    list2: Option<Box<ListNode>>) -> Option<Box<ListNode>>
-{
-    match (list1, list2) {
-        (Some(mut node1), Some(node2)) if node1.val <= node2.val => {
-            node1.next = merge_two_lists(node1.next, Some(node2));
-            Some(node1)
-        }
-        (Some(node1), Some(mut node2)) => {
-            node2.next = merge_two_lists(Some(node1), node2.next);
-            Some(node2)
-        },
-        (Some(node1), None) => { Some(node1) },
-        (None, Some(node2)) => { Some(node2) },
-        (None, None) => { None }
+
+pub fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
+    let len = nums.len();
+    if len <= 1 {
+        return len as i32;
     }
+    let mut total_uniques = 1;
+    let mut place_for_next: Option<usize> = None;
+
+    for i in 0..len - 1 {
+        let cur = nums[i];
+        let next = nums[i+1];
+        if cur == next {
+            if place_for_next == None // сохранить первое место появления дубликата
+            {
+                place_for_next = Some(i+1);
+                continue;
+            }
+        }
+        else {
+                // если встретили новую цифру и до этого запоминали адрес первого дубликата
+                if let Some(place) = place_for_next {
+                    nums[place] = next;
+                    place_for_next = Some(place + 1); // запоминаем где следующее место для дубликата
+                }
+                total_uniques = total_uniques + 1;
+        }
+    }
+    total_uniques
 }
+
