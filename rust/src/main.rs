@@ -2,30 +2,22 @@ mod data;
 use data::list::ListNode; // Refers to ListNode in src/data/data.rs
 
 fn main() {
-    let str1 = String::from("sadbutsad");
-    let str2 = String::from("sad");
-    let result = str_str(str1, str2);
+    let v = vec![1,3,5,6];
+    let result = search_insert(v, 2);
     println!("result {:?}", result);
 }
 
-pub fn str_str(haystack: String, needle: String) -> i32 {
-        let needle_len = needle.len();
-        if needle_len == 0 {
-            return 0;
-        }
-        if needle_len > haystack.len() {
-            return -1;
-        }
-
-        let haystack_len = haystack.len();
-        for (index, _) in haystack.chars().enumerate() {
-            if (index + needle_len) > haystack_len {
-                return -1;
+pub fn search_insert(nums: Vec<i32>, target: i32) -> i32 {
+        let mut left = 0;
+        let mut right =  nums.len();      
+        while left < right {
+            let mut mid  = left + (right - left) / 2;
+            let curr = nums[mid];          
+            if curr < target {
+                left = mid + 1;                
+            } else {
+                right = mid;                
             }
-            let sub_hay_stack = &haystack[index..index+needle_len];
-            if sub_hay_stack == needle {
-                return index as i32;
-            }          
         }
-        return -1   
+        return left as i32
 }
