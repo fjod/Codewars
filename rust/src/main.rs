@@ -1,57 +1,41 @@
 mod data;
 use data::list::ListNode; // Refers to ListNode in src/data/data.rs
 
-fn main() {
-    let v = String::from("day    ");
-    let result = length_of_last_word(v);
+fn main() {  //     294 / 296 testcases passed
+    let result = add_binary(
+        String::from("11111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111"),
+         String::from("1"));
     println!("result {:?}", result);
-}
- // really bad solution
-pub fn length_of_last_word(s: String) -> i32 {
-        let s2 = trim_end(&s);
-        let len = s2.len();   
-        let mut right = len;   
-        let mut left : Option<usize> = None;
-        let mut any_space = false;
-        for (i, current) in s2.chars().rev().enumerate() {
-            println!("result {:?}", current);
-            match current {
-                ' ' => {
-                    if let Some(leftn) = left {
-                        return (right - leftn) as i32;
-                    }
-                    else {
-                        right = len - 1 - i;
-                    }
-                    any_space = true;
-                },
-                _ => {                 
-                        left = Some(len - 1 - i);                   
-                }
-            }
-        }
-        if any_space {
-            return len as i32 - right as i32
-        }
-        return len as i32;
-        
+} 
+
+pub fn add_binary(a: String, b: String) -> String {
+        let s1 = convert_to_binary(&a);
+        let s2 = convert_to_binary(&b);
+        int_to_binary(s1 + s2)
 }
 
-pub fn  trim_end(s: &String) -> &str{
-    let mut last_space: Option<usize> = None;
-    for (i, current) in s.chars().rev().enumerate() {
-        match current {
-            ' ' => {
-                last_space = Some(i);
-              
-            },
-            _ => {   
-                if let Some(lp) = last_space {
-                    return &s[..s.len() - lp - 1];
-                }
-                return &s                       
-            }
+fn convert_to_binary(input: &str) -> u128{
+    let mut result = 0;
+    let mut n = 0;
+    for c in input.chars().rev() {
+        if c == '1' {
+            result += 2u128.pow(n);
         }
+        n += 1;
     }
-    return &s          
+    result
+}
+
+fn int_to_binary(input: u128) -> String {
+    if input == 0 {
+        return "0".to_string();
+    }
+    let mut result = String::new();
+    let mut n = input;
+    while n > 0 {
+        let remainder = n % 2;
+        result.push_str(&remainder.to_string());
+        n = n / 2;
+    }
+    result.chars().rev().collect()
 }
