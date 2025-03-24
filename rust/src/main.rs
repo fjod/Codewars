@@ -1,49 +1,29 @@
 mod data;
 
+use std::result;
+
 use data::list::ListNode; // Refers to ListNode in src/data/data.rs
 
 fn main() {
-    let mut head = ListNode::new(1);
-    let next = ListNode::new(1);
-    head.next = Some(Box::new(next));
-    let next = ListNode::new(2);    
-    head.next.as_mut().unwrap().next = Some(Box::new(next));
-
-    let result = delete_duplicates(Some(Box::new(head)));  
-    println!("result {:?}", result);
+    let mut v1 = vec![4,0,0,0,0,0];
+    let mut v2 = vec![1,2,3,5,6];
+    merge(&mut v1, 1, &mut v2, 5);
+    println!("result {:?}", v1);
 } 
-
-pub fn delete_duplicates(mut head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-    let mut current = &mut head;
-    while let Some(ref mut node) = current {
-        while let Some(ref next) = node.next {
-            if node.val == next.val {
-                node.next = next.next.clone();
-            } else {
-                break;
-            }
+// failed to solve it myself, tried to go forwad from the start of the array, but it was too complicated
+pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &Vec<i32>, n: i32) {
+    let mut k = (m + n - 1) as usize;  // Points to the last position in nums1 (where to place element)
+    let mut i = (m - 1) as i32;        // Points to the last element in nums1's original data
+    let mut j = (n - 1) as i32;        // Points to the last element in nums2
+    
+    while j >= 0 {// Works backwards from the end of nums1
+        if i >= 0 && nums1[i as usize] > nums2[j as usize] { // If the element is greater and there are still elements in nums1
+            nums1[k] = nums1[i as usize]; // Place larger nums1 element from original data
+            i -= 1; // shift original data pointer
+        } else {
+            nums1[k] = nums2[j as usize]; // Place nums2 element
+            j -= 1; // shift new data
         }
-        current = &mut node.next;
+        k = k.wrapping_sub(1); // move new element pointer to the left either way
     }
-    head
-}
-
-// ownership gymnastics
-pub fn delete_duplicates2(mut head: Option<Box<ListNode>>) -> Option<Box<ListNode>> {
-    let mut current = &mut head;
-    while let Some(node) = current.take() {
-        let mut node = node;
-        let mut next_opt = node.next.take();
-        while let Some(mut next) = next_opt {
-            if node.val == next.val {
-                next_opt = next.next.take();
-            } else {
-                node.next = Some(next);
-                break;
-            }
-        }
-        *current = Some(node);
-        current = &mut current.as_mut().unwrap().next;
-    }
-    head
 }
