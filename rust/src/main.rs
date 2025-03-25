@@ -1,29 +1,40 @@
 mod data;
 
-use std::result;
+use std::{cell::RefCell, rc::Rc, result};
 
-use data::list::ListNode; // Refers to ListNode in src/data/data.rs
+use data::tree::TreeNode; // Refers to ListNode in src/data/data.rs
 
+/*
+Summary
+Rc: Enables shared ownership of data.
+RefCell: Enables interior mutability by enforcing borrowing rules at runtime.
+Together: They allow shared, mutable data structures like trees or graphs.
+*/
 fn main() {
-    let mut v1 = vec![4,0,0,0,0,0];
-    let mut v2 = vec![1,2,3,5,6];
-    merge(&mut v1, 1, &mut v2, 5);
-    println!("result {:?}", v1);
+  
+    let v1 = Rc::new(RefCell::new(TreeNode::new(1)));
+    let v2 = Rc::new(RefCell::new(TreeNode::new(5)));
+    let v3 = Rc::new(RefCell::new(TreeNode::new(3)));
+
+    // Build the tree
+    v3.borrow_mut().left = Some(v1);
+    v3.borrow_mut().right = Some(v2);
+
+    // Perform inorder traversal
+    let result = inorder_traversal(Some(v3));
+    println!("Inorder Traversal Result: {:?}", result);
 } 
-// failed to solve it myself, tried to go forwad from the start of the array, but it was too complicated
-pub fn merge(nums1: &mut Vec<i32>, m: i32, nums2: &Vec<i32>, n: i32) {
-    let mut k = (m + n - 1) as usize;  // Points to the last position in nums1 (where to place element)
-    let mut i = (m - 1) as i32;        // Points to the last element in nums1's original data
-    let mut j = (n - 1) as i32;        // Points to the last element in nums2
-    
-    while j >= 0 {// Works backwards from the end of nums1
-        if i >= 0 && nums1[i as usize] > nums2[j as usize] { // If the element is greater and there are still elements in nums1
-            nums1[k] = nums1[i as usize]; // Place larger nums1 element from original data
-            i -= 1; // shift original data pointer
-        } else {
-            nums1[k] = nums2[j as usize]; // Place nums2 element
-            j -= 1; // shift new data
-        }
-        k = k.wrapping_sub(1); // move new element pointer to the left either way
+
+pub fn inorder_traversal(root: Option<Rc<RefCell<TreeNode>>>) -> Vec<i32> {
+    let mut result = Vec::new();
+    helper(root, &mut result);
+    result
+}
+
+fn helper(node: Option<Rc<RefCell<TreeNode>>>, result: &mut Vec<i32>) {
+    if let Some(node) = node {
+        helper(node.borrow().left.clone(), result);
+        result.push(node.borrow().val);
+        helper(node.borrow().right.clone(), result);
     }
 }
