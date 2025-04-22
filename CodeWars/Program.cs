@@ -1,59 +1,78 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.IO.Enumeration;
 using System.Linq;
-using System.Numerics;
-using System.Reflection;
-using System.Reflection.Metadata.Ecma335;
-using System.Text;
-using System.Xml.Schema;
+using BenchmarkDotNet.Attributes;
+using BenchmarkDotNet.Running;
+
 
 namespace CodeWars
 {
-    class Program
+    /* 
+        | Method             | Mean      | Error    | StdDev   | Allocated |
+        |------------------- |----------:|---------:|---------:|----------:|
+        | MajorityArraySort  |  65.18 us | 1.260 us | 1.808 us |         - |
+        | MajorityDictionary | 164.88 us | 2.510 us | 1.960 us |     424 B |
+        */
+    public class Majority
     {
-        static IEnumerable<int> Data()
+        private static IEnumerable<int> Generate()
         {
-            yield return 0;
-            yield return 1;
-            yield return 2;
-            yield return 3;
-            yield return 4;
-            yield return 5;
-            yield return 6;
-            yield return 7;
-            yield return 8;
-            yield return 9;
-        }
-        static void Main(string[] args)
-        {
-            try
+            for (int i = 0; i < 15000; i++)
             {
-                var res = Data();
-                res = res.Where(x => x % 2 == 0&& res.Any(t => t == x - 1));
-                Console.Write(res.Count());
+                yield return 1;
             }
-            catch (Exception e)
+
+            for (int i = 2; i < 5; i++)
             {
-                Console.WriteLine(e);
+                for (int k = 0; k < 2000; k++)
+                {
+                    yield return i;
+                }
             }
-           
         }
 
-        public bool IsSameTree(TreeNode p, TreeNode q)
+        private readonly int[] _nums = Generate().ToArray();
+        
+        [Benchmark]
+        public int MajorityArraySort() {
+            Array.Sort(_nums);
+            return _nums[_nums.Length / 2];
+        }
+        
+        [Benchmark]
+        public int MajorityDictionary() {
+        
+            // can work without the array
+            Dictionary<int, int> dict = new Dictionary<int, int>();
+            int counter = 0;
+            foreach (var num in Generate())
+            {
+                if (!dict.TryAdd(num, 1))
+                {
+                    dict[num]++;
+                }
+
+                counter++;
+            }
+
+            foreach (var num in dict)
+            {
+                if (num.Value > counter / 2)
+                {
+                    return num.Key;
+                }
+            }
+
+            throw new Exception();
+        }
+    }
+    
+    class Program
+    {
+       
+        static void Main(string[] args)
         {
-            if (p == null && q == null) return true;
-            if (p == null) return false;
-            if (q == null) return false;
-            if (p.val != q.val) return false;
-            var left = IsSameTree(p.left, q.left);
-            if (!left) return false;
-            var right = IsSameTree(p.right, q.right);
-            return right;
+            BenchmarkRunner.Run<Majority>();
         }
     }
 }

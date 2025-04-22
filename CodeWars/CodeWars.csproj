@@ -19,6 +19,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="BenchmarkDotNet" Version="0.14.0" />
       <PackageReference Include="xunit.assert" Version="2.4.2" />
       <PackageReference Include="xunit.extensibility.core" Version="2.4.2" />
     </ItemGroup>
