@@ -32,24 +32,27 @@ public class Samples
 
  */
 
-public class IsoStrings
+public class ContainsDuplicate
 {
-    public bool IsIsomorphic(string s, string t) {
-        Dictionary<char , char> sDic = new Dictionary<char,char>();
-        Dictionary<char , char> tDic = new Dictionary<char,char>();
+    public bool ContainsNearbyDuplicate(int[] nums, int k) {
+        Dictionary<int, int> dict = new Dictionary<int, int>();
+        for (int i = 0; i < nums.Length; i++)
+        {
+            if (!dict.TryGetValue(nums[i], out int prev))
+            {
+                dict.Add(nums[i], i);
+            }
+            else
+            {
+                if (i - prev <= k)
+                {
+                    return true;
+                }
 
-        for (int i = 0 ; i < s.Length ; i++){
-            if (sDic.TryGetValue(s[i], out char vs) && vs != t[i])
-                return false ; 
-
-            if (tDic.TryGetValue(t[i], out char vt) && vt != s[i])
-                return false ; 
-
-            sDic[s[i]] = t[i] ;
-            tDic[t[i]] = s[i] ; 
+                dict[nums[i]] = i;
+            }
         }
-
-        return true ; 
+        return false;
     }
 }
 
