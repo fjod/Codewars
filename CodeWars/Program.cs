@@ -32,27 +32,43 @@ public class Samples
 
  */
 
-public class ContainsDuplicate
+public class CountNodes222
 {
-    public bool ContainsNearbyDuplicate(int[] nums, int k) {
-        Dictionary<int, int> dict = new Dictionary<int, int>();
-        for (int i = 0; i < nums.Length; i++)
-        {
-            if (!dict.TryGetValue(nums[i], out int prev))
-            {
-                dict.Add(nums[i], i);
-            }
-            else
-            {
-                if (i - prev <= k)
-                {
-                    return true;
-                }
+    public int CountNodes(TreeNode root) {
+        if (root == null)
+            return 0;
+        if (root.left == null && root.right == null)
+            return 1;
 
-                dict[nums[i]] = i;
-            }
+        var left = CountLeft(root);
+        var right = CountRight(root);
+        if (left == right)
+        {
+            return (int)Math.Pow(2, left ) - 1;
         }
-        return false;
+
+        return CountNodes(root.left) + CountNodes(root.right) + 1;
+    }
+
+    private int CountLeft(TreeNode root)
+    {
+        int count = 0;
+        while (root != null)
+        {
+            count++;
+            root = root.left;
+        }
+        return count;
+    }
+    private int CountRight(TreeNode root)
+    {
+        int count = 0;
+        while (root != null)
+        {
+            count++;
+            root = root.right;
+        }
+        return count;
     }
 }
 
