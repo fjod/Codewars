@@ -264,6 +264,76 @@ class Program
 {
     static void Main(string[] args)
     {
+        SummaryRanges(new[] { 0,1,2,4,5,7 });
         BenchmarkRunner.Run<Spans>();
+    }
+    
+    // My solution
+    public static IList<string> SummaryRanges(int[] nums)
+    {
+        var ret = new List<string>();
+        if (nums == null || nums.Length == 0)
+            return ret;
+        var cur = 0;
+        var next = cur + 1;
+        var start = nums[0];
+        while (cur < nums.Length)
+        {
+           var curNum = nums[cur];
+           if (cur + 1 == nums.Length)
+           {
+               ret.Add(curNum.ToString());
+               return ret;
+           }
+           var nextNum = nums[next];
+           if (curNum + 1 != nextNum)
+           {
+               ret.Add(curNum.ToString());
+               cur++;
+               next++;
+           }
+           else
+           {
+                start = curNum; // save start of range
+                while (next < nums.Length && nums[next] == curNum + 1) // seek next number in range
+                {
+                     curNum = nums[next];
+                     next++;
+                }
+                ret.Add($"{start}->{curNum}");
+                cur = next;
+                next = cur + 1;
+           }
+        }
+        return ret;
+    }
+    
+    // Grok version
+    public static IList<string> SummaryRanges(int[] nums)
+    {
+        var result = new List<string>();
+        if (nums == null || nums.Length == 0)
+            return result;
+
+        int start = nums[0];
+        for (int i = 0; i < nums.Length; i++)
+        {
+            // Check if current number is the last or not consecutive
+            if (i == nums.Length - 1 || nums[i] + 1 != nums[i + 1])
+            {
+                // Single number case
+                if (start == nums[i])
+                    result.Add(start.ToString());
+                // Range case
+                else
+                    result.Add($"{start}->{nums[i]}");
+            
+                // Update start for next range
+                if (i < nums.Length - 1)
+                    start = nums[i + 1];
+            }
+        }
+
+        return result;
     }
 }
