@@ -1,55 +1,38 @@
 package main
 
-import (
-	"fmt"
-)
+func isPalindrome(head *ListNode) bool {
+	if head == nil || head.Next == nil {
+		return true // Single node or empty list is palindrome
+	}
 
-func resultArray(nums []int) []int {
-	arr1 := make([]int, len(nums))
-	arr1Counter := 0
-	arr2 := make([]int, len(nums))
-	arr2Counter := 0
-	arr1[arr1Counter] = nums[0]
-	arr1Counter++
-	arr2[arr2Counter] = nums[1]
-	arr2Counter++
-	for i := 2; i < len(nums); i++ {
-		if arr1[arr1Counter-1] > arr2[arr2Counter-1] {
-			arr1[arr1Counter] = nums[i]
-			arr1Counter++
-		} else {
-			arr2[arr2Counter] = nums[i]
-			arr2Counter++
+	slow, fast := head, head
+	for fast != nil && fast.Next != nil {
+		slow = slow.Next
+		fast = fast.Next.Next
+	}
+
+	// Reverse the second half
+	var prev *ListNode
+	curr := slow
+	for curr != nil {
+		next := curr.Next // Step 1: Save Next
+		curr.Next = prev  // Step 2: Reverse Connection
+		prev = curr       // Step 3: Move Pointers Forward
+		curr = next
+	}
+	// Compare first half with reversed second half
+	left, right := head, prev
+	for right != nil { // right will be shorter or equal length
+		if left.Val != right.Val {
+			return false
 		}
+		left = left.Next
+		right = right.Next
 	}
 
-	ret := make([]int, len(nums))
-	for i := 0; i < arr1Counter; i++ {
-		ret[i] = arr1[i]
-	}
-	for i := 0; i < arr2Counter; i++ {
-		ret[i+arr1Counter] = arr2[i]
-	}
-	return ret
-}
-
-func bubbleSort(nums []int) {
-	l := len(nums)
-	inner := l - 1
-	for i := 0; i < l; i++ {
-		for j := 0; j < inner; j++ {
-			if nums[j] > nums[i] {
-				temp := nums[j]
-				nums[j] = nums[i]
-				nums[i] = temp
-			}
-		}
-	}
+	return true
 }
 
 func main() {
-	slice := []int{1, 2, 5, 15, 20}
 
-	fmt.Println(slice)
-	fmt.Println(resultArray(slice))
 }
