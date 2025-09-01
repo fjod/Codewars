@@ -1,36 +1,15 @@
 package main
 
-func isPalindrome(head *ListNode) bool {
-	if head == nil || head.Next == nil {
-		return true // Single node or empty list is palindrome
+func addDigits(num int) int {
+	var ret = 0
+	if num < 10 {
+		return num
 	}
-
-	slow, fast := head, head
-	for fast != nil && fast.Next != nil {
-		slow = slow.Next
-		fast = fast.Next.Next
+	for num > 0 {
+		ret += num % 10
+		num /= 10
 	}
-
-	// Reverse the second half
-	var prev *ListNode
-	curr := slow
-	for curr != nil {
-		next := curr.Next // Step 1: Save Next
-		curr.Next = prev  // Step 2: Reverse Connection
-		prev = curr       // Step 3: Move Pointers Forward
-		curr = next
-	}
-	// Compare first half with reversed second half
-	left, right := head, prev
-	for right != nil { // right will be shorter or equal length
-		if left.Val != right.Val {
-			return false
-		}
-		left = left.Next
-		right = right.Next
-	}
-
-	return true
+	return addDigits(ret)
 }
 
 func main() {
