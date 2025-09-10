@@ -1,15 +1,16 @@
 package main
 
-func addDigits(num int) int {
-	var ret = 0
-	if num < 10 {
-		return num
+import "sort"
+
+func missingNumber(nums []int) int {
+
+	sort.Ints(nums)
+	for i := 0; i < len(nums); i++ {
+		if nums[i] != i {
+			return i
+		}
 	}
-	for num > 0 {
-		ret += num % 10
-		num /= 10
-	}
-	return addDigits(ret)
+	return len(nums)
 }
 
 func main() {
