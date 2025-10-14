@@ -294,114 +294,99 @@ public class Spans
 
 class Program
 {
-    public static IList<double> AverageOfLevels(TreeNode root) {
-        List<double> ret = new List<double>();
-        if (root == null) return ret;
-        Queue<TreeNode> queue = new Queue<TreeNode>();
-        queue.Enqueue(root);
-        while (queue.Count > 0)
+    public class RangeFreqQuery {
+        private readonly int[] _arr;
+        Dictionary<int, List<int>> dict = new Dictionary<int, List<int>>();
+        public RangeFreqQuery(int[] arr)
         {
-            var levelSize = queue.Count;
-            var sum = 0.0;
-            for (int i = 0; i < levelSize; i++)
+            _arr = arr;
+            for (int j = 0; j < arr.Length; j++)
             {
-                var cur = queue.Dequeue();
-                if (cur.left != null) queue.Enqueue(cur.left);
-                if (cur.right != null) queue.Enqueue(cur.right);
-                sum += cur.val;
+                var cur = arr[j];
+                if (!dict.ContainsKey(cur))
+                {
+                    dict[cur] = new List<int>();
+                    dict[cur].Add(j);
+                }
+                else
+                {
+                    dict[cur].Add(j);
+                }
             }
-            
-            ret.Add(sum / levelSize);
-          
         }
-        return ret;
-    }
     
-    public static int MincostTicketsWrong(int[] days, int[] costs) {
-        // backtracking is wrong here, I failed to understand task
-        var m1 = MincostTickets2(1, 0, days, costs, 0, 0);
-        var m2 = MincostTickets2(2, 0, days, costs, 0, 0);
-        var m3 = MincostTickets2(3, 0, days, costs, 0, 0);
-        return Math.Min(m1, Math.Min(m2, m3));
-    }
+        public int Query(int left, int right, int value) {
 
-    static int MincostTickets2(int currentPass, int currentTicket, int[] days, int[] costs, int currentPrice, int currentDayIndex)
-    {
-        if (currentTicket >= days.Last())
-            return currentPrice;
-        var currentDay = days[currentDayIndex]; // 1
-        while (currentTicket >= currentDay) // текущего билета хватает на текущий день
+            if (dict.TryGetValue(value, out var query))
+            {
+                // Find the leftmost index >= left
+                int leftIdx = BinarySearchLeft(query, left);
+        
+                // Find the rightmost index <= right
+                int rightIdx = BinarySearchRight(query, right);
+        
+                // If no valid range exists
+                if (leftIdx > rightIdx)
+                    return 0;
+            
+                return rightIdx - leftIdx + 1;
+            }
+            return 0;
+        }
+        private int BinarySearchLeft(List<int> list, int target)
         {
-            var diff = days[currentDayIndex + 1] - currentDay; // считаем сколько поездок останется
-            currentDayIndex++; // переходим к следующему дню
-            currentTicket -= diff; // уменьшаем количество поездок
-            if (currentTicket < 0) return int.MaxValue; // если поездок не хватает, возвращаем макс значение так как нет смысла покупать билет такого типа
+            var left = 0;
+            var right = list.Count - 1; 
+            var result = list.Count; // "not found" - all elements < target
+    
+            while (left <= right)  // Changed from 
+            {
+                var mid = left + (right - left) / 2;
+                var cur = list[mid];
+                if (cur >= target)
+                {
+                    result = mid;      // Found a candidate
+                    right = mid - 1;   // Keep looking left
+                }
+                else
+                {
+                    left = mid + 1;    // Too small, go right
+                }
+            }
+    
+            return result;
         }
-        
-        if (currentPass == 1)
+
+// Find last index where list[mid] <= target
+        private int BinarySearchRight(List<int> list, int target)
         {
-            currentTicket += 1;
-            currentPrice += costs[0];
-            var m11 = MincostTickets2(1, currentTicket, days, costs, currentPrice, currentDayIndex);
-            var m21 = MincostTickets2(2, currentTicket, days, costs, currentPrice, currentDayIndex);
-            var m31 = MincostTickets2(3, currentTicket, days, costs, currentPrice, currentDayIndex);
-            return Math.Min(m11, Math.Min(m21, m31));
+            var left = 0;
+            var right = list.Count - 1; 
+            var result = -1; // "not found" - all elements > target
+    
+            while (left <= right)  // Changed from 
+            {
+                var mid = left + (right - left) / 2;
+                var cur = list[mid];
+                if (cur <= target)  // Changed condition
+                {
+                    result = mid;      // Found a candidate
+                    left = mid + 1;    // Keep looking right
+                }
+                else
+                {
+                    right = mid - 1;   // Too large, go left
+                }
+            }
+    
+            return result;
         }
-
-        if (currentPass == 2)
-        {
-            currentTicket += 7;
-            currentPrice += costs[1];
-            var m12 = MincostTickets2(1, currentTicket, days, costs, currentPrice, currentDayIndex);
-            var m22 = MincostTickets2(2, currentTicket, days, costs, currentPrice, currentDayIndex);
-            var m32 = MincostTickets2(3, currentTicket, days, costs, currentPrice, currentDayIndex);
-            return Math.Min(m12, Math.Min(m22, m32));
-        }
-
-        currentTicket += 30;
-        currentPrice += costs[2];
-        var m13 = MincostTickets2(1, currentTicket, days, costs, currentPrice, currentDayIndex);
-        var m23 = MincostTickets2(2, currentTicket, days, costs, currentPrice, currentDayIndex);
-        var m33 = MincostTickets2(3, currentTicket, days, costs, currentPrice, currentDayIndex);
-        return Math.Min(m13, Math.Min(m23, m33));
-        
-    }
-
-    public static int MincostTickets(int[] days, int[] costs) {
-      int[] dp = new int[days.Length];
-      Array.Fill(dp, int.MaxValue);
-      return Helper(days, costs, dp, 0);
-    }
-
-    private static int Helper(int[] days, int[] costs, int[] dp, int currentDayIndex)
-    {
-        if (currentDayIndex >= days.Length) return 0; // дни закончились
-        if (dp[currentDayIndex] != int.MaxValue) return dp[currentDayIndex]; // уже подсчитали этот день
-        
-        // 1 день
-        var cost1 = Helper(days, costs, dp, currentDayIndex + 1) + costs[0]; // купили билет на этот день и двигаемся на следующий день (пусть он будет хоть через год, там и купим билет)
-        
-        // 7 дней 
-        int currentOrNext = currentDayIndex;
-        while (currentOrNext < days.Length && days[currentOrNext] < days[currentDayIndex] + 7) { // насколько хватит билета на 7 дней если считать от текущего индекса + 7 и не выйти за рамки всего массива
-            currentOrNext++;
-        }
-        int cost7 = costs[1] + Helper(days, costs, dp, currentOrNext);
-        
-        // 30 дней 
-        currentOrNext = currentDayIndex;
-        while (currentOrNext < days.Length && days[currentOrNext] < days[currentDayIndex] + 30) {
-            currentOrNext++;
-        }
-        int cost30 = costs[2] + Helper(days, costs, dp, currentOrNext);
-
-        dp[currentDayIndex] = Math.Min(cost30, Math.Min(cost1, cost7));
-        return dp[currentDayIndex];
     }
 
     static void Main(string[] args)
     {
-        MincostTickets(new[] {1,4,6,7,8,20}, new[] {2,7,15});
+        RangeFreqQuery rf = new RangeFreqQuery([12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]);
+        var a = rf.Query(1, 2, 4);
     }
     
 }
