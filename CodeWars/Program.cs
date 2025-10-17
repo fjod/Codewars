@@ -294,99 +294,43 @@ public class Spans
 
 class Program
 {
-    public class RangeFreqQuery {
-        private readonly int[] _arr;
-        Dictionary<int, List<int>> dict = new Dictionary<int, List<int>>();
-        public RangeFreqQuery(int[] arr)
-        {
-            _arr = arr;
-            for (int j = 0; j < arr.Length; j++)
-            {
-                var cur = arr[j];
-                if (!dict.ContainsKey(cur))
-                {
-                    dict[cur] = new List<int>();
-                    dict[cur].Add(j);
-                }
-                else
-                {
-                    dict[cur].Add(j);
-                }
-            }
-        }
-    
-        public int Query(int left, int right, int value) {
+  
+    public static TreeNode BalanceBST(TreeNode root)
+    {
 
-            if (dict.TryGetValue(value, out var query))
-            {
-                // Find the leftmost index >= left
-                int leftIdx = BinarySearchLeft(query, left);
-        
-                // Find the rightmost index <= right
-                int rightIdx = BinarySearchRight(query, right);
-        
-                // If no valid range exists
-                if (leftIdx > rightIdx)
-                    return 0;
-            
-                return rightIdx - leftIdx + 1;
-            }
-            return 0;
-        }
-        private int BinarySearchLeft(List<int> list, int target)
-        {
-            var left = 0;
-            var right = list.Count - 1; 
-            var result = list.Count; // "not found" - all elements < target
-    
-            while (left <= right)  // Changed from 
-            {
-                var mid = left + (right - left) / 2;
-                var cur = list[mid];
-                if (cur >= target)
-                {
-                    result = mid;      // Found a candidate
-                    right = mid - 1;   // Keep looking left
-                }
-                else
-                {
-                    left = mid + 1;    // Too small, go right
-                }
-            }
-    
-            return result;
-        }
+        List<int> list = new List<int>();
+       
+        SaveTree(root, list);
+        var arr = list.ToArray();
+        Array.Sort(arr);
+        var root2 = CreateTree(arr, 0, arr.Length - 1);
 
-// Find last index where list[mid] <= target
-        private int BinarySearchRight(List<int> list, int target)
-        {
-            var left = 0;
-            var right = list.Count - 1; 
-            var result = -1; // "not found" - all elements > target
-    
-            while (left <= right)  // Changed from 
-            {
-                var mid = left + (right - left) / 2;
-                var cur = list[mid];
-                if (cur <= target)  // Changed condition
-                {
-                    result = mid;      // Found a candidate
-                    left = mid + 1;    // Keep looking right
-                }
-                else
-                {
-                    right = mid - 1;   // Too large, go left
-                }
-            }
-    
-            return result;
-        }
+        return root2;
+    }
+
+    private static TreeNode CreateTree(int[] arr, int left, int right)
+    {
+        if (left > right)
+            return null;
+        var mid = left + (right - left) / 2;
+        var node = new TreeNode(arr[mid]);
+        node.left = CreateTree(arr, left, mid - 1);
+        node.right = CreateTree(arr, mid + 1, right);
+        return node;
+    }
+
+
+    private static void SaveTree(TreeNode root, List<int> arr)
+    {
+        if (root == null) return;
+        arr.Add(root.val);
+        SaveTree(root.left, arr);
+        SaveTree(root.right, arr);
     }
 
     static void Main(string[] args)
     {
-        RangeFreqQuery rf = new RangeFreqQuery([12, 33, 4, 56, 22, 2, 34, 33, 22, 12, 34, 56]);
-        var a = rf.Query(1, 2, 4);
+        BalanceBST(new TreeNode(1, null, new TreeNode(2, null, new TreeNode(3, null, new TreeNode(4)))));
     }
     
 }
