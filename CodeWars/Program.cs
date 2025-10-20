@@ -295,60 +295,22 @@ public class Spans
 class Program
 {
   
-    public static void MoveZeroes(int[] nums) {
-
-        /* почти догадался, но нет. думал считать нули, хотя было достаточно подвинуть не нули
-         * int writeIndex = 0; // позиция для записи следующего ненулевого элемента
-    
-        // Проход 1: перемещаем все ненулевые элементы влево
-        for (int i = 0; i < nums.Length; i++)
+    public string RemoveStars(string s) {
+        // Напишите здесь свой код
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < s.Length; i++)
         {
-            if (nums[i] != 0)
+            if (s[i] == '*')
             {
-                nums[writeIndex] = nums[i];
-                writeIndex++;
+                if (sb.Length > 0)
+                    sb.Remove(sb.Length - 1, 1);
+            }
+            else
+            {
+                sb.Append(s[i]);
             }
         }
-        
-        // Проход 2: заполняем оставшиеся позиции нулями
-        for (int i = writeIndex; i < nums.Length; i++)
-        {
-            nums[i] = 0;
-        }
-         */
-        int? writeIndex = null;
-        for (int i = 0; i < nums.Length; i++)
-        {
-            var cur = nums[i];
-            if (cur == 0 && writeIndex == null) // встретили первый ноль - ничего не делаем, запоминаем его 
-            {
-                writeIndex = i;
-                continue;
-            }
-            if (cur != 0 && writeIndex == null) // встретили ненулевой элемент, но нулей еще не видели - идем дальше
-            {
-                continue;
-            }
-
-            if (cur != 0 && writeIndex != null)
-            {
-                // поменять местами ноль и значение
-                nums[writeIndex.Value] = cur;
-                nums[i] = 0;
-                writeIndex = null;
-                
-                // найти следуюший ноль от writeIndex+1 до i, если нет его = ставим в нулл
-                for (int j = 0; j < i+1; j++)
-                {
-                    var possibleZero = nums[j];
-                    if (possibleZero == 0)
-                    {
-                        writeIndex = j;
-                        break;
-                    }
-                }
-            }
-        }
+        return sb.ToString();
     }
 
     static void Main(string[] args)
