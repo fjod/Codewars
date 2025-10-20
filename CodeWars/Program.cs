@@ -300,7 +300,7 @@ class Program
         int left = 0;
         int right = nums.Length - 1;
     
-        // Определяем, в какой части искать
+        // Определяем, в какой части искатьВ
         if (target >= nums[pivotIndex] && target <= nums[right])
         {
             left = pivotIndex;
