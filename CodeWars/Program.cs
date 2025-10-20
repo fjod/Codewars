@@ -295,42 +295,65 @@ public class Spans
 class Program
 {
   
-    public static TreeNode BalanceBST(TreeNode root)
-    {
+    public static void MoveZeroes(int[] nums) {
 
-        List<int> list = new List<int>();
-       
-        SaveTree(root, list);
-        var arr = list.ToArray();
-        Array.Sort(arr);
-        var root2 = CreateTree(arr, 0, arr.Length - 1);
+        /* почти догадался, но нет. думал считать нули, хотя было достаточно подвинуть не нули
+         * int writeIndex = 0; // позиция для записи следующего ненулевого элемента
+    
+        // Проход 1: перемещаем все ненулевые элементы влево
+        for (int i = 0; i < nums.Length; i++)
+        {
+            if (nums[i] != 0)
+            {
+                nums[writeIndex] = nums[i];
+                writeIndex++;
+            }
+        }
+        
+        // Проход 2: заполняем оставшиеся позиции нулями
+        for (int i = writeIndex; i < nums.Length; i++)
+        {
+            nums[i] = 0;
+        }
+         */
+        int? writeIndex = null;
+        for (int i = 0; i < nums.Length; i++)
+        {
+            var cur = nums[i];
+            if (cur == 0 && writeIndex == null) // встретили первый ноль - ничего не делаем, запоминаем его 
+            {
+                writeIndex = i;
+                continue;
+            }
+            if (cur != 0 && writeIndex == null) // встретили ненулевой элемент, но нулей еще не видели - идем дальше
+            {
+                continue;
+            }
 
-        return root2;
-    }
-
-    private static TreeNode CreateTree(int[] arr, int left, int right)
-    {
-        if (left > right)
-            return null;
-        var mid = left + (right - left) / 2;
-        var node = new TreeNode(arr[mid]);
-        node.left = CreateTree(arr, left, mid - 1);
-        node.right = CreateTree(arr, mid + 1, right);
-        return node;
-    }
-
-
-    private static void SaveTree(TreeNode root, List<int> arr)
-    {
-        if (root == null) return;
-        arr.Add(root.val);
-        SaveTree(root.left, arr);
-        SaveTree(root.right, arr);
+            if (cur != 0 && writeIndex != null)
+            {
+                // поменять местами ноль и значение
+                nums[writeIndex.Value] = cur;
+                nums[i] = 0;
+                writeIndex = null;
+                
+                // найти следуюший ноль от writeIndex+1 до i, если нет его = ставим в нулл
+                for (int j = 0; j < i+1; j++)
+                {
+                    var possibleZero = nums[j];
+                    if (possibleZero == 0)
+                    {
+                        writeIndex = j;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     static void Main(string[] args)
     {
-        BalanceBST(new TreeNode(1, null, new TreeNode(2, null, new TreeNode(3, null, new TreeNode(4)))));
+        MoveZeroes(new[] { 0, 1, 0, 3, 12 });
     }
     
 }
