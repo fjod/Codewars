@@ -294,23 +294,61 @@ public class Spans
 
 class Program
 {
-  
-    public string RemoveStars(string s) {
-        // Напишите здесь свой код
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < s.Length; i++)
+  // идею я сразу выдал, с реализацией бинарного поиска вечно проблемы
+    public int Search(int[] nums, int target) {
+        var pivotIndex = findPivot(nums);
+        int left = 0;
+        int right = nums.Length - 1;
+    
+        // Определяем, в какой части искать
+        if (target >= nums[pivotIndex] && target <= nums[right])
         {
-            if (s[i] == '*')
+            left = pivotIndex;
+        }
+        else
+        {
+            right = pivotIndex - 1;
+        }
+    
+        // Обычный бинарный поиск
+        while (left <= right)
+        {
+            int mid = left + (right - left) / 2;
+        
+            if (nums[mid] == target) return mid;
+        
+            if (nums[mid] > target)
             {
-                if (sb.Length > 0)
-                    sb.Remove(sb.Length - 1, 1);
+                right = mid - 1; // target слева
             }
             else
             {
-                sb.Append(s[i]);
+                left = mid + 1; // target справа
             }
         }
-        return sb.ToString();
+    
+        return -1;
+    }
+
+    private int findPivot(int[] nums)
+    {
+        int left = 0;
+        int right = nums.Length - 1;
+    
+        while (left < right)
+        {
+            int mid = left + (right - left) / 2;
+        
+            if (nums[mid] > nums[right])
+            {
+                left = mid + 1;
+            }
+            else
+            {
+                right = mid;
+            }
+        }
+        return left;
     }
 
     static void Main(string[] args)
