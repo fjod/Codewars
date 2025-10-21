@@ -295,42 +295,31 @@ public class Spans
 
 class Program
 {
-    public static bool IsReflected(int[][] points) {
-        if (points == null || points.Length == 0)
-            return true;
-        // Напишите здесь свой код
+    public IList<IList<int>> LevelOrder(Node root)
+    {
+        List<IList<int>> ret = new List<IList<int>>();
+        if (root == null)
+            return ret;
+        // Напишите здесь свой код - это типовой dfs
+        var queue = new Queue<Node>();
+        queue.Enqueue(root);
+        while (queue.Count > 0)
+        {
+            var len = queue.Count;
+            var list = new List<int>(len);
+            for (int i = 0; i < len; i++)
+            {
+                var cur = queue.Dequeue();
+                list.Add(cur.val);
+                foreach (var n in cur.neighbors)
+                {
+                    queue.Enqueue(n);
+                }
+            }
+            ret.Add(list);
+        }
 
-        double middleLine = ((double)points.Max(p => p[0]) + points.Min(p => p[0]))/2; // если додуматься до этого то все просто (я не додумался)
-        Dictionary<int, List<int>> pointsDict = new Dictionary<int, List<int>>();
-        foreach (var p in points)
-        {
-            var x = p[0];
-            var y = p[1];
-            if (pointsDict.ContainsKey(y))
-            {
-                pointsDict[y].Add(x);
-            }
-            else
-            {
-                pointsDict[y] = new List<int>();
-                pointsDict[y].Add(x);
-            }
-        }
-        
-        foreach (var p in points)
-        {
-            var x = p[0];
-            var y = p[1];
-            if (x == (int)middleLine)
-                continue;
-           var list = pointsDict[y];
-           var middle = (int)(2 * middleLine - x);
-       
-           if (!list.Contains(middle))
-               return false;
-        }
-        
-        return true;
+        return ret;
     }
 
     static void Main(string[] args)
