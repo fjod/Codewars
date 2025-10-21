@@ -295,57 +295,47 @@ public class Spans
 
 class Program
 {
-    public static ListNode MergeTwoLists(ListNode list1, ListNode list2) {
-        if (list1 == null && list2 == null) return null;
-        if (list1 == null) return list2;
-        if (list2 == null) return list1;
+    public static bool IsReflected(int[][] points) {
+        if (points == null || points.Length == 0)
+            return true;
         // Напишите здесь свой код
-        var start = list1;
-        var end = list2;
-        if (list1.val > list2.val)
+
+        double middleLine = ((double)points.Max(p => p[0]) + points.Min(p => p[0]))/2; // если додуматься до этого то все просто (я не додумался)
+        Dictionary<int, List<int>> pointsDict = new Dictionary<int, List<int>>();
+        foreach (var p in points)
         {
-            start = list2;
-            end = list1;
+            var x = p[0];
+            var y = p[1];
+            if (pointsDict.ContainsKey(y))
+            {
+                pointsDict[y].Add(x);
+            }
+            else
+            {
+                pointsDict[y] = new List<int>();
+                pointsDict[y].Add(x);
+            }
         }
         
-        var ret = new ListNode(start.val);
-        var head = ret;
-        start = start.next;
-        while (true)
+        foreach (var p in points)
         {
-            if (start == null && end == null) return head;
-            if (start != null && end != null)
-            {
-                if (start.val < end.val)
-                {
-                    ret.next = start;
-                    start = start.next;
-                    ret = ret.next;
-                    continue;
-                }
-                ret.next = end;
-                end = end.next;
-                ret = ret.next;
+            var x = p[0];
+            var y = p[1];
+            if (x == (int)middleLine)
                 continue;
-            }
-
-            if (start == null)
-            {
-                ret.next = end;
-                end = end.next;
-                ret = ret.next;
-                continue;
-            }
-
-            ret.next = start;
-            start = start.next;
-            ret = ret.next;
+           var list = pointsDict[y];
+           var middle = (int)(2 * middleLine - x);
+       
+           if (!list.Contains(middle))
+               return false;
         }
+        
+        return true;
     }
 
     static void Main(string[] args)
     {
-        MergeTwoLists(new ListNode(1, new ListNode(2, new ListNode(4))), new ListNode(1, new ListNode(3, new ListNode(4))));
+        IsReflected(new[] { new[] { 0, 0 }, new[] { 1, 1 }, new[] { -1, 1 } });
     }
     
 }
