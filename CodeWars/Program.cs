@@ -294,20 +294,40 @@ public class Spans
 
 class Program
 {
-    public bool ContainsDuplicate(int[] nums) {
+    public static int Compress(char[] chars) {
         // Напишите здесь свой код
-        var set = new HashSet<int>();
-        foreach (var num in nums)
+        var read = 0;
+        var write = 0;
+        while (read < chars.Length)
         {
-            if (!set.Add(num))
-                return true;
+            var cur = chars[read];
+            var count = 0;
+            while (read < chars.Length && cur == chars[read]) // считаем количество одинаковых символов
+            {
+                read++;
+                count++;
+            }
+            
+            // записываем символ и количество
+            chars[write] = cur;
+            write++;
+            if (count > 1)
+            {
+                var st = count.ToString();
+                foreach (var c in st)
+                {
+                    chars[write] = c;
+                    write++;
+                }
+            }
         }
-        return false;
+        
+        return write;
     }
 
     static void Main(string[] args)
     {
-        MoveZeroes(new[] { 0, 1, 0, 3, 12 });
+        Compress(new[] { 'a','a','b','b','c','c','c' });
     }
     
 }
