@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
@@ -294,40 +295,57 @@ public class Spans
 
 class Program
 {
-    public static int Compress(char[] chars) {
+    public static ListNode MergeTwoLists(ListNode list1, ListNode list2) {
+        if (list1 == null && list2 == null) return null;
+        if (list1 == null) return list2;
+        if (list2 == null) return list1;
         // Напишите здесь свой код
-        var read = 0;
-        var write = 0;
-        while (read < chars.Length)
+        var start = list1;
+        var end = list2;
+        if (list1.val > list2.val)
         {
-            var cur = chars[read];
-            var count = 0;
-            while (read < chars.Length && cur == chars[read]) // считаем количество одинаковых символов
-            {
-                read++;
-                count++;
-            }
-            
-            // записываем символ и количество
-            chars[write] = cur;
-            write++;
-            if (count > 1)
-            {
-                var st = count.ToString();
-                foreach (var c in st)
-                {
-                    chars[write] = c;
-                    write++;
-                }
-            }
+            start = list2;
+            end = list1;
         }
         
-        return write;
+        var ret = new ListNode(start.val);
+        var head = ret;
+        start = start.next;
+        while (true)
+        {
+            if (start == null && end == null) return head;
+            if (start != null && end != null)
+            {
+                if (start.val < end.val)
+                {
+                    ret.next = start;
+                    start = start.next;
+                    ret = ret.next;
+                    continue;
+                }
+                ret.next = end;
+                end = end.next;
+                ret = ret.next;
+                continue;
+            }
+
+            if (start == null)
+            {
+                ret.next = end;
+                end = end.next;
+                ret = ret.next;
+                continue;
+            }
+
+            ret.next = start;
+            start = start.next;
+            ret = ret.next;
+        }
     }
 
     static void Main(string[] args)
     {
-        Compress(new[] { 'a','a','b','b','c','c','c' });
+        MergeTwoLists(new ListNode(1, new ListNode(2, new ListNode(4))), new ListNode(1, new ListNode(3, new ListNode(4))));
     }
     
 }
