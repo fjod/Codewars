@@ -295,36 +295,34 @@ public class Spans
 
 class Program
 {
-    public IList<IList<int>> LevelOrder(Node root)
-    {
-        List<IList<int>> ret = new List<IList<int>>();
-        if (root == null)
-            return ret;
-        // Напишите здесь свой код - это типовой dfs
-        var queue = new Queue<Node>();
-        queue.Enqueue(root);
-        while (queue.Count > 0)
+    public static int[] ProductExceptSelf(int[] nums) { //сам не догадался про два массива слева и справа :(
+        // Напишите здесь свой код
+       
+        var left = new int[nums.Length];
+        var right = new int[nums.Length];
+        left[0] = 1;
+        for (int i = 1; i < nums.Length; i++)
         {
-            var len = queue.Count;
-            var list = new List<int>(len);
-            for (int i = 0; i < len; i++)
-            {
-                var cur = queue.Dequeue();
-                list.Add(cur.val);
-                foreach (var n in cur.neighbors)
-                {
-                    queue.Enqueue(n);
-                }
-            }
-            ret.Add(list);
+            left[i] = nums[i - 1] * left[i - 1];
+        }
+        
+        right[nums.Length - 1] = 1;
+        for (int i = nums.Length - 2; i >=0; i--)
+        {
+            right[i] = nums[i + 1] * right[i + 1];
         }
 
-        return ret;
+        for (int i = 0; i < nums.Length; i++)
+        {
+            nums[i] = left[i] * right[i];
+        }
+        
+        return nums;
     }
 
     static void Main(string[] args)
     {
-        IsReflected(new[] { new[] { 0, 0 }, new[] { 1, 1 }, new[] { -1, 1 } });
+        ProductExceptSelf(new []{1,2,3,4});
     }
     
 }
