@@ -295,34 +295,33 @@ public class Spans
 
 class Program
 {
-    public static int[] ProductExceptSelf(int[] nums) { //сам не догадался про два массива слева и справа :(
+    public static int LengthOfLongestSubstring(string s) { // почти сам, не так сделал обработку повторов через hashset
+        if (s.Length == 0) return 0;
+        if (s.Length == 1) return 1;
+        
         // Напишите здесь свой код
-       
-        var left = new int[nums.Length];
-        var right = new int[nums.Length];
-        left[0] = 1;
-        for (int i = 1; i < nums.Length; i++)
+        int maxLen = 0;
+        HashSet<char> set = new HashSet<char>();
+        int start = 0;
+        set.Add(s[0]);
+        for (int i = 1; i < s.Length; i++)
         {
-            left[i] = nums[i - 1] * left[i - 1];
-        }
+            var cur = s[i];
+            while (set.Contains(cur))
+            {
+                set.Remove(s[start]);
+                start++;
+            }
         
-        right[nums.Length - 1] = 1;
-        for (int i = nums.Length - 2; i >=0; i--)
-        {
-            right[i] = nums[i + 1] * right[i + 1];
+            set.Add(cur);
+            maxLen = Math.Max(maxLen, i - start + 1);
         }
-
-        for (int i = 0; i < nums.Length; i++)
-        {
-            nums[i] = left[i] * right[i];
-        }
-        
-        return nums;
+        return maxLen;
     }
 
     static void Main(string[] args)
     {
-        ProductExceptSelf(new []{1,2,3,4});
+        LengthOfLongestSubstring("bbbbb");
     }
     
 }
