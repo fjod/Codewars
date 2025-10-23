@@ -295,78 +295,28 @@ public class Spans
 
 class Program
 {
-    public int[][] Merge(int[][] intervals)
-    {
-        // Напишите здесь свой код - он отработал, но можно проще и быстрее
-        List<int[]> ret = new List<int[]>();
-        foreach (var interval in intervals)
+    public static int FindMaxConsecutiveOnes(int[] nums) {
+        // Напишите здесь свой код
+        int maxlen = 0;
+        int curLen = 0;
+        for (int i = 0; i < nums.Length; i++)
         {
-            if (!ret.Any())
+            if (nums[i] == 1)
             {
-                ret.Add(interval);
-                continue;
+                curLen++;
             }
-
-            bool foundMix = false;
-            foreach (var prev in ret.ToArray())
+            else
             {
-                if (interval[0] > prev[1])
-                    continue;
-                var min = Math.Min(prev[0], interval[0]);
-                var max = Math.Max(prev[1], interval[1]);
-                if (prev[0] >= min && interval[0] >= min && interval[1] <= max && prev[1] <= max)
-                {
-                    prev[0] = min;
-                    prev[1] = max;
-                    foundMix = true;
-                    break;
-                }
-            }
-
-            if (!foundMix)
-            {
-                ret.Add(interval);
+                maxlen = Math.Max(maxlen, curLen);
+                curLen = 0;
             }
         }
-        
-        return ret.ToArray();
-        
-        /*
-         * public int[][] Merge(int[][] intervals)
-{
-    if (intervals.Length <= 1)
-        return intervals;
-    
-    // Sort by start time
-    Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
-    
-    List<int[]> result = new List<int[]>();
-    int[] current = intervals[0];
-    result.Add(current);
-    
-    foreach (var interval in intervals)
-    {
-        if (interval[0] <= current[1])
-        {
-            // Overlapping - merge by updating end
-            current[1] = Math.Max(current[1], interval[1]);
-        }
-        else
-        {
-            // Non-overlapping - add new interval
-            current = interval;
-            result.Add(current);
-        }
-    }
-    
-    return result.ToArray();
-}
-         */
+        return maxlen;
     }
 
     static void Main(string[] args)
     {
-        LengthOfLongestSubstring("bbbbb");
+        FindMaxConsecutiveOnes(new[] { 1, 1, 0, 1, 1, 1 });
     }
     
 }
