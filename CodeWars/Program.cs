@@ -295,28 +295,73 @@ public class Spans
 
 class Program
 {
-    public static int LengthOfLongestSubstring(string s) { // почти сам, не так сделал обработку повторов через hashset
-        if (s.Length == 0) return 0;
-        if (s.Length == 1) return 1;
-        
-        // Напишите здесь свой код
-        int maxLen = 0;
-        HashSet<char> set = new HashSet<char>();
-        int start = 0;
-        set.Add(s[0]);
-        for (int i = 1; i < s.Length; i++)
+    public int[][] Merge(int[][] intervals)
+    {
+        // Напишите здесь свой код - он отработал, но можно проще и быстрее
+        List<int[]> ret = new List<int[]>();
+        foreach (var interval in intervals)
         {
-            var cur = s[i];
-            while (set.Contains(cur))
+            if (!ret.Any())
             {
-                set.Remove(s[start]);
-                start++;
+                ret.Add(interval);
+                continue;
             }
-        
-            set.Add(cur);
-            maxLen = Math.Max(maxLen, i - start + 1);
+
+            bool foundMix = false;
+            foreach (var prev in ret.ToArray())
+            {
+                if (interval[0] > prev[1])
+                    continue;
+                var min = Math.Min(prev[0], interval[0]);
+                var max = Math.Max(prev[1], interval[1]);
+                if (prev[0] >= min && interval[0] >= min && interval[1] <= max && prev[1] <= max)
+                {
+                    prev[0] = min;
+                    prev[1] = max;
+                    foundMix = true;
+                    break;
+                }
+            }
+
+            if (!foundMix)
+            {
+                ret.Add(interval);
+            }
         }
-        return maxLen;
+        
+        return ret.ToArray();
+        
+        /*
+         * public int[][] Merge(int[][] intervals)
+{
+    if (intervals.Length <= 1)
+        return intervals;
+    
+    // Sort by start time
+    Array.Sort(intervals, (a, b) => a[0].CompareTo(b[0]));
+    
+    List<int[]> result = new List<int[]>();
+    int[] current = intervals[0];
+    result.Add(current);
+    
+    foreach (var interval in intervals)
+    {
+        if (interval[0] <= current[1])
+        {
+            // Overlapping - merge by updating end
+            current[1] = Math.Max(current[1], interval[1]);
+        }
+        else
+        {
+            // Non-overlapping - add new interval
+            current = interval;
+            result.Add(current);
+        }
+    }
+    
+    return result.ToArray();
+}
+         */
     }
 
     static void Main(string[] args)
