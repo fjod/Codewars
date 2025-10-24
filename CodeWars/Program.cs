@@ -295,26 +295,31 @@ public class Spans
 
 class Program
 {
-    public TreeNode InvertTree(TreeNode root) {
-        // Напишите здесь свой код
-        InvertInner(root);
-        return root;
+    public static int FindPoisonedDuration(int[] timeSeries, int duration) {
+        int totalLen = duration;
+        var end = timeSeries[0] + duration;
+        for (int i = 1; i < timeSeries.Length; i++)
+        {
+            var cur = timeSeries[i];
+            if (cur < end) // inside interval, add time spent between points in interval
+            {
+                totalLen += timeSeries[i] - timeSeries[i - 1]; 
+            }
+            else
+            {
+                 //  no overlap, create new end point and add full duration
+                totalLen += duration;
+            }
+            end = timeSeries[i] + duration; // we increase end on each hit
+        }
+        
+        return totalLen;
     }
 
-    private void InvertInner(TreeNode root)
-    {
-        if (root == null) return;
-        var tempL = root.left;
-        var tempR = root.right;
-        root.left = tempR;
-        root.right = tempL;
-        InvertInner(root.left);
-        InvertInner(root.right);
-    }
 
     static void Main(string[] args)
     {
-        FindMaxConsecutiveOnes(new[] { 1, 1, 0, 1, 1, 1 });
+        FindPoisonedDuration(new[] { 1,4 }, 2);
     }
     
 }
