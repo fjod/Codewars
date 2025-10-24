@@ -295,18 +295,21 @@ public class Spans
 
 class Program
 {
-    public string LargestNumber(int[] nums) {
+    public TreeNode InvertTree(TreeNode root) {
         // Напишите здесь свой код
-        string[] strs = nums.Select(n => n.ToString()).ToArray();
-    
-        // Сортируем по специальному правилу:
-        // сравниваем конкатенации a+b и b+a
-        Array.Sort(strs, (a, b) => (b + a).CompareTo(a + b)); // я об этом вообще не знал
-    
-        // Если наибольшее число - "0", значит все нули
-        if (strs[0] == "0") return "0";
-    
-        return string.Join("", strs);
+        InvertInner(root);
+        return root;
+    }
+
+    private void InvertInner(TreeNode root)
+    {
+        if (root == null) return;
+        var tempL = root.left;
+        var tempR = root.right;
+        root.left = tempR;
+        root.right = tempL;
+        InvertInner(root.left);
+        InvertInner(root.right);
     }
 
     static void Main(string[] args)
