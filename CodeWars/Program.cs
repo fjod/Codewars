@@ -295,23 +295,18 @@ public class Spans
 
 class Program
 {
-    public static int FindMaxConsecutiveOnes(int[] nums) {
+    public string LargestNumber(int[] nums) {
         // Напишите здесь свой код
-        int maxlen = 0;
-        int curLen = 0;
-        for (int i = 0; i < nums.Length; i++)
-        {
-            if (nums[i] == 1)
-            {
-                curLen++;
-            }
-            else
-            {
-                maxlen = Math.Max(maxlen, curLen);
-                curLen = 0;
-            }
-        }
-        return maxlen;
+        string[] strs = nums.Select(n => n.ToString()).ToArray();
+    
+        // Сортируем по специальному правилу:
+        // сравниваем конкатенации a+b и b+a
+        Array.Sort(strs, (a, b) => (b + a).CompareTo(a + b)); // я об этом вообще не знал
+    
+        // Если наибольшее число - "0", значит все нули
+        if (strs[0] == "0") return "0";
+    
+        return string.Join("", strs);
     }
 
     static void Main(string[] args)
