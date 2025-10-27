@@ -296,40 +296,39 @@ public class Spans
 class Program
 {
     
-    public class OrderedStream { // I dont understand the description
-        private readonly string?[] _data;
-        private int _ptr;
-        public OrderedStream(int n)
-        {
-            _data = new string[n + 1];
-            _ptr = 1;
-        }
-    
-        public IList<string> Insert(int idKey, string value) {
-            _data[idKey] = value;
-            var res = new List<string>();
-            for (var i = _ptr; i < _data.Length; i++)
-            {
-                if (_data[i] != null)
-                {
-                    res.Add(_data[i]!);
-                }
-                else
-                {
-                    _ptr = i;
-                    break;
-                }
-            }
+    public static int[][] Merge(int[][] intervals)
+    {
+        List<int[]> ret = new List<int[]>();
 
-            return res;
+        intervals = intervals.OrderBy(a => a[0]).ToArray(); // Array.Sort(intervals, (a, b) => a[0] - b[0]);
+        ret.Add(intervals.First());
+        for (int i = 1; i < intervals.Length; i++)
+        {
+            var prev = ret.Last();
+            var cur = intervals[i];
+            if (cur[0] > prev[1])
+            {
+                // no overlap
+                ret.Add(cur);
+            }
+            else
+            {
+                // overlap - so set max end  [1,4] [4,5]
+                ret[^1][1] = Math.Max(ret[^1][1], cur[1]);
+            }
         }
+        return ret.ToArray();
     }
 
 
 
     static void Main(string[] args)
     {
-        CountEven(30);
+        var a = new[] { 2, 4 };
+        var b = new[] { 4, 9 };
+        var q = new[] { 1, 10 };
+        var c = new[] { new[] { 2, 3 }, new[] { 4, 5 }, new[] { 6, 7 }, new[] { 8, 9 }, new[] { 1, 10 } };
+        Merge(c);
     }
     
 }
