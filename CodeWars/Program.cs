@@ -295,31 +295,34 @@ public class Spans
 
 class Program
 {
-    public static int FindPoisonedDuration(int[] timeSeries, int duration) {
-        int totalLen = duration;
-        var end = timeSeries[0] + duration;
-        for (int i = 1; i < timeSeries.Length; i++)
-        {
-            var cur = timeSeries[i];
-            if (cur < end) // inside interval, add time spent between points in interval
-            {
-                totalLen += timeSeries[i] - timeSeries[i - 1]; 
+    public static int FirstCompleteIndex(int[] arr, int[][] mat) // I dont understand it
+    {
+        int rows = mat.Length;
+        var cols = mat[0].Length;
+        var positionMap = new Dictionary<int, (int, int)>();
+        int[] rowCount = new int[rows];
+        int[] colCount = new int[cols];
+        Array.Fill(rowCount, cols);
+        Array.Fill(colCount, rows);
+        for (int r = 0; r < rows; r++) {
+            for (int c = 0; c < cols; c++) {
+                positionMap[mat[r][c]] = (r, c); // 3 - (0,0) 2 (0,1) etc
             }
-            else
-            {
-                 //  no overlap, create new end point and add full duration
-                totalLen += duration;
-            }
-            end = timeSeries[i] + duration; // we increase end on each hit
         }
         
-        return totalLen;
+        for (int idx = 0; idx < arr.Length; idx++) {
+            var (row, col) = positionMap[arr[idx]];
+            if (--rowCount[row] == 0 || --colCount[col] == 0) {
+                return idx;
+            }
+        }
+        return -1;
     }
 
 
     static void Main(string[] args)
     {
-        FindPoisonedDuration(new[] { 1,4 }, 2);
+        FirstCompleteIndex(new[] { 2,8,7,4,1,3,5,6,9 }, [[3,2,5],[1,4,6],[8,7,9]]);
     }
     
 }
