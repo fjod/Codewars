@@ -295,28 +295,27 @@ public class Spans
 
 class Program
 {
-    public static int FirstCompleteIndex(int[] arr, int[][] mat) // I dont understand it
-    {
-        int rows = mat.Length;
-        var cols = mat[0].Length;
-        var positionMap = new Dictionary<int, (int, int)>();
-        int[] rowCount = new int[rows];
-        int[] colCount = new int[cols];
-        Array.Fill(rowCount, cols);
-        Array.Fill(colCount, rows);
-        for (int r = 0; r < rows; r++) {
-            for (int c = 0; c < cols; c++) {
-                positionMap[mat[r][c]] = (r, c); // 3 - (0,0) 2 (0,1) etc
-            }
+    public int NumberOfAlternatingGroups(int[] colors) {
+        bool isAlternatinng(int fst, int snd, int thrd)
+        {
+            if (fst == 0 && snd == 1 && thrd == 0)
+                return true;
+            if (fst == 1 && snd == 0 && thrd == 1)
+                return true;
+            return false;
         }
-        
-        for (int idx = 0; idx < arr.Length; idx++) {
-            var (row, col) = positionMap[arr[idx]];
-            if (--rowCount[row] == 0 || --colCount[col] == 0) {
-                return idx;
+
+        var count = 0;
+            for (int i = 0; i < colors.Length - 2; i++)
+            {
+                if (isAlternatinng(colors[i], colors[i + 1], colors[i + 2]))
+                    count++;
             }
-        }
-        return -1;
+            if (isAlternatinng(colors[colors.Length - 2], colors[colors.Length - 1], colors[0]))
+                count++;
+            if (isAlternatinng(colors[colors.Length - 1], colors[0], colors[1]))
+                count++;
+            return count;
     }
 
 
