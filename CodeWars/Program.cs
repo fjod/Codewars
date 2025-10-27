@@ -295,19 +295,36 @@ public class Spans
 
 class Program
 {
-    public int MaxAdjacentDistance(int[] nums)
-    {
-        var max = int.MinValue;
-        for (int i = 0; i < nums.Length - 1; i++)
+    
+    public class OrderedStream { // I dont understand the description
+        private readonly string?[] _data;
+        private int _ptr;
+        public OrderedStream(int n)
         {
-            var cur = nums[i];
-            var next = nums[i + 1];
-            var curDif = Math.Abs((cur) - (next));
-            max = Math.Max(max, curDif);
+            _data = new string[n + 1];
+            _ptr = 1;
         }
-        var lastDif = Math.Abs((nums.Last()) - (nums.First()));
-        return Math.Max(max, lastDif);
+    
+        public IList<string> Insert(int idKey, string value) {
+            _data[idKey] = value;
+            var res = new List<string>();
+            for (var i = _ptr; i < _data.Length; i++)
+            {
+                if (_data[i] != null)
+                {
+                    res.Add(_data[i]!);
+                }
+                else
+                {
+                    _ptr = i;
+                    break;
+                }
+            }
+
+            return res;
+        }
     }
+
 
 
     static void Main(string[] args)
