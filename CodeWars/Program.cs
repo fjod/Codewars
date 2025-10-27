@@ -295,30 +295,19 @@ public class Spans
 
 class Program
 {
-        public static int CountEven(int num) {
-                var count = 0;
-                var currentSum = 0;
-                for (int i = 1; i <= num; i++) // positive integers <= num
-                {
-                    if (i < 10)
-                    {
-                        currentSum = i;
-                        if (currentSum % 2 == 0) count++;
-                    }
-                    else
-                    {
-                        currentSum = 0;
-                        var number = i;
-                        while (number != 0)
-                        {
-                            currentSum += number % 10;
-                            number /= 10;
-                        }
-                        if (currentSum % 2 == 0) count++;
-                    }
-                }
-                return count;
+    public int MaxAdjacentDistance(int[] nums)
+    {
+        var max = int.MinValue;
+        for (int i = 0; i < nums.Length - 1; i++)
+        {
+            var cur = nums[i];
+            var next = nums[i + 1];
+            var curDif = Math.Abs((cur) - (next));
+            max = Math.Max(max, curDif);
         }
+        var lastDif = Math.Abs((nums.Last()) - (nums.First()));
+        return Math.Max(max, lastDif);
+    }
 
 
     static void Main(string[] args)
