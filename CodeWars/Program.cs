@@ -295,33 +295,35 @@ public class Spans
 
 class Program
 {
-    public int NumberOfAlternatingGroups(int[] colors) {
-        bool isAlternatinng(int fst, int snd, int thrd)
-        {
-            if (fst == 0 && snd == 1 && thrd == 0)
-                return true;
-            if (fst == 1 && snd == 0 && thrd == 1)
-                return true;
-            return false;
+        public static int CountEven(int num) {
+                var count = 0;
+                var currentSum = 0;
+                for (int i = 1; i <= num; i++) // positive integers <= num
+                {
+                    if (i < 10)
+                    {
+                        currentSum = i;
+                        if (currentSum % 2 == 0) count++;
+                    }
+                    else
+                    {
+                        currentSum = 0;
+                        var number = i;
+                        while (number != 0)
+                        {
+                            currentSum += number % 10;
+                            number /= 10;
+                        }
+                        if (currentSum % 2 == 0) count++;
+                    }
+                }
+                return count;
         }
-
-        var count = 0;
-            for (int i = 0; i < colors.Length - 2; i++)
-            {
-                if (isAlternatinng(colors[i], colors[i + 1], colors[i + 2]))
-                    count++;
-            }
-            if (isAlternatinng(colors[colors.Length - 2], colors[colors.Length - 1], colors[0]))
-                count++;
-            if (isAlternatinng(colors[colors.Length - 1], colors[0], colors[1]))
-                count++;
-            return count;
-    }
 
 
     static void Main(string[] args)
     {
-        FirstCompleteIndex(new[] { 2,8,7,4,1,3,5,6,9 }, [[3,2,5],[1,4,6],[8,7,9]]);
+        CountEven(30);
     }
     
 }
