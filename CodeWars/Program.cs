@@ -305,55 +305,28 @@ https://leetcode.com/problems/binary-subarrays-with-sum/description/
 https://leetcode.com/problems/subarray-product-less-than-k/description/
 https://leetcode.com/problems/count-subarrays-where-max-element-appears-at-least-k-times/description/
      */
-    public int NumberOfSubarrays(int[] nums, int k) // timeout
-    {
-        var sum = 0;
-        int[] binary = new int[nums.Length];
-        for (int i = 0; i < nums.Length; i++) {
-            binary[i] = nums[i] % 2;  // 1 if odd, 0 if even
-        } // create array for odds
+    public int NumSubarraysWithSum(int[] nums, int goal) {
+     
+        var currentSum = 0;
+        var count = 0;
+        Dictionary<int, int> dict = new Dictionary<int, int>();
+        dict[0] = 1;  // dict[0] = 1 is the "virtual starting point" that lets us detect subarrays beginning at index 0!
+        // When we find currentSum - goal = 0 in the dictionary:
+        // It means: "The entire subarray from the start of the array to the current position has sum = goal"
 
-        int[] prefixSum = new int[nums.Length + 1]; 
-        prefixSum[0] = 0;  // No elements = 0 odds
-        for (int i = 0; i < nums.Length; i++) {
-            prefixSum[i + 1] = prefixSum[i] + binary[i];
-        } // calculate rolling sum of odds at each index
-
-        for (int i = 0; i < prefixSum.Length; i++)
+        for (int i = 0; i < nums.Length; i++)
         {
-            for (int j = i+1; j < prefixSum.Length; j++)
-            {
-                if (prefixSum[j] - prefixSum[i] == k)
-                    sum++;
-            }
-        } // for each possible index in array of rolling sums find whether it has k odd elements inside
-        
-        return sum;
-    }
-    
-    public int NumberOfSubarrays2(int[] nums, int k)
-    {
-        Dictionary<int, int> prefixCount = new Dictionary<int, int>();
-        prefixCount[0] = 1;  // We've seen prefix sum 0 once (empty prefix)
-    
-        int count = 0;
-        int currentSum = 0;  // This is our rolling prefix sum
-    
-        for (int i = 0; i < nums.Length; i++) {
-            // Update current prefix sum
-            currentSum += nums[i] % 2;  // Add 1 if odd, 0 if even
-        
-            // Check: how many times have we seen (currentSum - k)?
-            // Each occurrence gives us one valid subarray ending at i
-            if (prefixCount.ContainsKey(currentSum - k)) {
-                count += prefixCount[currentSum - k];
-            }
-        
-            // Record that we've now seen currentSum
-            prefixCount.TryAdd(currentSum, 0);
-            prefixCount[currentSum]++;
+            currentSum += nums[i];
+             if (dict.ContainsKey(currentSum - goal)) // index[j] - index[i] == k  , so if we met currentSum on any prevIndex?
+             {
+                 count+= dict[currentSum - goal]; // add how many times we met it
+             }
+             
+             // save current sum of odd elements
+             dict.TryAdd(currentSum, 0); 
+             dict[currentSum]++;
         }
-    
+        
         return count;
     }
 
