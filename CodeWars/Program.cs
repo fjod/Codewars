@@ -295,31 +295,36 @@ public class Spans
 
 class Program
 {
-    public int LargestPerimeter(int[] nums) {
-        Array.Sort(nums);
-        int max = 0;
-        for (int i = nums.Length - 1; i >= 2 ; i++)
+    public static int FindSpecialInteger(int[] arr) { // should use sliding window with size of  arr.Length / 4 and check if 1st and last elements in window are same
+        Dictionary<int, int> dict = new Dictionary<int, int>();
+        for (int i = 0; i < arr.Length; i++)
         {
-            var a = nums[i];
-            var b = nums[i - 1];
-            var c = nums[i - 2];
-            if (a < b + c) // valid
+            if (dict.ContainsKey(arr[i]))
             {
-               max = Math.Max(max, a + b + c); 
+                dict[arr[i]]++;
+            }
+            else
+            {
+                dict.Add(arr[i], 1);
             }
         }
-        return max;
+
+        var half4 = (float)arr.Length / 4;
+        foreach (var i in dict)
+        {
+            if (i.Value > half4)
+            {
+                return i.Key;
+            }
+        }
+        return -1;
     }
 
 
 
     static void Main(string[] args)
     {
-        var a = new[] { 2, 4 };
-        var b = new[] { 4, 9 };
-        var q = new[] { 1, 10 };
-        var c = new[] { new[] { 2, 3 }, new[] { 4, 5 }, new[] { 6, 7 }, new[] { 8, 9 }, new[] { 1, 10 } };
-        Merge(c);
+        FindSpecialInteger(new []{1,2,2,6,6,6,6,7,10});
     }
     
 }
