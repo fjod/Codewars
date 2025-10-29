@@ -296,28 +296,33 @@ public class Spans
 class Program
 {
     
-    public static int[][] Merge(int[][] intervals)
-    {
-        List<int[]> ret = new List<int[]>();
-
-        intervals = intervals.OrderBy(a => a[0]).ToArray(); // Array.Sort(intervals, (a, b) => a[0] - b[0]);
-        ret.Add(intervals.First());
-        for (int i = 1; i < intervals.Length; i++)
+    public int MaxSatisfied(int[] customers, int[] grumpy, int minutes) {
+        // pretty easy but I was not able to understand additional minutes thing
+        int satisfied = 0;
+        for (int i = 0; i < customers.Length; i++)
         {
-            var prev = ret.Last();
-            var cur = intervals[i];
-            if (cur[0] > prev[1])
-            {
-                // no overlap
-                ret.Add(cur);
-            }
-            else
-            {
-                // overlap - so set max end  [1,4] [4,5]
-                ret[^1][1] = Math.Max(ret[^1][1], cur[1]);
+            if (grumpy[i] == 0) {
+                satisfied += customers[i];
             }
         }
-        return ret.ToArray();
+        
+        // total number of customers from the start up to index i when the owner is grumpy.
+        int[] prefix = new int[customers.Length + 1];
+        for (int i = 0; i <= customers.Length; i++) {
+            prefix[i + 1] = prefix[i];
+            if (grumpy[i] == 1) {
+                prefix[i + 1] += customers[i];
+            }
+        }
+
+        var maxAdditional = 0;
+        for (int i = 0; i < customers.Length - minutes; i++)
+        {
+            int end = i + minutes;
+            maxAdditional = Math.Max(maxAdditional, prefix[end] - prefix[i]);
+        }
+        
+        return satisfied + maxAdditional;
     }
 
 
