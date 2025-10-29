@@ -295,39 +295,20 @@ public class Spans
 
 class Program
 {
-    //very hard + math trick
-    /*
-     * https://leetcode.com/problems/contiguous-array/description/
-https://leetcode.com/problems/subarray-sum-equals-k/description/
-https://leetcode.com/problems/subarrays-with-k-different-integers/description/
-https://leetcode.com/problems/count-number-of-nice-subarrays/description/
-https://leetcode.com/problems/binary-subarrays-with-sum/description/
-https://leetcode.com/problems/subarray-product-less-than-k/description/
-https://leetcode.com/problems/count-subarrays-where-max-element-appears-at-least-k-times/description/
-     */
-    public int NumSubarraysWithSum(int[] nums, int goal) {
-     
-        var currentSum = 0;
-        var count = 0;
-        Dictionary<int, int> dict = new Dictionary<int, int>();
-        dict[0] = 1;  // dict[0] = 1 is the "virtual starting point" that lets us detect subarrays beginning at index 0!
-        // When we find currentSum - goal = 0 in the dictionary:
-        // It means: "The entire subarray from the start of the array to the current position has sum = goal"
-
-        for (int i = 0; i < nums.Length; i++)
+    public int LargestPerimeter(int[] nums) {
+        Array.Sort(nums);
+        int max = 0;
+        for (int i = nums.Length - 1; i >= 2 ; i++)
         {
-            currentSum += nums[i];
-             if (dict.ContainsKey(currentSum - goal)) // index[j] - index[i] == k  , so if we met currentSum on any prevIndex?
-             {
-                 count+= dict[currentSum - goal]; // add how many times we met it
-             }
-             
-             // save current sum of odd elements
-             dict.TryAdd(currentSum, 0); 
-             dict[currentSum]++;
+            var a = nums[i];
+            var b = nums[i - 1];
+            var c = nums[i - 2];
+            if (a < b + c) // valid
+            {
+               max = Math.Max(max, a + b + c); 
+            }
         }
-        
-        return count;
+        return max;
     }
 
 
