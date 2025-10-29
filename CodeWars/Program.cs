@@ -295,34 +295,66 @@ public class Spans
 
 class Program
 {
-    
-    public int MaxSatisfied(int[] customers, int[] grumpy, int minutes) {
-        // pretty easy but I was not able to understand additional minutes thing
-        int satisfied = 0;
-        for (int i = 0; i < customers.Length; i++)
-        {
-            if (grumpy[i] == 0) {
-                satisfied += customers[i];
-            }
-        }
-        
-        // total number of customers from the start up to index i when the owner is grumpy.
-        int[] prefix = new int[customers.Length + 1];
-        for (int i = 0; i <= customers.Length; i++) {
-            prefix[i + 1] = prefix[i];
-            if (grumpy[i] == 1) {
-                prefix[i + 1] += customers[i];
-            }
-        }
+    //very hard + math trick
+    /*
+     * https://leetcode.com/problems/contiguous-array/description/
+https://leetcode.com/problems/subarray-sum-equals-k/description/
+https://leetcode.com/problems/subarrays-with-k-different-integers/description/
+https://leetcode.com/problems/count-number-of-nice-subarrays/description/
+https://leetcode.com/problems/binary-subarrays-with-sum/description/
+https://leetcode.com/problems/subarray-product-less-than-k/description/
+https://leetcode.com/problems/count-subarrays-where-max-element-appears-at-least-k-times/description/
+     */
+    public int NumberOfSubarrays(int[] nums, int k) // timeout
+    {
+        var sum = 0;
+        int[] binary = new int[nums.Length];
+        for (int i = 0; i < nums.Length; i++) {
+            binary[i] = nums[i] % 2;  // 1 if odd, 0 if even
+        } // create array for odds
 
-        var maxAdditional = 0;
-        for (int i = 0; i < customers.Length - minutes; i++)
+        int[] prefixSum = new int[nums.Length + 1]; 
+        prefixSum[0] = 0;  // No elements = 0 odds
+        for (int i = 0; i < nums.Length; i++) {
+            prefixSum[i + 1] = prefixSum[i] + binary[i];
+        } // calculate rolling sum of odds at each index
+
+        for (int i = 0; i < prefixSum.Length; i++)
         {
-            int end = i + minutes;
-            maxAdditional = Math.Max(maxAdditional, prefix[end] - prefix[i]);
-        }
+            for (int j = i+1; j < prefixSum.Length; j++)
+            {
+                if (prefixSum[j] - prefixSum[i] == k)
+                    sum++;
+            }
+        } // for each possible index in array of rolling sums find whether it has k odd elements inside
         
-        return satisfied + maxAdditional;
+        return sum;
+    }
+    
+    public int NumberOfSubarrays2(int[] nums, int k)
+    {
+        Dictionary<int, int> prefixCount = new Dictionary<int, int>();
+        prefixCount[0] = 1;  // We've seen prefix sum 0 once (empty prefix)
+    
+        int count = 0;
+        int currentSum = 0;  // This is our rolling prefix sum
+    
+        for (int i = 0; i < nums.Length; i++) {
+            // Update current prefix sum
+            currentSum += nums[i] % 2;  // Add 1 if odd, 0 if even
+        
+            // Check: how many times have we seen (currentSum - k)?
+            // Each occurrence gives us one valid subarray ending at i
+            if (prefixCount.ContainsKey(currentSum - k)) {
+                count += prefixCount[currentSum - k];
+            }
+        
+            // Record that we've now seen currentSum
+            prefixCount.TryAdd(currentSum, 0);
+            prefixCount[currentSum]++;
+        }
+    
+        return count;
     }
 
 
