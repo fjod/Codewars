@@ -295,29 +295,23 @@ public class Spans
 
 class Program
 {
-    public static int WidthOfBinaryTree(TreeNode root) { // I dont understand the task, if we add nulls on each level just find deepest lvl and * 2 ?
-        if (root == null)
-            return 0;
-        var result = 0;
-        Queue<TreeNode> queue = new Queue<TreeNode>();
-        queue.Enqueue(root);
-        var nullAmount = 0;
-        while (queue.Count > 0)
+    public int FurthestDistanceFromOrigin(string moves) { // task is poorly written, look at hints
+        Dictionary<char, int> map = new Dictionary<char, int>();
+        map['L'] = 0;
+        map['R'] = 0;
+        map['_'] = 0;
+        foreach (var v in moves)
         {
-            result = Math.Max(result, queue.Count + nullAmount);
-            nullAmount = 0;
-            var count = queue.Count;
-            for (int i = 0; i < count; i++)
-            {
-              var cur = queue.Dequeue();
-              if (cur.left != null) queue.Enqueue(cur.left);
-              else nullAmount++;
-              if (cur.right != null) queue.Enqueue(cur.right);
-              else nullAmount++;
-            }
+                map[v]++;
+          
         }
         
-        return result;
+
+        var Lcount = map['L'];
+        var Rcount = map['R'];
+        var UCount = map['_'];
+        if (Lcount > Rcount) return Lcount + UCount - Rcount;
+        return Rcount + UCount - Lcount;
     }
 
 
