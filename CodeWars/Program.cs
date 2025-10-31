@@ -295,29 +295,27 @@ public class Spans
 
 class Program
 {
-    public static int FindSpecialInteger(int[] arr) { // should use sliding window with size of  arr.Length / 4 and check if 1st and last elements in window are same
-        Dictionary<int, int> dict = new Dictionary<int, int>();
-        for (int i = 0; i < arr.Length; i++)
+    public int[] DecimalRepresentation(int n)
+    {
+        List<int> ret = new List<int>();
+        while (n > 0)
         {
-            if (dict.ContainsKey(arr[i]))
-            {
-                dict[arr[i]]++;
-            }
-            else
-            {
-                dict.Add(arr[i], 1);
-            }
+            var rem = n % 10;
+            if (rem != 0) 
+                ret.Add(rem);
+            n /= 10;
         }
 
-        var half4 = (float)arr.Length / 4;
-        foreach (var i in dict)
+        ret.Reverse();
+
+        var c = (int)Math.Pow(10, ret.Count - 1);
+        for(int i = 0; i < ret.Count; i++)
         {
-            if (i.Value > half4)
-            {
-                return i.Key;
-            }
+            ret[i] *= c;
+            c /= 10;
         }
-        return -1;
+
+        return ret.Where(r => r != 0).ToArray();
     }
 
 
