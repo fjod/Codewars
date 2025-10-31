@@ -295,23 +295,25 @@ public class Spans
 
 class Program
 {
-    public int FurthestDistanceFromOrigin(string moves) { // task is poorly written, look at hints
-        Dictionary<char, int> map = new Dictionary<char, int>();
-        map['L'] = 0;
-        map['R'] = 0;
-        map['_'] = 0;
-        foreach (var v in moves)
+    public int LongestIdealString(string s, int k) { // I thought about sliding window, but was totally wrong... 
+        int[] dp = new int[26];
+        foreach (var c in s)
         {
-                map[v]++;
-          
+            var currentIndex = c - 'a';
+            int maxPrev = 0;
+            for (int i = 0; i < dp.Length; i++) // process all chars within distance
+            {
+                var distance = Math.Abs(currentIndex - i);
+                if (distance <= k)
+                {
+                    maxPrev = Math.Max(maxPrev, dp[i]); // find such char that we can have best distance from current char
+                }
+            }
+            
+            dp[currentIndex] = maxPrev + 1; // add current char to the dp
         }
         
-
-        var Lcount = map['L'];
-        var Rcount = map['R'];
-        var UCount = map['_'];
-        if (Lcount > Rcount) return Lcount + UCount - Rcount;
-        return Rcount + UCount - Lcount;
+        return dp.Max();
     }
 
 
