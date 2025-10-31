@@ -301,8 +301,7 @@ class Program
         while (n > 0)
         {
             var rem = n % 10;
-            if (rem != 0) 
-                ret.Add(rem);
+            ret.Add(rem);
             n /= 10;
         }
 
