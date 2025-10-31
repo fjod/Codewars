@@ -295,33 +295,40 @@ public class Spans
 
 class Program
 {
-    public int[] DecimalRepresentation(int n)
-    {
-        List<int> ret = new List<int>();
-        while (n > 0)
+    public static int WidthOfBinaryTree(TreeNode root) { // I dont understand the task, if we add nulls on each level just find deepest lvl and * 2 ?
+        if (root == null)
+            return 0;
+        var result = 0;
+        Queue<TreeNode> queue = new Queue<TreeNode>();
+        queue.Enqueue(root);
+        var nullAmount = 0;
+        while (queue.Count > 0)
         {
-            var rem = n % 10;
-            ret.Add(rem);
-            n /= 10;
+            result = Math.Max(result, queue.Count + nullAmount);
+            nullAmount = 0;
+            var count = queue.Count;
+            for (int i = 0; i < count; i++)
+            {
+              var cur = queue.Dequeue();
+              if (cur.left != null) queue.Enqueue(cur.left);
+              else nullAmount++;
+              if (cur.right != null) queue.Enqueue(cur.right);
+              else nullAmount++;
+            }
         }
-
-        ret.Reverse();
-
-        var c = (int)Math.Pow(10, ret.Count - 1);
-        for(int i = 0; i < ret.Count; i++)
-        {
-            ret[i] *= c;
-            c /= 10;
-        }
-
-        return ret.Where(r => r != 0).ToArray();
+        
+        return result;
     }
 
 
 
     static void Main(string[] args)
     {
-        FindSpecialInteger(new []{1,2,2,6,6,6,6,7,10});
+        WidthOfBinaryTree(new TreeNode(1, 
+            new TreeNode(3, 
+                new TreeNode(5), new TreeNode(3)), 
+            new TreeNode(2, 
+                null,new TreeNode(2))));
     }
     
 }
