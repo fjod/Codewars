@@ -295,43 +295,47 @@ public class Spans
 
 class Program
 {
-    public static int UniquePaths(int m, int n) {
-        if (m == 1 && n == 1) return 1;
+    public static int MinPathSum(int[][] grid)
+    {
+        var m = grid.Length;
+        var n = grid[0].Length;
+        if (m == 1 && n == 1) return grid[0][0];
         int[][] dp = new int[m][];
         for (int i = 0; i < m; i++)
         {
             dp[i] = new int[n];
         }
         
-        dp[0][0] = 0; // start
-        for (int i = 1; i < n; i++) // top horizontal row if we only go right (only 1 way to reach here!)
+        dp[0][0] = grid[0][0]; // start
+        for (int i = 1; i < n; i++) // top horizontal row (move only right)
         {
-            dp[0][i] = 1;
+            dp[0][i] = dp[0][i-1]+grid[0][i];
         }
         for (int i = 1; i < m; i++) // left vertical row if we only go left
         {
-            dp[i][0] = 1;
+            dp[i][0] = dp[i-1][0] + grid[i][0];
         }
-
+        
         for (int i = 1; i < m; i++)
         {
             for (int j = 1; j < n; j++)
             {
                 var a = dp[i - 1][j];
                 var b = dp[i][j - 1];
-                dp[i][j] = a+b; // we get here either from top or from left
+                var cur = grid[i][j];
+                dp[i][j] = Math.Min(cur + a, cur + b); // we get here either from top or from left
             }
         }
-        
-        return dp[m-1][n-1];
+
+        return dp.Last().Last();
     }
-
- 
-
 
     static void Main(string[] args)
     {
-        UniquePaths(3, 7);
+        var a = new[] { 1, 3, 1 };
+        var b = new[] { 1, 5, 1 };
+        var c = new[] { 4, 2, 1 };
+        MinPathSum(new []{a,b,c});
     }
     
 }
