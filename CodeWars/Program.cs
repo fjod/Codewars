@@ -295,24 +295,14 @@ public class Spans
 
 class Program
 {
-    public int LongestIdealString(string s, int k) { // I thought about sliding window, but was totally wrong... 
-        int[] dp = new int[26];
-        foreach (var c in s)
+    public int MaxSubArray(int[] nums) {
+        int[] dp = new int[nums.Length];
+        dp[0] = nums[0];
+        for (int i = 1; i < nums.Length; i++)
         {
-            var currentIndex = c - 'a';
-            int maxPrev = 0;
-            for (int i = 0; i < dp.Length; i++) // process all chars within distance
-            {
-                var distance = Math.Abs(currentIndex - i);
-                if (distance <= k)
-                {
-                    maxPrev = Math.Max(maxPrev, dp[i]); // find such char that we can have best distance from current char
-                }
-            }
-            
-            dp[currentIndex] = maxPrev + 1; // add current char to the dp
+            var cur = nums[i];
+            dp[i] = Math.Max(dp[i - 1] + cur, cur); // what is better - to add current to prev or to start fresh?
         }
-        
         return dp.Max();
     }
 
