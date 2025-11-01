@@ -295,26 +295,43 @@ public class Spans
 
 class Program
 {
-    public int MaxSubArray(int[] nums) {
-        int[] dp = new int[nums.Length];
-        dp[0] = nums[0];
-        for (int i = 1; i < nums.Length; i++)
+    public static int UniquePaths(int m, int n) {
+        if (m == 1 && n == 1) return 1;
+        int[][] dp = new int[m][];
+        for (int i = 0; i < m; i++)
         {
-            var cur = nums[i];
-            dp[i] = Math.Max(dp[i - 1] + cur, cur); // what is better - to add current to prev or to start fresh?
+            dp[i] = new int[n];
         }
-        return dp.Max();
+        
+        dp[0][0] = 0; // start
+        for (int i = 1; i < n; i++) // top horizontal row if we only go right (only 1 way to reach here!)
+        {
+            dp[0][i] = 1;
+        }
+        for (int i = 1; i < m; i++) // left vertical row if we only go left
+        {
+            dp[i][0] = 1;
+        }
+
+        for (int i = 1; i < m; i++)
+        {
+            for (int j = 1; j < n; j++)
+            {
+                var a = dp[i - 1][j];
+                var b = dp[i][j - 1];
+                dp[i][j] = a+b; // we get here either from top or from left
+            }
+        }
+        
+        return dp[m-1][n-1];
     }
 
+ 
 
 
     static void Main(string[] args)
     {
-        WidthOfBinaryTree(new TreeNode(1, 
-            new TreeNode(3, 
-                new TreeNode(5), new TreeNode(3)), 
-            new TreeNode(2, 
-                null,new TreeNode(2))));
+        UniquePaths(3, 7);
     }
     
 }
