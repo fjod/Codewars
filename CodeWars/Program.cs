@@ -295,47 +295,28 @@ public class Spans
 
 class Program
 {
-    public static int MinPathSum(int[][] grid)
-    {
-        var m = grid.Length;
-        var n = grid[0].Length;
-        if (m == 1 && n == 1) return grid[0][0];
-        int[][] dp = new int[m][];
-        for (int i = 0; i < m; i++)
+    public static int MaxCount(int[] banned, int n, int maxSum) { // thought about prefix sum at first, but it's not needed here, just add until maxsum
+
+        int counter = 0;
+        int sum = 0;
+        for (int i = 1; i < n; i++)   // 2 3 4 5 6
+                                      // 2 5 9
         {
-            dp[i] = new int[n];
-        }
-        
-        dp[0][0] = grid[0][0]; // start
-        for (int i = 1; i < n; i++) // top horizontal row (move only right)
-        {
-            dp[0][i] = dp[0][i-1]+grid[0][i];
-        }
-        for (int i = 1; i < m; i++) // left vertical row if we only go left
-        {
-            dp[i][0] = dp[i-1][0] + grid[i][0];
-        }
-        
-        for (int i = 1; i < m; i++)
-        {
-            for (int j = 1; j < n; j++)
+            if (banned.Contains(i)) continue;
+            if (i + sum < maxSum)
             {
-                var a = dp[i - 1][j];
-                var b = dp[i][j - 1];
-                var cur = grid[i][j];
-                dp[i][j] = Math.Min(cur + a, cur + b); // we get here either from top or from left
+                counter++;
+                sum++;
             }
+            else break;
         }
-
-        return dp.Last().Last();
+        
+        return counter;
     }
-
+   
     static void Main(string[] args)
     {
-        var a = new[] { 1, 3, 1 };
-        var b = new[] { 1, 5, 1 };
-        var c = new[] { 4, 2, 1 };
-        MinPathSum(new []{a,b,c});
+        MaxCount(new[] { 11 }, 7, 50);
     }
     
 }
