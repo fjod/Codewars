@@ -295,37 +295,71 @@ public class Spans
 
 class Program
 {
-    public static bool ContainsPattern(int[] arr, int m, int k)
+    /*
+     * public static int CaptureForts(int[] forts)
+{
+    int maxCapture = 0;
+    
+    for (int i = 0; i < forts.Length; i++)
     {
-        var target = arr.AsSpan();
-        for (int i = 0; i < arr.Length - m; i++)
+        // Only start from positions that are 1 or -1 (not 0)
+        if (forts[i] == 0) continue;
+        
+        // Look for the opposite endpoint
+        for (int j = i + 1; j < forts.Length; j++)
         {
-            var current = 0;
-            var cur = target.Slice(i, m);
-            for (int j = i; j <= arr.Length - m; j += m) // shift for slice len
+            // If we hit another 0, keep counting
+            if (forts[j] == 0) continue;
+            
+            // If we found the opposite type (1 and -1, or -1 and 1)
+            if (forts[i] + forts[j] == 0) // 1 + (-1) = 0
             {
-                var next = target.Slice(j, m);
-                if (cur.SequenceEqual(next))
-                {
-                    current++;
-                    if (current >= k)
-                        return true;
-                }
-                else
-                {
-                    break; // if not equal stop searching for current slice
-                }
+                maxCapture = Math.Max(maxCapture, j - i - 1);
+            }
+            
+            // Either way, we hit a non-zero, so stop this search
+            break;
+        }
+    }
+    
+    return maxCapture;
+}
+     */
+    public static int CaptureForts(int[] forts) // bad task formatting as usual - we can start from 1 and from -1!
+    {
+        int start = 0;
+        for (int i = 0; i < forts.Length; i++)
+        {
+            if (forts[i] == 1) // start from friendly pos
+            {
+                start = i;
+                break;
+            }
+        }
+
+        int[] prefix = new int[forts.Length];
+        prefix[start] = 0;
+        for (int i = start+1; i < forts.Length; i++)
+        {
+            if (forts[i] == 0) // enemy
+            {
+                prefix[i] = prefix[i-1] + 1;
+            }
+
+            if (forts[i] != 0) // another not enemy
+            {
+                prefix[i] = 0; // start to find new sequence
             }
         }
         
-        return false;
+        return prefix.Max();
     }
     
   
 
     static void Main(string[] args)
     {
-        ContainsPattern([1,2,1,2,1,1,1,3] ,2 ,2);
+        CaptureForts([1,0,0,-1,0,0,0,0,1]);
     }
     
 }
