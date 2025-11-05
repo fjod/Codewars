@@ -295,36 +295,48 @@ public class Spans
 
 class Program
 {
-    public bool CanConstruct(string ransomNote, string magazine) {
-        Dictionary<char, int> dictionary = new Dictionary<char, int>();
-        foreach (char c in magazine)
+    public static int FirstUniqChar(string s) {
+        Dictionary<char, (int amount, int index)> dictionary = new Dictionary<char,  (int amount, int index)>();
+        for (int i = 0; i < s.Length; i++)
         {
-            if (!dictionary.TryAdd(c, 1))
+            var cur = s[i];
+            if (dictionary.ContainsKey(cur))
             {
-                dictionary[c]++;
+                var (amount, index) = dictionary[cur];
+                dictionary[cur] = (1 + amount, index);
+            }
+            else
+            {
+                dictionary[cur] = (1, i);
             }
         }
 
-        foreach (char c in ransomNote)
+        int minIndex = int.MaxValue;
+        foreach (var pair in dictionary.Values) 
         {
-            if (!dictionary.TryGetValue(c, out int value))
+            if (pair.amount == 1)
             {
-                return false;
+                minIndex = Math.Min(minIndex, pair.index);
             }
-
-            if (value == 0)
-            {
-                return false;
-            }
-            dictionary[c]--;
         }
-        
-        return true;
+     /*
+   // Find first unique character
+    for (int i = 0; i < s.Length; i++)
+    {
+        if (count[s[i]] == 1)
+            return i;
     }
+      * 
+      */
+        return minIndex == int.MaxValue ? -1 : minIndex;
+        
+    }
+    
+  
 
     static void Main(string[] args)
     {
-        MaxCount(new[] { 11 }, 7, 50);
+        FirstUniqChar("loveleetcode");
     }
     
 }
