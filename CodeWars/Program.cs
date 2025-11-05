@@ -296,19 +296,18 @@ public class Spans
 class Program
 {
 
-    public int DifferenceOfSum(int[] nums)
+    public IList<string> GetLongestSubsequence(string[] words, int[] groups) // very wierd description
     {
-        var sum = 0;
-        for (int i = 0; i < nums.Length; i++)
+        List<string> ret = new List<string>();
+        ret.Add(words[0]);
+        for (int i = 1; i < words.Length; i++)
         {
-            var cur = nums[i];
-            while (cur > 0)
+            if (groups[i] != groups[i - 1])
             {
-                sum += cur % 10;
-                cur /= 10;
+                ret.Add(words[i]);
             }
         }
-        return Math.Abs(sum - nums.Sum());
+        return ret;
     }
   
 
