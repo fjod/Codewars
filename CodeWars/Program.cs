@@ -295,48 +295,37 @@ public class Spans
 
 class Program
 {
-    public static int FirstUniqChar(string s) {
-        Dictionary<char, (int amount, int index)> dictionary = new Dictionary<char,  (int amount, int index)>();
-        for (int i = 0; i < s.Length; i++)
-        {
-            var cur = s[i];
-            if (dictionary.ContainsKey(cur))
-            {
-                var (amount, index) = dictionary[cur];
-                dictionary[cur] = (1 + amount, index);
-            }
-            else
-            {
-                dictionary[cur] = (1, i);
-            }
-        }
-
-        int minIndex = int.MaxValue;
-        foreach (var pair in dictionary.Values) 
-        {
-            if (pair.amount == 1)
-            {
-                minIndex = Math.Min(minIndex, pair.index);
-            }
-        }
-     /*
-   // Find first unique character
-    for (int i = 0; i < s.Length; i++)
+    public static bool ContainsPattern(int[] arr, int m, int k)
     {
-        if (count[s[i]] == 1)
-            return i;
-    }
-      * 
-      */
-        return minIndex == int.MaxValue ? -1 : minIndex;
+        var target = arr.AsSpan();
+        for (int i = 0; i < arr.Length - m; i++)
+        {
+            var current = 0;
+            var cur = target.Slice(i, m);
+            for (int j = i; j <= arr.Length - m; j += m) // shift for slice len
+            {
+                var next = target.Slice(j, m);
+                if (cur.SequenceEqual(next))
+                {
+                    current++;
+                    if (current >= k)
+                        return true;
+                }
+                else
+                {
+                    break; // if not equal stop searching for current slice
+                }
+            }
+        }
         
+        return false;
     }
     
   
 
     static void Main(string[] args)
     {
-        FirstUniqChar("loveleetcode");
+        ContainsPattern([1,2,1,2,1,1,1,3] ,2 ,2);
     }
     
 }
