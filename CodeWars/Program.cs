@@ -295,38 +295,30 @@ public class Spans
 
 class Program
 {
-    public IList<IList<string>> Partition(string s)  // it would be much easier to return just a list<string>
-    {
-        List<IList<string>> ret = new List<IList<string>>();
-        PartitionInner(s, ret, new List<string>());
-        return ret;
-    }
-
-    private void PartitionInner(string s, List<IList<string>> ret, List<string> sub)
-    {
-        if (string.IsNullOrEmpty(s))
+    public bool CanConstruct(string ransomNote, string magazine) {
+        Dictionary<char, int> dictionary = new Dictionary<char, int>();
+        foreach (char c in magazine)
         {
-            ret.Add(new List<string>(sub)); // copy to output
-            return;
+            if (!dictionary.TryAdd(c, 1))
+            {
+                dictionary[c]++;
+            }
         }
 
-        for (int i = 0; i < s.Length; i++)
+        foreach (char c in ransomNote)
         {
-            string ss = s.Substring(0,i+1); // check all substrings from start
-            if(!isPalindrome(ss)) continue;
-            sub.Add(ss);
-            PartitionInner(s.Substring(i + 1), ret, sub); // if this sub is a pali, create sub from next item till end
-            sub.RemoveAt(sub.Count - 1); // backtrack
+            if (!dictionary.TryGetValue(c, out int value))
+            {
+                return false;
+            }
+
+            if (value == 0)
+            {
+                return false;
+            }
+            dictionary[c]--;
         }
-    }
-    
-    private bool isPalindrome(string str)
-    {
-        int idx = str.Length -1;
-        for(int i=0;i<str.Length/2;i++)
-        {
-            if(str[i] != str[idx--]) return false;
-        }
+        
         return true;
     }
 
