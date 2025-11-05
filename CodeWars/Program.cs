@@ -295,23 +295,25 @@ public class Spans
 
 class Program
 {
-    public static int MaxCount(int[] banned, int n, int maxSum) { // thought about prefix sum at first, but it's not needed here, just add until maxsum
-
-        int counter = 0;
-        int sum = 0;
-        for (int i = 1; i < n; i++)   // 2 3 4 5 6
-                                      // 2 5 9
+    public int[] TransformArray(int[] nums)
+    {
+        var zeroes = 0;
+        for (int i = 0; i < nums.Length; i++)
         {
-            if (banned.Contains(i)) continue;
-            if (i + sum < maxSum)
-            {
-                counter++;
-                sum++;
-            }
-            else break;
+            if (nums[i] %2 == 0) zeroes++;
+        }
+
+        for (int i = 0; i < zeroes; i++)
+        {
+            nums[i] = 0;
+        }
+
+        for (int i = zeroes + 1; i < nums.Length; i++)
+        {
+            nums[i] = 1;
         }
         
-        return counter;
+        return nums;
     }
    
     static void Main(string[] args)
