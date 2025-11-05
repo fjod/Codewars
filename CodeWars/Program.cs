@@ -295,66 +295,21 @@ public class Spans
 
 class Program
 {
-    /*
-     * public static int CaptureForts(int[] forts)
-{
-    int maxCapture = 0;
-    
-    for (int i = 0; i < forts.Length; i++)
-    {
-        // Only start from positions that are 1 or -1 (not 0)
-        if (forts[i] == 0) continue;
-        
-        // Look for the opposite endpoint
-        for (int j = i + 1; j < forts.Length; j++)
-        {
-            // If we hit another 0, keep counting
-            if (forts[j] == 0) continue;
-            
-            // If we found the opposite type (1 and -1, or -1 and 1)
-            if (forts[i] + forts[j] == 0) // 1 + (-1) = 0
-            {
-                maxCapture = Math.Max(maxCapture, j - i - 1);
-            }
-            
-            // Either way, we hit a non-zero, so stop this search
-            break;
-        }
-    }
-    
-    return maxCapture;
-}
-     */
-    public static int CaptureForts(int[] forts) // bad task formatting as usual - we can start from 1 and from -1!
-    {
-        int start = 0;
-        for (int i = 0; i < forts.Length; i++)
-        {
-            if (forts[i] == 1) // start from friendly pos
-            {
-                start = i;
-                break;
-            }
-        }
 
-        int[] prefix = new int[forts.Length];
-        prefix[start] = 0;
-        for (int i = start+1; i < forts.Length; i++)
+    public int DifferenceOfSum(int[] nums)
+    {
+        var sum = 0;
+        for (int i = 0; i < nums.Length; i++)
         {
-            if (forts[i] == 0) // enemy
+            var cur = nums[i];
+            while (cur > 0)
             {
-                prefix[i] = prefix[i-1] + 1;
-            }
-
-            if (forts[i] != 0) // another not enemy
-            {
-                prefix[i] = 0; // start to find new sequence
+                sum += cur % 10;
+                cur /= 10;
             }
         }
-        
-        return prefix.Max();
+        return Math.Abs(sum - nums.Sum());
     }
-    
   
 
     static void Main(string[] args)
