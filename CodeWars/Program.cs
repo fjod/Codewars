@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using Microsoft.Diagnostics.Runtime;
 
 
 namespace CodeWars;
@@ -296,34 +297,42 @@ public class Spans
 class Program
 {
 
-    public int[] FindIndices(int[] nums, int indexDifference, int valueDifference) // did not realize conditions, therefore failed
+    public static bool IsCousins(TreeNode root, int x, int y) { // just a bfs with parent check
+        var xDepth = Traverse(root, root,0, x);
+        var yDepth = Traverse(root, root,0, y);
+        if (xDepth.Item1.val == yDepth.Item1.val)
+            return false;
+        return xDepth.Item2 == yDepth.Item2;
+    }
+
+   static (TreeNode, int) Traverse(TreeNode prev, TreeNode current, int currentLvl, int target)
     {
-        var minIndx = 0;
-        var maxIndx = 0;
-        for (int j = indexDifference; j < nums.Length; j++)
+        if (current == null)
         {
-            var i = j - indexDifference;
-            if (nums[i] < nums[minIndx]) minIndx = i; // we need indexes >=indexDifference, so for one i we can have many j's
-            if (nums[i] > nums[maxIndx]) maxIndx = i; // therefore search for minmax values on each iteration
-
-            if (Math.Abs(nums[j] - nums[minIndx]) >= valueDifference)
-            {
-                return new[] { minIndx, j };
-            }
-            
-            if (Math.Abs(nums[j] - nums[maxIndx]) >= valueDifference)
-            {
-                return new[] { j, maxIndx };
-            }
+            return (null, currentLvl);
         }
-
-        return new[] { -1, -1 };
+        if (current.val == target)
+        {
+            return (prev, currentLvl);
+        }
+        var left = Traverse(current, current.left, currentLvl + 1, target);
+        var right = Traverse(current, current.right, currentLvl + 1, target);
+        if (left.Item1 != null)
+        {
+            return left;
+        }
+        if (right.Item1 != null)
+        {
+            return right;
+        }
+        return (null, currentLvl);
     }
   
 
     static void Main(string[] args)
     {
-        CaptureForts([1,0,0,-1,0,0,0,0,1]);
+        var tree = new TreeNode(1, new TreeNode(2, null, new TreeNode(4)), new TreeNode(3, null, new TreeNode(5)));
+        IsCousins(tree, 2, 3);
     }
     
 }
