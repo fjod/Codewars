@@ -296,18 +296,28 @@ public class Spans
 class Program
 {
 
-    public IList<string> GetLongestSubsequence(string[] words, int[] groups) // very wierd description
+    public int[] FindIndices(int[] nums, int indexDifference, int valueDifference) // did not realize conditions, therefore failed
     {
-        List<string> ret = new List<string>();
-        ret.Add(words[0]);
-        for (int i = 1; i < words.Length; i++)
+        var minIndx = 0;
+        var maxIndx = 0;
+        for (int j = indexDifference; j < nums.Length; j++)
         {
-            if (groups[i] != groups[i - 1])
+            var i = j - indexDifference;
+            if (nums[i] < nums[minIndx]) minIndx = i; // we need indexes >=indexDifference, so for one i we can have many j's
+            if (nums[i] > nums[maxIndx]) maxIndx = i; // therefore search for minmax values on each iteration
+
+            if (Math.Abs(nums[j] - nums[minIndx]) >= valueDifference)
             {
-                ret.Add(words[i]);
+                return new[] { minIndx, j };
+            }
+            
+            if (Math.Abs(nums[j] - nums[maxIndx]) >= valueDifference)
+            {
+                return new[] { j, maxIndx };
             }
         }
-        return ret;
+
+        return new[] { -1, -1 };
     }
   
 
