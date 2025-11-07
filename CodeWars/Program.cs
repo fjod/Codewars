@@ -297,42 +297,34 @@ public class Spans
 class Program
 {
 
-    public static bool IsCousins(TreeNode root, int x, int y) { // just a bfs with parent check
-        var xDepth = Traverse(root, root,0, x);
-        var yDepth = Traverse(root, root,0, y);
-        if (xDepth.Item1.val == yDepth.Item1.val)
-            return false;
-        return xDepth.Item2 == yDepth.Item2;
-    }
-
-   static (TreeNode, int) Traverse(TreeNode prev, TreeNode current, int currentLvl, int target)
+    public static int NumberOfSpecialChars(string word)
     {
-        if (current == null)
+        int[] lower = new int[26];
+        int[] uppper = new int[26];
+        foreach (var v in word)
         {
-            return (null, currentLvl);
+            if (char.IsUpper(v))
+            {
+                uppper[v - 'A']++;
+            }
+            else
+            {
+                lower[v - 'a']++;
+            }
         }
-        if (current.val == target)
+
+        int count = 0;
+        for (int i = 0; i < lower.Length; i++)
         {
-            return (prev, currentLvl);
+            if (uppper[i] > 0 && lower[i] > 0) count++;
         }
-        var left = Traverse(current, current.left, currentLvl + 1, target);
-        var right = Traverse(current, current.right, currentLvl + 1, target);
-        if (left.Item1 != null)
-        {
-            return left;
-        }
-        if (right.Item1 != null)
-        {
-            return right;
-        }
-        return (null, currentLvl);
+        return count;
     }
   
 
     static void Main(string[] args)
     {
-        var tree = new TreeNode(1, new TreeNode(2, null, new TreeNode(4)), new TreeNode(3, null, new TreeNode(5)));
-        IsCousins(tree, 2, 3);
+        NumberOfSpecialChars("aaAbcBC");
     }
     
 }
