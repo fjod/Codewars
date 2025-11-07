@@ -297,26 +297,21 @@ public class Spans
 class Program
 {
 
-    public static int NumberOfSpecialChars(string word)
-    {
-        int[] lower = new int[26];
-        int[] uppper = new int[26];
-        foreach (var v in word)
-        {
-            if (char.IsUpper(v))
-            {
-                uppper[v - 'A']++;
-            }
-            else
-            {
-                lower[v - 'a']++;
-            }
-        }
-
+    public int MinimumMoves(string s) { // I guess greedy works?
         int count = 0;
-        for (int i = 0; i < lower.Length; i++)
+        for (int i = 0; i < s.Length; i++)
         {
-            if (uppper[i] > 0 && lower[i] > 0) count++;
+            var c = s[i];
+            if (c == 'O')
+            {
+                continue;
+            }
+
+            if (c == 'X')
+            {
+                count++;
+                i += 2;
+            }
         }
         return count;
     }
