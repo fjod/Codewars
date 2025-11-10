@@ -297,29 +297,53 @@ public class Spans
 class Program
 {
 
-    public int MinimumMoves(string s) { // I guess greedy works?
-        int count = 0;
-        for (int i = 0; i < s.Length; i++)
+    public static int CountStudents(int[] students, int[] sandwiches) {
+        Stack<int> stack = new Stack<int>();
+        for (int i = sandwiches.Length - 1; i >= 0; i--)
         {
-            var c = s[i];
-            if (c == 'O')
+            stack.Push(sandwiches[i]);
+        }
+        
+        Queue<int> queue = new Queue<int>();
+        for (int i = 0; i < students.Length; i++)
+        {
+            queue.Enqueue(students[i]);
+        }
+
+        while (true)
+        {
+            var student= queue.Dequeue();
+            if (stack.TryPeek(out var sandwich))
             {
-                continue;
+                if (student == sandwich)
+                {
+                    stack.Pop(); // eat sandwich and leave
+                }
+                else
+                {
+                    queue.Enqueue(student); // go back to queue
+                }
             }
 
-            if (c == 'X')
+            if (queue.Count == 0)
             {
-                count++;
-                i += 2;
+                return 0;
+            }
+
+            if (stack.TryPeek(out var sandwich2))
+            {
+                if (!queue.Contains(sandwich2))
+                {
+                    return queue.Count; // top sandwich cant be taken
+                }
             }
         }
-        return count;
     }
   
 
     static void Main(string[] args)
     {
-        NumberOfSpecialChars("aaAbcBC");
+        CountStudents([1,1,1,0,0,1], [1,0,0,0,1,1]);
     }
     
 }
