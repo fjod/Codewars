@@ -297,49 +297,28 @@ public class Spans
 class Program
 {
 
-    public static int CountStudents(int[] students, int[] sandwiches) {
-        Stack<int> stack = new Stack<int>();
-        for (int i = sandwiches.Length - 1; i >= 0; i--)
-        {
-            stack.Push(sandwiches[i]);
-        }
-        
-        Queue<int> queue = new Queue<int>();
-        for (int i = 0; i < students.Length; i++)
-        {
-            queue.Enqueue(students[i]);
-        }
-
-        while (true)
-        {
-            var student= queue.Dequeue();
-            if (stack.TryPeek(out var sandwich))
-            {
-                if (student == sandwich)
-                {
-                    stack.Pop(); // eat sandwich and leave
-                }
-                else
-                {
-                    queue.Enqueue(student); // go back to queue
-                }
-            }
-
-            if (queue.Count == 0)
-            {
-                return 0;
-            }
-
-            if (stack.TryPeek(out var sandwich2))
-            {
-                if (!queue.Contains(sandwich2))
-                {
-                    return queue.Count; // top sandwich cant be taken
-                }
-            }
-        }
+    public int MaxDepth(Node root) {
+        if (root == null)
+            return 0;
+        return GetDepth(root, 1);
     }
-  
+
+    private int GetDepth(Node root, int i) // basic dfs
+    {
+        if (root == null) return i;
+        if (root.children == null || root.children.Count == 0) return i;
+        var max = i;
+        foreach (var child in root.children)
+        {
+            var depth = GetDepth(child, i + 1);
+            if (depth > max)
+            {
+                max = depth;
+            }
+        }
+        return max;
+    }
+
 
     static void Main(string[] args)
     {
