@@ -5,20 +5,20 @@ namespace CodeWars;
 public class Node
 {
     public int val;
-    public IList<Node> neighbors;
+    public IList<Node> children;
 
     public Node() {
         val = 0;
-        neighbors = new List<Node>();
+        children = new List<Node>();
     }
 
     public Node(int _val) {
         val = _val;
-        neighbors = new List<Node>();
+        children = new List<Node>();
     }
 
-    public Node(int _val, List<Node> _neighbors) {
+    public Node(int _val, List<Node> children) {
         val = _val;
-        neighbors = _neighbors;
+        this.children = children;
     }
 }

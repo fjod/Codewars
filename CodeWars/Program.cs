@@ -297,26 +297,32 @@ public class Spans
 class Program
 {
 
-    public int MaxDepth(Node root) {
-        if (root == null)
-            return 0;
-        return GetDepth(root, 1);
+    public IList<int> Postorder(Node root)
+    {
+        List<int> ret = new List<int>();
+        Traverse(root, ret);
+        return ret;
     }
 
-    private int GetDepth(Node root, int i) // basic dfs
+    private void Traverse(Node root, List<int> ret)
     {
-        if (root == null) return i;
-        if (root.children == null || root.children.Count == 0) return i;
-        var max = i;
-        foreach (var child in root.children)
+        if (root == null)
+            return;
+        if (root.children == null || root.children.Count == 0) // end of branch - add
         {
-            var depth = GetDepth(child, i + 1);
-            if (depth > max)
-            {
-                max = depth;
-            }
+            ret.Add(root.val);
+            return;
         }
-        return max;
+
+        if (root.children.Any()) // any leafs?
+        {
+            foreach (var rootChild in root.children)
+            {
+                Traverse(rootChild, ret);
+            }
+            ret.Add(root.val); // add root of leafs
+        }
+      
     }
 
 
