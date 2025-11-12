@@ -297,42 +297,44 @@ public class Spans
 class Program
 {
 
-    public static int MaxProduct(int[] nums) {
-        if (nums == null || nums.Length < 2)
+    public static int[] CircularGameLosers(int n, int k) {
+        HashSet<int> visitedNumbers = new HashSet<int>();
+        int currentFriend = 1;
+        int currentMult = 1;
+        visitedNumbers.Add(currentFriend);
+     
+        while (true)
         {
-            return 0;
-        }
-
-        int firstIndex = 0;
-        int secondIndex = 1;
-    
-        // Ensure firstIndex points to the larger element initially
-        if (nums[secondIndex] > nums[firstIndex])
-        {
-            (firstIndex, secondIndex) = (secondIndex, firstIndex);
+            int next = currentFriend + currentMult * k;
+        
+            // Handle circular wrapping: convert to 0-indexed, apply modulo, convert back to 1-indexed
+            next = (next - 1) % n + 1; // good luck understanding this
+        
+            if (visitedNumbers.Contains(next))
+            {
+                break; // hit second time, end of game
+            }
+        
+            visitedNumbers.Add(next);
+            currentMult++;
+            currentFriend = next;
         }
         
-        // Single pass through the rest of the array
-        for (int i = 2; i < nums.Length; i++)
+        List<int> ret = new List<int>();
+        for (int i = 1; i <= n; i++)
         {
-            if (nums[i] > nums[firstIndex])
+            if (!visitedNumbers.Contains(i))
             {
-                secondIndex = firstIndex;
-                firstIndex = i;
-            }
-            else if (nums[i] > nums[secondIndex])
-            {
-                secondIndex = i;
+                ret.Add(i);
             }
         }
-        
-        return (nums[firstIndex] - 1)* (nums[secondIndex] - 1);
+        return ret.ToArray();
     }
 
 
     static void Main(string[] args)
     {
-        MaxProduct([3,4,5,2]);
+        CircularGameLosers(5,2);
     }
     
 }
