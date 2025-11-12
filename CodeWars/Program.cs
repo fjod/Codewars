@@ -297,38 +297,42 @@ public class Spans
 class Program
 {
 
-    public IList<int> Postorder(Node root)
-    {
-        List<int> ret = new List<int>();
-        Traverse(root, ret);
-        return ret;
-    }
-
-    private void Traverse(Node root, List<int> ret)
-    {
-        if (root == null)
-            return;
-        if (root.children == null || root.children.Count == 0) // end of branch - add
+    public static int MaxProduct(int[] nums) {
+        if (nums == null || nums.Length < 2)
         {
-            ret.Add(root.val);
-            return;
+            return 0;
         }
 
-        if (root.children.Any()) // any leafs?
+        int firstIndex = 0;
+        int secondIndex = 1;
+    
+        // Ensure firstIndex points to the larger element initially
+        if (nums[secondIndex] > nums[firstIndex])
         {
-            foreach (var rootChild in root.children)
+            (firstIndex, secondIndex) = (secondIndex, firstIndex);
+        }
+        
+        // Single pass through the rest of the array
+        for (int i = 2; i < nums.Length; i++)
+        {
+            if (nums[i] > nums[firstIndex])
             {
-                Traverse(rootChild, ret);
+                secondIndex = firstIndex;
+                firstIndex = i;
             }
-            ret.Add(root.val); // add root of leafs
+            else if (nums[i] > nums[secondIndex])
+            {
+                secondIndex = i;
+            }
         }
-      
+        
+        return (nums[firstIndex] - 1)* (nums[secondIndex] - 1);
     }
 
 
     static void Main(string[] args)
     {
-        CountStudents([1,1,1,0,0,1], [1,0,0,0,1,1]);
+        MaxProduct([3,4,5,2]);
     }
     
 }
