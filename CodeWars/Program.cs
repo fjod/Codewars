@@ -297,38 +297,19 @@ public class Spans
 class Program
 {
 
-    public static int[] CircularGameLosers(int n, int k) {
-        HashSet<int> visitedNumbers = new HashSet<int>();
-        int currentFriend = 1;
-        int currentMult = 1;
-        visitedNumbers.Add(currentFriend);
-     
-        while (true)
+    public int MinimumSum(int num)
+    {
+        int[] digits = new int[4];
+        for (int i = 0; i < 4; i++)
         {
-            int next = currentFriend + currentMult * k;
-        
-            // Handle circular wrapping: convert to 0-indexed, apply modulo, convert back to 1-indexed
-            next = (next - 1) % n + 1; // good luck understanding this
-        
-            if (visitedNumbers.Contains(next))
-            {
-                break; // hit second time, end of game
-            }
-        
-            visitedNumbers.Add(next);
-            currentMult++;
-            currentFriend = next;
+            var cur = num % 10;
+            digits[i] = cur;
+            num /= 10;
         }
-        
-        List<int> ret = new List<int>();
-        for (int i = 1; i <= n; i++)
-        {
-            if (!visitedNumbers.Contains(i))
-            {
-                ret.Add(i);
-            }
-        }
-        return ret.ToArray();
+        Array.Sort(digits);
+        var s1 = digits[0]*10 + digits[2] + digits[1]*10 + digits[3];
+        var s2 = digits[0]*10 + digits[3] + digits[1]*10 + digits[2];
+        return Math.Min(s1, s2);
     }
 
 
