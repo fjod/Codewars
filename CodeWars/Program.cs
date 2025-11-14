@@ -297,19 +297,39 @@ public class Spans
 class Program
 {
 
-    public int MinimumSum(int num)
-    {
-        int[] digits = new int[4];
-        for (int i = 0; i < 4; i++)
-        {
-            var cur = num % 10;
-            digits[i] = cur;
-            num /= 10;
+    public class MyQueue {
+
+        Stack<int> stack = new Stack<int>();
+        Stack<int> aux = new Stack<int>();
+        public MyQueue() { }
+    
+        public void Push(int x) {
+            aux.Clear();   
+            while (stack.Count > 0)   //  2 1  push all prev stack to aux (so queue reverses into stack)
+            {
+                aux.Push(stack.Pop()); //  1 2
+            }
+
+            aux.Push(x);   // 1 2 3  // add current elem on top
+            
+            while (aux.Count > 0)
+            {
+                stack.Push(aux.Pop()); // 3 2 1  (reverse again to form queue)
+            }
         }
-        Array.Sort(digits);
-        var s1 = digits[0]*10 + digits[2] + digits[1]*10 + digits[3];
-        var s2 = digits[0]*10 + digits[3] + digits[1]*10 + digits[2];
-        return Math.Min(s1, s2);
+    
+        public int Pop()
+        {
+            return stack.Pop();
+        }
+    
+        public int Peek() {
+            return stack.Peek();
+        }
+    
+        public bool Empty() {
+            return stack.Count == 0;
+        }
     }
 
 
