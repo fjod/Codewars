@@ -297,45 +297,17 @@ public class Spans
 class Program
 {
 
-    public class MyQueue {
-
-        Stack<int> stack = new Stack<int>();
-        Stack<int> aux = new Stack<int>();
-        public MyQueue() { }
-    
-        public void Push(int x) {
-            aux.Clear();   
-            while (stack.Count > 0)   //  2 1  push all prev stack to aux (so queue reverses into stack)
-            {
-                aux.Push(stack.Pop()); //  1 2
-            }
-
-            aux.Push(x);   // 1 2 3  // add current elem on top
-            
-            while (aux.Count > 0)
-            {
-                stack.Push(aux.Pop()); // 3 2 1  (reverse again to form queue)
-            }
-        }
-    
-        public int Pop()
-        {
-            return stack.Pop();
-        }
-    
-        public int Peek() {
-            return stack.Peek();
-        }
-    
-        public bool Empty() {
-            return stack.Count == 0;
-        }
+    public static int MaxSum(int[] nums) {
+        var max = nums.Max();
+        if (max <= 0) return max;
+        HashSet<int> set = new HashSet<int>(nums.Where(i => i > 0));
+        return set.Sum();
     }
 
 
     static void Main(string[] args)
     {
-        CircularGameLosers(5,2);
+        MaxSum([1,2,-1,-2,1,0,-1]);
     }
     
 }
