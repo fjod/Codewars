@@ -297,17 +297,54 @@ public class Spans
 class Program
 {
 
-    public static int MaxSum(int[] nums) {
-        var max = nums.Max();
-        if (max <= 0) return max;
-        HashSet<int> set = new HashSet<int>(nums.Where(i => i > 0));
-        return set.Sum();
+    public static int FindTheLongestBalancedSubstring(string s)
+    {
+        int max = 0;
+        var index = 0;
+        
+        var cur = s[index];  // find first 0
+        while (cur != '0')
+        {
+            index++;
+            if (index == s.Length) break;
+            cur = s[index]; 
+        }
+        while (index < s.Length)
+        {
+            cur = s[index]; 
+         
+            // calculate zeroes
+            var zeroes = 0;
+            while (index < s.Length && cur == '0')
+            {
+                zeroes++;
+                index++;
+                if (index == s.Length) break;
+                cur = s[index]; 
+            }
+            
+            // calculate ones
+            var ones = 0;
+            while (index < s.Length && cur == '1')
+            {
+                ones++;
+                index++;
+                if (index == s.Length) break;
+                cur = s[index]; 
+            }
+           
+            // check which number is lower, so balanced subseq can be created from it
+            max = Math.Max(max, Math.Min(ones,zeroes)*2);
+            
+        }
+        
+        return max;
     }
 
 
     static void Main(string[] args)
     {
-        MaxSum([1,2,-1,-2,1,0,-1]);
+        FindTheLongestBalancedSubstring("01000111");
     }
     
 }
