@@ -297,25 +297,25 @@ public class Spans
 class Program
 {
 
-    public static int FindContentChildren(int[] g, int[] s) { // did not realize that we can give bigger cookie to child
-        Array.Sort(g);  // Sort greed factors
-        Array.Sort(s);  // Sort cookie sizes
-    
-        int child = 0;
-        int cookie = 0;
-    
-        while (child < g.Length && cookie < s.Length) {
-            if (s[cookie] >= g[child]) {
-                // This cookie satisfies this child
-                child++;
+    public int MaxOperations(int[] nums)
+    {
+        if (nums == null || nums.Length < 2)
+            return 0;
+        int count = 1;
+        var firstSum = nums[0] + nums[1];
+        for (int i = 2; i < nums.Length; i += 2)
+        {
+            if (i + 1 == nums.Length)
+                return count;
+            if (nums[i] + nums[i + 1] == firstSum)
+            {
+                count++;
             }
-            // Always move to next cookie (either used or too small)
-            cookie++;
+            else break;
         }
-    
-        return child;  // Number of satisfied children
+        return count;
     }
-
+}
 
     static void Main(string[] args)
     {
