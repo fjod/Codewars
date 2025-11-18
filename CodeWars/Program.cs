@@ -297,23 +297,18 @@ public class Spans
 class Program
 {
 
-    public IList<string> StringMatching(string[] words)
-    {
-        HashSet<string> ret = new HashSet<string>();
-        foreach (var sortedWord in words.OrderBy(o => o.Length))
+    public int[] RecoverOrder(int[] order, int[] friends) {
+        int[] result = new int[friends.Length];
+        int count = 0;
+        HashSet<int> set = new HashSet<int>(friends);
+        for (int i = 0; i < order.Length; i++)
         {
-            foreach (var allWord in words)
+            if (set.Contains(order[i]))
             {
-                if (allWord == sortedWord) continue;
-                if (allWord.Contains(sortedWord))
-                {
-                    ret.Add(sortedWord);
-                }
+                result[count++] = order[i];
             }
         }
-
-        return new List<string>(ret);
-    }
+        return result;
 }
 
     static void Main(string[] args)
