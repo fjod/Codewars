@@ -297,23 +297,22 @@ public class Spans
 class Program
 {
 
-    public int MaxOperations(int[] nums)
+    public IList<string> StringMatching(string[] words)
     {
-        if (nums == null || nums.Length < 2)
-            return 0;
-        int count = 1;
-        var firstSum = nums[0] + nums[1];
-        for (int i = 2; i < nums.Length; i += 2)
+        HashSet<string> ret = new HashSet<string>();
+        foreach (var sortedWord in words.OrderBy(o => o.Length))
         {
-            if (i + 1 == nums.Length)
-                return count;
-            if (nums[i] + nums[i + 1] == firstSum)
+            foreach (var allWord in words)
             {
-                count++;
+                if (allWord == sortedWord) continue;
+                if (allWord.Contains(sortedWord))
+                {
+                    ret.Add(sortedWord);
+                }
             }
-            else break;
         }
-        return count;
+
+        return new List<string>(ret);
     }
 }
 
