@@ -296,43 +296,57 @@ public class Spans
 
 class Program
 {
-
-    public static TreeNode IncreasingBST(TreeNode root)
+    record struct Athlete : IComparable
     {
-        List<int> start = new List<int>();
-        CreateTree(root, start);
-        TreeNode ret = new TreeNode();
-        var s = ret;
-        foreach (var item in start)
+        public int score;
+        public int index;
+        public int result;
+        public int CompareTo(object obj)
         {
-            ret.val = item;
-            if (start.Last() != item)
-            {
-                ret.right = new TreeNode();
-                ret = ret.right;
-            }
+            return ((Athlete)obj).score - score;
         }
-        return s;
     }
-
-    private static void CreateTree(TreeNode root, List<int> start)
-    {
-        if (root.left != null)
+    public static string[] FindRelativeRanks(int[] score) { // it gave me brain damage
+        Athlete[] scores = new Athlete[score.Length];
+        for (int i = 0; i < score.Length; i++)
         {
-            CreateTree(root.left,  start);
+            scores[i] = new Athlete { score = score[i], index = i };
         }
         
-        start.Add(root.val);
-
-        if (root.right != null)
+        Array.Sort(scores);
+        Dictionary<int, Athlete> dict = new Dictionary<int, Athlete>();
+        for (int i = 0; i < scores.Length; i++)
         {
-            CreateTree(root.right, start);
+            dict.Add(scores[i].index, scores[i] with { result = i});
         }
+
+        string[] ret = new string[dict.Count];
+        for (int i = 0; i < scores.Length; i++)
+        {
+            var index = dict[i];
+            if (index.result == 0)
+            {
+                ret[i] = "Gold Medal";
+                continue;
+            }
+            if (index.result == 1)
+            {
+                ret[i] = "Silver Medal";
+                continue;
+            }
+            if (index.result == 2)
+            {
+                ret[i] = "Bronze Medal";
+                continue;
+            }
+            ret[i] = (index.result + 1).ToString();
+        }
+        return ret;
     }
 
     static void Main(string[] args)
     {
-        IncreasingBST(new TreeNode(5, new TreeNode(1), new TreeNode(7)));
+        FindRelativeRanks([10,3,8,9,4]);
     }
     
 }
