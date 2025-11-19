@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlTypes;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices;
 using System.Text;
 using BenchmarkDotNet.Attributes;
@@ -294,54 +295,37 @@ public class Spans
     }
 }
 
-class Program
+static class TestSpan
 {
-    record struct Athlete : IComparable
+    public static T Sum<T>(this Span<T> span) where T : INumber<T>
     {
-        public int score;
-        public int index;
-        public int result;
-        public int CompareTo(object obj)
+        T ret = T.Zero;
+        foreach (var v in span)
         {
-            return ((Athlete)obj).score - score;
-        }
-    }
-    public static string[] FindRelativeRanks(int[] score) { // it gave me brain damage
-        Athlete[] scores = new Athlete[score.Length];
-        for (int i = 0; i < score.Length; i++)
-        {
-            scores[i] = new Athlete { score = score[i], index = i };
-        }
-        
-        Array.Sort(scores);
-        Dictionary<int, Athlete> dict = new Dictionary<int, Athlete>();
-        for (int i = 0; i < scores.Length; i++)
-        {
-            dict.Add(scores[i].index, scores[i] with { result = i});
-        }
-
-        string[] ret = new string[dict.Count];
-        for (int i = 0; i < scores.Length; i++)
-        {
-            var index = dict[i];
-            if (index.result == 0)
-            {
-                ret[i] = "Gold Medal";
-                continue;
-            }
-            if (index.result == 1)
-            {
-                ret[i] = "Silver Medal";
-                continue;
-            }
-            if (index.result == 2)
-            {
-                ret[i] = "Bronze Medal";
-                continue;
-            }
-            ret[i] = (index.result + 1).ToString();
+            ret += v;
         }
         return ret;
+    }
+}
+
+class Program
+{
+    public int CountPartitions(int[] nums)
+    {
+        int evens = 0;
+        for (int i = 1; i < nums.Length; i++)
+        {
+            var left = nums.AsSpan(0, i);
+            var right = nums.AsSpan(i, nums.Length - i);
+            var leftSum = left.Sum();
+            var rightSum = right.Sum();
+
+            if ((leftSum - rightSum) % 2 == 0)
+            {
+                evens++;
+            }
+        }
+        return evens;
     }
 
     static void Main(string[] args)
