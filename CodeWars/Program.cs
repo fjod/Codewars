@@ -297,7 +297,19 @@ public class Spans
 
 static class TestSpan
 {
-    public static T Sum<T>(this Span<T> span) where T : INumber<T>
+    extension<T>(Span<T> span) where T : INumber<T>
+    {
+        public T TestSum()
+        {
+            T ret = T.Zero;
+            foreach (var v in span)
+            {
+                ret += v;
+            }
+            return ret;
+        }
+    }
+    public static T TestSum2<T>(this Span<T> span) where T : INumber<T>
     {
         T ret = T.Zero;
         foreach (var v in span)
@@ -310,27 +322,80 @@ static class TestSpan
 
 class Program
 {
-    public int CountPartitions(int[] nums)
+    public static int CountValidWords(string sentence)
     {
-        int evens = 0;
-        for (int i = 1; i < nums.Length; i++)
+        int ret = 0;
+        string chars = "qwertyuiopasdfghjklzxcvbnm";
+        string digits = "0123456789";
+        string marks = "-!.,";
+        string marksWithoutHyphen = "!.,";
+        foreach (var s in sentence.Split(' '))
         {
-            var left = nums.AsSpan(0, i);
-            var right = nums.AsSpan(i, nums.Length - i);
-            var leftSum = left.Sum();
-            var rightSum = right.Sum();
-
-            if ((leftSum - rightSum) % 2 == 0)
+            if (string.IsNullOrEmpty(s)) continue;
+            bool isCorrect = true;
+            var ts = s.Trim();
+            foreach (var c in ts) 
             {
-                evens++;
+                if (!chars.Contains(c) && !marks.Contains(c) && digits.Contains(c)) // check illegal chars + illegal punctuation +  digits are not legal
+                {
+                    isCorrect = false;
+                    break;
+                }
             }
+            if (!isCorrect) continue;
+            
+            var hyphenPos = ts.IndexOf('-');
+            if (hyphenPos != -1) // check position of hyphen
+            {
+                var left = hyphenPos - 1;
+                var right = hyphenPos + 1;
+                if (left < 0 || right >= ts.Length) // it must be between chars
+                {
+                    continue;
+                }
+                var leftChar = ts[left];
+                var rightChar = ts[right];
+                if (!chars.Contains(leftChar) || !chars.Contains(rightChar)) // and only chars
+                {
+                    continue;
+                }
+            }
+
+            if (ts.Count(c => c == '-') > 1) // only one hyphen
+            {
+                continue;
+            }
+            var marksCount = 0;
+            foreach (var c in ts) // check punctuation 
+            {
+                if (marksWithoutHyphen.Contains(c))
+                {
+                    marksCount++;
+                }
+            }
+            if (marksCount > 1) // only one is allowed
+            {
+                continue;
+            }
+
+            if (marksCount == 1)
+            {
+                var last = ts[^1];
+                if (!marksWithoutHyphen.Contains(last)) // it must be last
+                {
+                    continue;
+                }
+            }
+
+            ret++;
         }
-        return evens;
+        return ret;
     }
 
     static void Main(string[] args)
     {
-        FindRelativeRanks([10,3,8,9,4]);
+
+        CountValidWords("he bought 2 pencils, 3 erasers, and 1  pencil-sharpener.");
     }
     
 }
