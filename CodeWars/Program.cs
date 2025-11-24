@@ -322,24 +322,49 @@ static class TestSpan
 
 class Program
 {
-    public static bool IsCircularSentence(string sentence) {
-        if (sentence[0] != sentence[^1]) return false; // first must be equal to last because of circular
-        var words = sentence.Split(' ');
-        if (words.Length == 1) return true; // 1 word
-        var prev = words[0];
-        for (int i = 1; i < words.Length; i++)
+    record struct Pair(int index, int sum); // no need to create it at all
+    public static int MinimumPairRemoval(int[] nums)
+    {
+        List<int> res = new List<int>(nums);
+        bool isSorted()
         {
-            var current = words[i];
-            if (current[0] != prev[^1]) return false;
-            prev = current;
+            int prev = res[0];
+            for (int i = 0; i < res.Count; i++)
+            {
+                var cur = res[i];
+                if (cur < prev) return false;
+                prev = cur;
+            }
+            return true;
         }
-        return true;
+        int count = 0;
+        
+        List<Pair> pairs = new List<Pair>(nums.Length);
+        while (true)
+        {
+            if (isSorted())
+            {
+                return count;
+            }
+
+            pairs.Clear();
+            int prev = res[0];
+            for (int i = 1; i < res.Count; i++)
+            {
+                pairs.Add(new Pair(i - 1, res[i] + prev));
+                prev = res[i];
+            }
+            var minPair = pairs.OrderBy(p => p.sum).First(); // should be  if (p.sum < minPair.sum || (p.sum == minPair.sum && p.index < minPair.index)) minPair = p;
+            res[minPair.index] = minPair.sum;
+            res.RemoveAt(minPair.index + 1);
+            count++;
+        }
     }
 
     static void Main(string[] args)
     {
 
-        IsCircularSentence("leetcode exercises sound delightful");
+        MinimumPairRemoval([-2,1,2,-1,-1,-2,-2,-1,-1,1,1]);
     }
     
 }
