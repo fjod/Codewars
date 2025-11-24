@@ -322,80 +322,24 @@ static class TestSpan
 
 class Program
 {
-    public static int CountValidWords(string sentence)
-    {
-        int ret = 0;
-        string chars = "qwertyuiopasdfghjklzxcvbnm";
-        string digits = "0123456789";
-        string marks = "-!.,";
-        string marksWithoutHyphen = "!.,";
-        foreach (var s in sentence.Split(' '))
+    public static bool IsCircularSentence(string sentence) {
+        if (sentence[0] != sentence[^1]) return false; // first must be equal to last because of circular
+        var words = sentence.Split(' ');
+        if (words.Length == 1) return true; // 1 word
+        var prev = words[0];
+        for (int i = 1; i < words.Length; i++)
         {
-            if (string.IsNullOrEmpty(s)) continue;
-            bool isCorrect = true;
-            var ts = s.Trim();
-            foreach (var c in ts) 
-            {
-                if (!chars.Contains(c) && !marks.Contains(c) && digits.Contains(c)) // check illegal chars + illegal punctuation +  digits are not legal
-                {
-                    isCorrect = false;
-                    break;
-                }
-            }
-            if (!isCorrect) continue;
-            
-            var hyphenPos = ts.IndexOf('-');
-            if (hyphenPos != -1) // check position of hyphen
-            {
-                var left = hyphenPos - 1;
-                var right = hyphenPos + 1;
-                if (left < 0 || right >= ts.Length) // it must be between chars
-                {
-                    continue;
-                }
-                var leftChar = ts[left];
-                var rightChar = ts[right];
-                if (!chars.Contains(leftChar) || !chars.Contains(rightChar)) // and only chars
-                {
-                    continue;
-                }
-            }
-
-            if (ts.Count(c => c == '-') > 1) // only one hyphen
-            {
-                continue;
-            }
-            var marksCount = 0;
-            foreach (var c in ts) // check punctuation 
-            {
-                if (marksWithoutHyphen.Contains(c))
-                {
-                    marksCount++;
-                }
-            }
-            if (marksCount > 1) // only one is allowed
-            {
-                continue;
-            }
-
-            if (marksCount == 1)
-            {
-                var last = ts[^1];
-                if (!marksWithoutHyphen.Contains(last)) // it must be last
-                {
-                    continue;
-                }
-            }
-
-            ret++;
+            var current = words[i];
+            if (current[0] != prev[^1]) return false;
+            prev = current;
         }
-        return ret;
+        return true;
     }
 
     static void Main(string[] args)
     {
 
-        CountValidWords("he bought 2 pencils, 3 erasers, and 1  pencil-sharpener.");
+        IsCircularSentence("leetcode exercises sound delightful");
     }
     
 }
