@@ -322,24 +322,31 @@ static class TestSpan
 
 class Program
 {
-    public int SmallestAbsent(int[] nums) {
-        HashSet<int> set = new HashSet<int>(nums.Length);
-        int sum = 0;
-        for (int i = 0; i < nums.Length; i++)
+    public int[][] AllCellsDistOrder(int rows, int cols, int rCenter, int cCenter)
+    {
+        List<int[]> ret = new List<int[]>();
+        Queue<(int r, int c)> queue = new Queue<(int r, int c)>();
+        HashSet<(int, int)> visited = new HashSet<(int, int)>();
+        queue.Enqueue((rCenter, cCenter));
+        visited.Add((rCenter, cCenter));
+        int[] rowShifts = new[] { -1, 1, 0, 0 };
+        int[] colShifts = new[] {  0, 0, -1, 1 };
+        while (queue.Count > 0)
         {
-            set.Add(nums[i]);
-            sum += nums[i];
+            var (r, c) = queue.Dequeue();
+            ret.Add(new[] {r, c});
+            for (int i = 0; i < 4; i++)
+            {
+                var newRow = rowShifts[i] + r;
+                var newCol = colShifts[i] + c;
+                if (newRow >= 0 && newRow < rows && newCol >= 0 && newCol < cols && !visited.Contains((newRow, newCol)))
+                {
+                    queue.Enqueue((newRow, newCol));
+                    visited.Add((newRow, newCol));
+                }
+            }
         }
-        int avg = sum / nums.Length;
-        if (avg < 0)
-            avg = 1;
-        
-        while (true)
-        {
-            avg += 1;
-            if (!set.Contains(avg)) continue;
-            return avg;
-        }
+        return  ret.ToArray();
     }
 
     static void Main(string[] args)
