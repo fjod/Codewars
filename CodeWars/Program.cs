@@ -322,42 +322,23 @@ static class TestSpan
 
 class Program
 {
-    record struct Pair(int index, int sum); // no need to create it at all
-    public static int MinimumPairRemoval(int[] nums)
-    {
-        List<int> res = new List<int>(nums);
-        bool isSorted()
+    public int SmallestAbsent(int[] nums) {
+        HashSet<int> set = new HashSet<int>(nums.Length);
+        int sum = 0;
+        for (int i = 0; i < nums.Length; i++)
         {
-            int prev = res[0];
-            for (int i = 0; i < res.Count; i++)
-            {
-                var cur = res[i];
-                if (cur < prev) return false;
-                prev = cur;
-            }
-            return true;
+            set.Add(nums[i]);
+            sum += nums[i];
         }
-        int count = 0;
+        int avg = sum / nums.Length;
+        if (avg < 0)
+            avg = 1;
         
-        List<Pair> pairs = new List<Pair>(nums.Length);
         while (true)
         {
-            if (isSorted())
-            {
-                return count;
-            }
-
-            pairs.Clear();
-            int prev = res[0];
-            for (int i = 1; i < res.Count; i++)
-            {
-                pairs.Add(new Pair(i - 1, res[i] + prev));
-                prev = res[i];
-            }
-            var minPair = pairs.OrderBy(p => p.sum).First(); // should be  if (p.sum < minPair.sum || (p.sum == minPair.sum && p.index < minPair.index)) minPair = p;
-            res[minPair.index] = minPair.sum;
-            res.RemoveAt(minPair.index + 1);
-            count++;
+            avg += 1;
+            if (!set.Contains(avg)) continue;
+            return avg;
         }
     }
 
