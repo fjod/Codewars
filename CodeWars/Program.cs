@@ -322,22 +322,38 @@ static class TestSpan
 
 class Program
 {
-    public IList<int> Preorder(Node root)
+    public int CountKConstraintSubstrings(string s, int k)
     {
-        List<int> ret = new List<int>();
-        Traverse(root, ret);
-        return ret;
-    }
-
-    private void Traverse(Node root, List<int> ret)
-    {
-        if (root == null) return;
-        ret.Add(root.val);
-        if (root.children == null) return;
-        foreach (var c in root.children)
+        int left = 0; int right = 0;
+        int zeroes = 0; int ones = 0;
+        int ret = 0;
+        while (right < s.Length)
         {
-            Traverse(c, ret);
+            var cur = s[right];
+            if (cur == '0')
+            {
+                zeroes++;
+            }
+            else ones++;
+
+            while (zeroes > k && ones > k) // shrink window because we are out of limits
+            {
+                if (s[left] == '0')
+                {
+                    zeroes--;
+                }
+                else
+                {
+                    ones--;
+                }
+
+                left++;
+            }
+            ret += right - left + 1;
+            right++;
         }
+
+        return ret;
     }
 
     static void Main(string[] args)
