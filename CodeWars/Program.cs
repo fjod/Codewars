@@ -322,44 +322,30 @@ static class TestSpan
 
 class Program
 {
-    public int CountKConstraintSubstrings(string s, int k)
-    {
-        int left = 0; int right = 0;
-        int zeroes = 0; int ones = 0;
-        int ret = 0;
-        while (right < s.Length)
+    public static bool IsOneBitCharacter(int[] bits) {
+        for (int i = 0; i < bits.Length;)
         {
-            var cur = s[right];
-            if (cur == '0')
+            var cur = bits[i];
+            if (cur == 0) // skip it
             {
-                zeroes++;
+                i++;
+                if (i == bits.Length) return true; // if it's last
+                continue;
             }
-            else ones++;
 
-            while (zeroes > k && ones > k) // shrink window because we are out of limits
+            if (cur == 1) // so it's 10 or 11
             {
-                if (s[left] == '0')
-                {
-                    zeroes--;
-                }
-                else
-                {
-                    ones--;
-                }
-
-                left++;
+                i += 2;
+                if (i >= bits.Length) return false;
             }
-            ret += right - left + 1;
-            right++;
         }
-
-        return ret;
+        return false;
     }
 
     static void Main(string[] args)
     {
 
-        MinimumPairRemoval([-2,1,2,-1,-1,-2,-2,-1,-1,1,1]);
+        IsOneBitCharacter([1,0,0]);
     }
     
 }
