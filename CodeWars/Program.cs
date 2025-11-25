@@ -322,24 +322,16 @@ static class TestSpan
 
 class Program
 {
-    public static bool IsOneBitCharacter(int[] bits) {
-        for (int i = 0; i < bits.Length;)
+    public bool IsArraySpecial(int[] nums) {
+        if (nums.Length < 2) return true;
+        var prev = nums[0];
+        for (int i = 1; i < nums.Length; i++)
         {
-            var cur = bits[i];
-            if (cur == 0) // skip it
-            {
-                i++;
-                if (i == bits.Length) return true; // if it's last
-                continue;
-            }
-
-            if (cur == 1) // so it's 10 or 11
-            {
-                i += 2;
-                if (i >= bits.Length) return false;
-            }
+            var cur = nums[i];
+            if (prev % 2 == cur % 2) return false;
+            prev = cur;
         }
-        return false;
+        return true;
     }
 
     static void Main(string[] args)
