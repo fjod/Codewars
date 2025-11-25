@@ -322,16 +322,25 @@ static class TestSpan
 
 class Program
 {
-    public bool IsArraySpecial(int[] nums) {
-        if (nums.Length < 2) return true;
-        var prev = nums[0];
-        for (int i = 1; i < nums.Length; i++)
+    public string MakeFancyString(string s)
+    {
+        if (s.Length < 2)
+            return s;
+        StringBuilder sb = new StringBuilder();
+        sb.Append(s[0]);
+        sb.Append(s[1]);
+        for (int i = 2; i < s.Length; i++)
         {
-            var cur = nums[i];
-            if (prev % 2 == cur % 2) return false;
-            prev = cur;
+            var p1 = s[i - 1];
+            var p2 = s[i - 2];
+            var cur = s[i];
+            if (p1 == p2 && p2 == cur)
+            {
+                continue; // will be 3 consecutives
+            }
+            sb.Append(cur);
         }
-        return true;
+        return sb.ToString();
     }
 
     static void Main(string[] args)
