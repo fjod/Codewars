@@ -322,55 +322,47 @@ static class TestSpan
 
 class Program
 {
-    public static int MaximumUniqueSubarray(int[] nums)
-    {
-        int left = 0;
-        int right = 0;
-        HashSet<int> set = new HashSet<int>();
-        set.Add(nums[0]);
-        
-        int score = nums[0];
-        while (right < nums.Length)
+    public static string LargestPalindromic(string num) {
+        int[] digits = new int[10];
+        foreach (var c in num)
         {
-            right++;
-            if (right == nums.Length) return score;
-            var cur = nums[right];
-            if (set.Contains(cur))
+            var number = int.Parse(c.ToString()); 
+            digits[number]++;
+        }
+        
+        // do we have single digits? if we do, place largest in the middle
+        string ret = "";
+        for (int i = digits.Length - 1; i >=0; i--)
+        {
+            if (digits[i] % 2 == 1) // is even, so put it in the middle
             {
-                // move left until we find cur
-                while (nums[left] != cur)
-                {
-                    set.Remove(nums[left]);
-                    left++;
-                } 
-                // on the char to remove
-                left++;
-                int sum = 0;
-                for (int i = left; i <= right; i++)
-                {
-                    sum += nums[i];
-                }
-                score = Math.Max(score, sum);
-            }
-            else
-            {
-                // new element
-                set.Add(cur);
-                int sum = 0;
-                for (int i = left; i <= right; i++)
-                {
-                    sum += nums[i];
-                }
-                score = Math.Max(score, sum);
+                ret = i.ToString();
+                digits[i] -= 1;
+                break; // place only one
             }
         }
-        return score;
+        
+        // add all pairs 
+        var start = 1;
+        if (digits.Skip(1).Any(d => d > 1)) start = 0; // if there are any pairs, then we can use zeroes
+        for (int i = start; i < digits.Length; i++)
+        {
+            var cur = digits[i];
+            if (cur < 2) continue; // now skip all singles
+            while (cur > 1) // keep adding to both sides
+            {
+                ret = $"{i}{ret}{i}"; 
+                cur -= 2;
+            }
+        }
+        
+        return String.IsNullOrEmpty(ret) ? "0" : ret;
     }
 
     static void Main(string[] args)
     {
 
-        MaximumUniqueSubarray([5,2,1,2,5,2,1,2,5]);
+        LargestPalindromic("123");
     }
     
 }
