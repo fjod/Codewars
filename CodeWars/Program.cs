@@ -326,7 +326,7 @@ class Program
         var v1 = version1.Split('.');
         var v2 = version2.Split('.');
         int current = 0;
-        while (current < v1.Length && current < v2.Length)
+        while (current < v1.Length || current < v2.Length)
         {
             int v1Val = 0;
             if (current < v1.Length) v1Val = int.Parse(v1[current]);
