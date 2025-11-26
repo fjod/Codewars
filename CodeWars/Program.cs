@@ -322,27 +322,55 @@ static class TestSpan
 
 class Program
 {
-    public static int CompareVersion(string version1, string version2) {
-        var v1 = version1.Split('.');
-        var v2 = version2.Split('.');
-        int current = 0;
-        while (current < v1.Length || current < v2.Length)
+    public static int MaximumUniqueSubarray(int[] nums)
+    {
+        int left = 0;
+        int right = 0;
+        HashSet<int> set = new HashSet<int>();
+        set.Add(nums[0]);
+        
+        int score = nums[0];
+        while (right < nums.Length)
         {
-            int v1Val = 0;
-            if (current < v1.Length) v1Val = int.Parse(v1[current]);
-            int v2Val = 0;
-            if (current < v2.Length) v2Val = int.Parse(v2[current]);
-            if (v1Val < v2Val) return -1;
-            if (v1Val > v2Val) return 1;
-            current++;
+            right++;
+            if (right == nums.Length) return score;
+            var cur = nums[right];
+            if (set.Contains(cur))
+            {
+                // move left until we find cur
+                while (nums[left] != cur)
+                {
+                    set.Remove(nums[left]);
+                    left++;
+                } 
+                // on the char to remove
+                left++;
+                int sum = 0;
+                for (int i = left; i <= right; i++)
+                {
+                    sum += nums[i];
+                }
+                score = Math.Max(score, sum);
+            }
+            else
+            {
+                // new element
+                set.Add(cur);
+                int sum = 0;
+                for (int i = left; i <= right; i++)
+                {
+                    sum += nums[i];
+                }
+                score = Math.Max(score, sum);
+            }
         }
-        return 0;
+        return score;
     }
 
     static void Main(string[] args)
     {
 
-        CompareVersion("1.0.1" , "1");
+        MaximumUniqueSubarray([5,2,1,2,5,2,1,2,5]);
     }
     
 }
