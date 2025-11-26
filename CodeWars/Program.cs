@@ -322,31 +322,27 @@ static class TestSpan
 
 class Program
 {
-    public string MakeFancyString(string s)
-    {
-        if (s.Length < 2)
-            return s;
-        StringBuilder sb = new StringBuilder();
-        sb.Append(s[0]);
-        sb.Append(s[1]);
-        for (int i = 2; i < s.Length; i++)
+    public static int CompareVersion(string version1, string version2) {
+        var v1 = version1.Split('.');
+        var v2 = version2.Split('.');
+        int current = 0;
+        while (current < v1.Length && current < v2.Length)
         {
-            var p1 = s[i - 1];
-            var p2 = s[i - 2];
-            var cur = s[i];
-            if (p1 == p2 && p2 == cur)
-            {
-                continue; // will be 3 consecutives
-            }
-            sb.Append(cur);
+            int v1Val = 0;
+            if (current < v1.Length) v1Val = int.Parse(v1[current]);
+            int v2Val = 0;
+            if (current < v2.Length) v2Val = int.Parse(v2[current]);
+            if (v1Val < v2Val) return -1;
+            if (v1Val > v2Val) return 1;
+            current++;
         }
-        return sb.ToString();
+        return 0;
     }
 
     static void Main(string[] args)
     {
 
-        IsOneBitCharacter([1,0,0]);
+        CompareVersion("1.0.1" , "1");
     }
     
 }
