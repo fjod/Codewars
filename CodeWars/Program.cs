@@ -322,25 +322,14 @@ static class TestSpan
 
 class Program
 {
-    public  static int CountHillValley(int[] nums) // it's no easy by any means, I could not solve it myself
-    {
-        int prev = nums[0];
-        int prevDir = 0;
+    public static int CountCompleteDayPairs(int[] hours) { // apparently in can be done via dictionary in o(n) but I cant understand the solution
         int count = 0;
-        foreach (var i in nums.Skip(1))
+        for (int i = 0; i < hours.Length; i++)
         {
-            if (i == prev) continue; // skip plato
-            var curDir = Math.Sign(i - prev);
-            if (prevDir == 0) // save new dir for 1st element
+            for (int j = i+1; j < hours.Length; j++)
             {
-                prevDir = curDir;
+               if ((hours[i] + hours[j])% 24 == 0) count++;
             }
-            else if (curDir != prevDir) // save new dir and update count
-            {
-                prevDir = curDir;
-                count++;
-            }
-            prev = i; // save new number
         }
         return count;
     }
@@ -348,7 +337,7 @@ class Program
     static void Main(string[] args)
     {
 
-      var q=   CountHillValley([2,4,1,1,6,5]);
+      var q=   CountCompleteDayPairs([72,48,24,3]);
     }
     
 }
