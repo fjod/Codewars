@@ -322,41 +322,33 @@ static class TestSpan
 
 class Program
 {
-    public static string GenerateTag(string caption) {
-        Span<char> ret = stackalloc char[caption.Length + 1];
-        ret[0] = '#';
-        string valid = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM ";
-        int counter = 1;
-        bool prevIsSpace = false;
-        foreach (var c in caption)
+    public  static int CountHillValley(int[] nums) // it's no easy by any means, I could not solve it myself
+    {
+        int prev = nums[0];
+        int prevDir = 0;
+        int count = 0;
+        foreach (var i in nums.Skip(1))
         {
-            if (!valid.Contains(c)) continue;
-            if (c == ' ')
+            if (i == prev) continue; // skip plato
+            var curDir = Math.Sign(i - prev);
+            if (prevDir == 0) // save new dir for 1st element
             {
-                prevIsSpace = true;
-                continue;
+                prevDir = curDir;
             }
-
-            if (prevIsSpace)
+            else if (curDir != prevDir) // save new dir and update count
             {
-                ret[counter++] = char.ToUpper(c);
-                prevIsSpace = false;
-                continue;
+                prevDir = curDir;
+                count++;
             }
-            ret[counter++] = char.ToLower(c);
+            prev = i; // save new number
         }
-
-        ret[1] = char.ToLower(ret[1]);
-        
-        if (counter > 100)
-            return new string(ret[..100]);
-        return new string(ret[..counter]);
+        return count;
     }
 
     static void Main(string[] args)
     {
 
-      var q=   GenerateTag("Waves hope dream plays future flies ideas quietly bold moon high apple rise field green glow over early surface");
+      var q=   CountHillValley([2,4,1,1,6,5]);
     }
     
 }
