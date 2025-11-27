@@ -322,34 +322,41 @@ static class TestSpan
 
 class Program
 {
-    public string RemoveDuplicates(string s) {
-        Stack<char>  stack = new Stack<char>();
-        stack.Push(s[0]);
-        foreach (var c in s.Skip(1))
+    public static string GenerateTag(string caption) {
+        Span<char> ret = stackalloc char[caption.Length + 1];
+        ret[0] = '#';
+        string valid = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM ";
+        int counter = 1;
+        bool prevIsSpace = false;
+        foreach (var c in caption)
         {
-            if (stack.Count > 0 && stack.Peek() == c)
+            if (!valid.Contains(c)) continue;
+            if (c == ' ')
             {
-                stack.Pop();
+                prevIsSpace = true;
+                continue;
             }
-            else
+
+            if (prevIsSpace)
             {
-                stack.Push(c);
+                ret[counter++] = char.ToUpper(c);
+                prevIsSpace = false;
+                continue;
             }
+            ret[counter++] = char.ToLower(c);
         }
-        Span<char> result = stackalloc char[stack.Count];
-        int counter = stack.Count - 1;
-        while (stack.Count > 0)
-        {
-            result[counter] = stack.Pop();
-            counter--;
-        }
-        return new string(result);
+
+        ret[1] = char.ToLower(ret[1]);
+        
+        if (counter > 100)
+            return new string(ret[..100]);
+        return new string(ret[..counter]);
     }
 
     static void Main(string[] args)
     {
 
-        LargestPalindromic("123");
+      var q=   GenerateTag("Waves hope dream plays future flies ideas quietly bold moon high apple rise field green glow over early surface");
     }
     
 }
