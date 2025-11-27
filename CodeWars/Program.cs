@@ -322,41 +322,28 @@ static class TestSpan
 
 class Program
 {
-    public static string LargestPalindromic(string num) {
-        int[] digits = new int[10];
-        foreach (var c in num)
+    public string RemoveDuplicates(string s) {
+        Stack<char>  stack = new Stack<char>();
+        stack.Push(s[0]);
+        foreach (var c in s.Skip(1))
         {
-            var number = int.Parse(c.ToString()); 
-            digits[number]++;
-        }
-        
-        // do we have single digits? if we do, place largest in the middle
-        string ret = "";
-        for (int i = digits.Length - 1; i >=0; i--)
-        {
-            if (digits[i] % 2 == 1) // is even, so put it in the middle
+            if (stack.Count > 0 && stack.Peek() == c)
             {
-                ret = i.ToString();
-                digits[i] -= 1;
-                break; // place only one
+                stack.Pop();
+            }
+            else
+            {
+                stack.Push(c);
             }
         }
-        
-        // add all pairs 
-        var start = 1;
-        if (digits.Skip(1).Any(d => d > 1)) start = 0; // if there are any pairs, then we can use zeroes
-        for (int i = start; i < digits.Length; i++)
+        Span<char> result = stackalloc char[stack.Count];
+        int counter = stack.Count - 1;
+        while (stack.Count > 0)
         {
-            var cur = digits[i];
-            if (cur < 2) continue; // now skip all singles
-            while (cur > 1) // keep adding to both sides
-            {
-                ret = $"{i}{ret}{i}"; 
-                cur -= 2;
-            }
+            result[counter] = stack.Pop();
+            counter--;
         }
-        
-        return String.IsNullOrEmpty(ret) ? "0" : ret;
+        return new string(result);
     }
 
     static void Main(string[] args)
