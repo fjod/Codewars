@@ -322,22 +322,59 @@ static class TestSpan
 
 class Program
 {
-    public static int CountCompleteDayPairs(int[] hours) { // apparently in can be done via dictionary in o(n) but I cant understand the solution
-        int count = 0;
-        for (int i = 0; i < hours.Length; i++)
+    public static int MaxScore(int n, int k, int[][] stayScore, int[][] travelScore) // this is very wierd task 
+    {
+        int[][] dp = new int[k][];  // k days
+        for (int i = 0; i < k; i++)
         {
-            for (int j = i+1; j < hours.Length; j++)
+            dp[i] = new int[n]; // n cities
+        }
+        
+        // fill base case
+        // Base case: day 0, consider all ways to be at each city
+        for (int city = 0; city < n; city++)
+        {
+            // Option 1: Start here and stay
+            dp[0][city] = stayScore[0][city];
+    
+            // Option 2: Start at another city and travel here
+            for (int startCity = 0; startCity < n; startCity++)
             {
-               if ((hours[i] + hours[j])% 24 == 0) count++;
+                if (startCity != city)
+                {
+                    dp[0][city] = Math.Max(dp[0][city], travelScore[startCity][city]);
+                }
             }
         }
-        return count;
+        for (int day = 1; day < k; day++) // for each next day
+        {
+            for (int city = 0; city < n; city++) // check each city we can travel to
+            {
+                // Option 1: Stay in this city (was here yesterday)
+                int stayOption = dp[day-1][city] + stayScore[day][city];
+                
+                // Option 2: Travel from another city to here
+                int travelOption = 0;
+                for (int prevCity = 0; prevCity < n; prevCity++)
+                {
+                    if (prevCity != city)
+                    {
+                        travelOption = Math.Max(travelOption, 
+                            dp[day-1][prevCity] + travelScore[prevCity][city]);
+                    }
+                }
+                
+                // Take the better option
+                dp[day][city] = Math.Max(stayOption, travelOption);
+            }
+        }
+        return dp[k - 1].Max();
     }
 
     static void Main(string[] args)
     {
 
-      var q=   CountCompleteDayPairs([72,48,24,3]);
+      var q=   MaxScore(2, 1, [[1,1]], [[0,1],[6,0]]);
     }
     
 }
