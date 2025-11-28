@@ -316,65 +316,34 @@ static class TestSpan
         {
             ret += v;
         }
+        Span<char> qspan = stackalloc char[span.Length];
         return ret;
     }
 }
 
 class Program
 {
-    public static int MaxScore(int n, int k, int[][] stayScore, int[][] travelScore) // this is very wierd task 
+    private static int tilt = 0;
+    public static int FindTilt(TreeNode root)
     {
-        int[][] dp = new int[k][];  // k days
-        for (int i = 0; i < k; i++)
-        {
-            dp[i] = new int[n]; // n cities
-        }
+        FindTiltInner(root);
+        return tilt;
+    }
+
+    private static int FindTiltInner(TreeNode root)
+    {
+        if (root == null) return 0;
         
-        // fill base case
-        // Base case: day 0, consider all ways to be at each city
-        for (int city = 0; city < n; city++)
-        {
-            // Option 1: Start here and stay
-            dp[0][city] = stayScore[0][city];
-    
-            // Option 2: Start at another city and travel here
-            for (int startCity = 0; startCity < n; startCity++)
-            {
-                if (startCity != city)
-                {
-                    dp[0][city] = Math.Max(dp[0][city], travelScore[startCity][city]);
-                }
-            }
-        }
-        for (int day = 1; day < k; day++) // for each next day
-        {
-            for (int city = 0; city < n; city++) // check each city we can travel to
-            {
-                // Option 1: Stay in this city (was here yesterday)
-                int stayOption = dp[day-1][city] + stayScore[day][city];
-                
-                // Option 2: Travel from another city to here
-                int travelOption = 0;
-                for (int prevCity = 0; prevCity < n; prevCity++)
-                {
-                    if (prevCity != city)
-                    {
-                        travelOption = Math.Max(travelOption, 
-                            dp[day-1][prevCity] + travelScore[prevCity][city]);
-                    }
-                }
-                
-                // Take the better option
-                dp[day][city] = Math.Max(stayOption, travelOption);
-            }
-        }
-        return dp[k - 1].Max();
+            var left =  FindTiltInner(root.left);
+            var right = FindTiltInner(root.right);
+            tilt += Math.Abs(left - right);
+            return root.val + right + left;
     }
 
     static void Main(string[] args)
     {
 
-      var q=   MaxScore(2, 1, [[1,1]], [[0,1],[6,0]]);
+      var q=   FindTilt(new TreeNode(1, new TreeNode(2), new TreeNode(3)));
     }
     
 }
