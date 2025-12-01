@@ -373,26 +373,42 @@ public class Spans
 
 class Program
 {
-    private static int tilt = 0;
-    public static int FindTilt(TreeNode root)
+    public static bool ValidPalindrome(string s) // this took me way too much time
     {
-        FindTiltInner(root);
-        return tilt;
-    }
-
-    private static int FindTiltInner(TreeNode root)
-    {
-        if (root == null) return 0;
-        
-            var left =  FindTiltInner(root.left);
-            var right = FindTiltInner(root.right);
-            tilt += Math.Abs(left - right);
-            return root.val + right + left;
+        var sp = s.AsSpan();
+        bool isValidInner(ReadOnlySpan<char> span)
+        {
+            for (int i = 0; i < span.Length/2; i++)
+            {
+                var other = span[^(i+1)];
+                var cur = span[i];
+                if (cur != other)
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+        for (int i = 0; i < sp.Length/2; i++)
+        {
+            var other = sp[^(i+1)]; // ^i -> sp.Length I guess?  so must add 1 to indexer
+            var cur = sp[i];
+            if (cur != other)
+            {
+                // Try skipping left mismatched character
+                var skipLeft = sp[(i+1)..^i];
+                // Try skipping right mismatched character  
+                var skipRight = sp[i..^(i+1)];
+    
+                return isValidInner(skipLeft) || isValidInner(skipRight);
+            }
+        }
+        return true;
     }
 
     static void Main(string[] args)
     {
-      BenchmarkRunner.Run<Averages>();
+        ValidPalindrome("abca");
     }
     
 }
