@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.SqlTypes;
+using System.Globalization;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text;
@@ -373,36 +374,30 @@ public class Spans
 
 class Program
 {
-    public static bool ValidPalindrome(string s) // this took me way too much time
-    {
-        bool isPalindromeInner(int l, int r)
+    public int MinMaxDifference(int num) {
+        
+        /*
+         *For maximum: Find the first digit that isn't '9', replace all occurrences of it with '9'.
+          For minimum: Replace all occurrences of the first digit with '0' (leading zeros are allowed).
+         * 
+         */
+        var min = int.MaxValue;
+        var max = int.MinValue;
+        var st = num.ToString();
+        for (int i = 0; i < 9; i++)
         {
-            while (l < r)
-            {
-                if (s[l] != s[r])
-                {
-                    return false;
-                }
-
-                l++;
-                r--;
-            }
-            return true;
+            var replaced = st.Replace(i.ToString(), "9"); // change any digit to 9 except 9 itself
+            max = Math.Max(max, int.Parse(replaced));
         }
-        var left = 0;
-        var right = s.Length - 1;
-        while (left < right)
+        max = Math.Max(max, int.Parse(st));
+        
+        for (int i = 1; i < 10; i++)
         {
-            if (s[left] != s[right])
-            {
-                return isPalindromeInner(left +1,right) || isPalindromeInner(left,right - 1);
-            }
-
-            left++;
-            right--;
+            var replaced = st.Replace(i.ToString(), "0"); // change any digit to 0 except 0 itself
+            min = Math.Min(min, int.Parse(replaced));
         }
-
-        return true;
+        min = Math.Min(min, int.Parse(st));
+        return max - min;
     }
 
     static void Main(string[] args)
