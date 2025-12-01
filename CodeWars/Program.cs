@@ -375,34 +375,33 @@ class Program
 {
     public static bool ValidPalindrome(string s) // this took me way too much time
     {
-        var sp = s.AsSpan();
-        bool isValidInner(ReadOnlySpan<char> span)
+        bool isPalindromeInner(int l, int r)
         {
-            for (int i = 0; i < span.Length/2; i++)
+            while (l < r)
             {
-                var other = span[^(i+1)];
-                var cur = span[i];
-                if (cur != other)
+                if (s[l] != s[r])
                 {
                     return false;
                 }
+
+                l++;
+                r--;
             }
             return true;
         }
-        for (int i = 0; i < sp.Length/2; i++)
+        var left = 0;
+        var right = s.Length - 1;
+        while (left < right)
         {
-            var other = sp[^(i+1)]; // ^i -> sp.Length I guess?  so must add 1 to indexer
-            var cur = sp[i];
-            if (cur != other)
+            if (s[left] != s[right])
             {
-                // Try skipping left mismatched character
-                var skipLeft = sp[(i+1)..^i];
-                // Try skipping right mismatched character  
-                var skipRight = sp[i..^(i+1)];
-    
-                return isValidInner(skipLeft) || isValidInner(skipRight);
+                return isPalindromeInner(left +1,right) || isPalindromeInner(left,right - 1);
             }
+
+            left++;
+            right--;
         }
+
         return true;
     }
 
