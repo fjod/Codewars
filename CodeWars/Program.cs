@@ -374,38 +374,23 @@ public class Spans
 
 class Program
 {
-    public static bool CanFormArray(int[] arr, int[][] pieces) {
-        List<int> visited = new List<int>();
-        for (int i = 0; i < arr.Length;){           
-            var cur = arr[i];
-            // search for same number in pieces
-            int arrayNum = 0;
-            bool found = false;
-            for (int j = 0; j < pieces.Length; j++){
-                if (visited.Contains(j)) continue;
-                var pieceArray = pieces[j];
-                if (pieceArray.Contains(cur))
-                {
-                    arrayNum = j;
-                    found  = true;
-                    break;
-                }
+    public int[] DistributeCandies(int candies, int num_people) {
+        int[] ret = new int[num_people];
+        int turn = 1;
+        int counter = 0;
+        while(true){            
+            if (candies <= turn)  {
+                //give last candies 
+                ret[counter] += candies; 
+                break;
             }
-
-            if (!found) return false;
-
-            visited.Add(arrayNum);
-            var innerArray =  pieces[arrayNum]; 
-            for (int a = 0; a < innerArray.Length; a++){
-                cur = arr[i];
-                if (cur != innerArray[a]) {
-                    return false;
-                }
-                i++;
-            }
+            ret[counter] += turn; //give candy       
+            candies -= turn; // deduct given candy
+            turn++; // increase candies for next turn
+            counter++; // go next person
+            if (counter == num_people)   counter = 0;
         }
-
-        return true;
+        return ret;
     }
 
     static void Main(string[] args)
