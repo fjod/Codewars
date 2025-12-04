@@ -374,35 +374,43 @@ public class Spans
 
 class Program
 {
-    public int MinMaxDifference(int num) {
-        
-        /*
-         *For maximum: Find the first digit that isn't '9', replace all occurrences of it with '9'.
-          For minimum: Replace all occurrences of the first digit with '0' (leading zeros are allowed).
-         * 
-         */
-        var min = int.MaxValue;
-        var max = int.MinValue;
-        var st = num.ToString();
-        for (int i = 0; i < 9; i++)
-        {
-            var replaced = st.Replace(i.ToString(), "9"); // change any digit to 9 except 9 itself
-            max = Math.Max(max, int.Parse(replaced));
+    public static bool CanFormArray(int[] arr, int[][] pieces) {
+        List<int> visited = new List<int>();
+        for (int i = 0; i < arr.Length;){           
+            var cur = arr[i];
+            // search for same number in pieces
+            int arrayNum = 0;
+            bool found = false;
+            for (int j = 0; j < pieces.Length; j++){
+                if (visited.Contains(j)) continue;
+                var pieceArray = pieces[j];
+                if (pieceArray.Contains(cur))
+                {
+                    arrayNum = j;
+                    found  = true;
+                    break;
+                }
+            }
+
+            if (!found) return false;
+
+            visited.Add(arrayNum);
+            var innerArray =  pieces[arrayNum]; 
+            for (int a = 0; a < innerArray.Length; a++){
+                cur = arr[i];
+                if (cur != innerArray[a]) {
+                    return false;
+                }
+                i++;
+            }
         }
-        max = Math.Max(max, int.Parse(st));
-        
-        for (int i = 1; i < 10; i++)
-        {
-            var replaced = st.Replace(i.ToString(), "0"); // change any digit to 0 except 0 itself
-            min = Math.Min(min, int.Parse(replaced));
-        }
-        min = Math.Min(min, int.Parse(st));
-        return max - min;
+
+        return true;
     }
 
     static void Main(string[] args)
     {
-        ValidPalindrome("abca");
+        CanFormArray(new []{15, 88}, new []{new []{88}, new []{15}});
     }
     
 }
