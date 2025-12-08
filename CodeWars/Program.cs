@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Text;
 using BenchmarkDotNet.Attributes;
 using BenchmarkDotNet.Running;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.Diagnostics.Runtime;
 
 
@@ -374,28 +375,47 @@ public class Spans
 
 class Program
 {
-    public int[] DistributeCandies(int candies, int num_people) {
-        int[] ret = new int[num_people];
-        int turn = 1;
-        int counter = 0;
-        while(true){            
-            if (candies <= turn)  {
-                //give last candies 
-                ret[counter] += candies; 
-                break;
-            }
-            ret[counter] += turn; //give candy       
-            candies -= turn; // deduct given candy
-            turn++; // increase candies for next turn
-            counter++; // go next person
-            if (counter == num_people)   counter = 0;
+    public static long SplitArray(int[] nums) { //  1000 / 1004 testcases passed
+        bool[] prefix = new bool[nums.Length];
+        prefix[0] = true;
+        for (int i = 1; i < nums.Length; i++)
+        {
+            prefix[i] = prefix[i-1] && nums[i] > nums[i - 1]; // increasing
         }
-        return ret;
+        
+        bool[] suffix = new bool[nums.Length];
+        suffix[^1] = true;
+        for (int i = nums.Length - 2; i >= 0; i--)
+        {
+            suffix[i] = suffix[i+1] && nums[i] > nums[i + 1]; // decreasing
+        }
+
+        int sum(int left, int right)
+        {
+            int ret = 0;
+            for (int i = left; i < right; i++)
+            {
+                ret += nums[i];
+            }
+            return ret;
+        }
+        
+        var minSum = int.MaxValue;
+        for (int i = 0; i < nums.Length - 1; i++)  // i is last index of left subarray
+        {
+            if (prefix[i] && suffix[i + 1])
+            {
+                var left = sum(0, i + 1);        // 0 to i inclusive
+                var right = sum(i + 1, nums.Length);  // i+1 to end inclusive
+                minSum = Math.Min(minSum, Math.Abs(left - right));
+            }
+        }
+        return minSum == int.MaxValue ? -1 : minSum;
     }
 
     static void Main(string[] args)
     {
-        CanFormArray(new []{15, 88}, new []{new []{88}, new []{15}});
+        SplitArray([1, 3, 2]);
     }
     
 }
