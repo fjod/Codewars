@@ -375,42 +375,31 @@ public class Spans
 
 class Program
 {
-    public static long SplitArray(int[] nums) { //  1000 / 1004 testcases passed
-        bool[] prefix = new bool[nums.Length];
-        prefix[0] = true;
-        for (int i = 1; i < nums.Length; i++)
-        {
-            prefix[i] = prefix[i-1] && nums[i] > nums[i - 1]; // increasing
-        }
-        
-        bool[] suffix = new bool[nums.Length];
-        suffix[^1] = true;
-        for (int i = nums.Length - 2; i >= 0; i--)
-        {
-            suffix[i] = suffix[i+1] && nums[i] > nums[i + 1]; // decreasing
+    public int MinDeletionSize(string[] strs) {        
+        List<char> chars = new List<char>(strs[0].Length);
+
+        bool areCharsSorted(){
+            for (int i = 0; i < chars.Count - 1; i++){
+                var cur = chars[i];
+                var next = chars[i+1];
+                if (cur > next) return false;
+            }
+            return true;
         }
 
-        int sum(int left, int right)
+        int index = 0;
+        int toDelete = 0;
+        while (index < strs[0].Length)
         {
-            int ret = 0;
-            for (int i = left; i < right; i++)
+            chars.Clear();
+            for (int i = 0; i < strs.Length; i++)
             {
-                ret += nums[i];
+                chars.Add(strs[i][index]);
             }
-            return ret;
+            if (!areCharsSorted()) toDelete ++;
+            index ++;
         }
-        
-        var minSum = int.MaxValue;
-        for (int i = 0; i < nums.Length - 1; i++)  // i is last index of left subarray
-        {
-            if (prefix[i] && suffix[i + 1])
-            {
-                var left = sum(0, i + 1);        // 0 to i inclusive
-                var right = sum(i + 1, nums.Length);  // i+1 to end inclusive
-                minSum = Math.Min(minSum, Math.Abs(left - right));
-            }
-        }
-        return minSum == int.MaxValue ? -1 : minSum;
+        return toDelete;
     }
 
     static void Main(string[] args)
