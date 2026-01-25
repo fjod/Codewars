@@ -375,36 +375,21 @@ public class Spans
 
 class Program
 {
-    public int MinDeletionSize(string[] strs) {        
-        List<char> chars = new List<char>(strs[0].Length);
-
-        bool areCharsSorted(){
-            for (int i = 0; i < chars.Count - 1; i++){
-                var cur = chars[i];
-                var next = chars[i+1];
-                if (cur > next) return false;
-            }
-            return true;
-        }
-
-        int index = 0;
-        int toDelete = 0;
-        while (index < strs[0].Length)
-        {
-            chars.Clear();
-            for (int i = 0; i < strs.Length; i++)
-            {
-                chars.Add(strs[i][index]);
-            }
-            if (!areCharsSorted()) toDelete ++;
-            index ++;
-        }
-        return toDelete;
+    public struct B
+    {
+        public int i;
     }
-
+    public class A
+    {
+        public string Q;
+        public string T;
+        public B qqq;
+    }
     static void Main(string[] args)
     {
-        SplitArray([1, 3, 2]);
+       var A = new A();
+       Console.WriteLine(A.qqq.i);
+       
     }
     
 }
