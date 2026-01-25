@@ -1,45 +1,49 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"math/rand"
+	"sync"
 	"time"
 )
 
-func main() {
-
-	sendChan := make(chan int, 5) // buffered to prevent blocking
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel() // cleanup
-
-	for i := 0; i < 5; i++ {
-		go getData(sendChan, ctx)
-	}
-
-	// Get first result
-	result := <-sendChan
-	fmt.Printf("%d\n", result)
-
-	// Cancel all other goroutines
-	cancel()
-
-	// Give them time to clean up
-	time.Sleep(100 * time.Millisecond)
+type semaphore struct {
+	WaitChan chan struct{}
 }
 
-func getData(c chan int, ctx context.Context) {
+func NewSemaphore(number int) *semaphore {
+	return &semaphore{make(chan struct{}, number)}
+}
 
-	dur := time.Duration(rand.Intn(1000)) * time.Millisecond
-	ticker := time.NewTicker(dur)
-	for {
-		select {
-		case <-ctx.Done():
-			return
-		case <-ticker.C:
-			c <- int(dur.Milliseconds())
-			return
-		}
+func (s *semaphore) acquire() {
+	s.WaitChan <- struct{}{} // add one to wait queue if there is place
+}
+func (s *semaphore) release() {
+	<-s.WaitChan
+}
+
+func main() {
+
+	s := NewSemaphore(3)
+	wg := &sync.WaitGroup{}
+	for i := 0; i < 10; i++ {
+
+		go func() {
+			wg.Add(1)
+			s.acquire()
+			fmt.Printf("iteration %v started", i)
+			fmt.Println()
+			defer s.release()
+			getData(wg, i)
+		}()
 	}
+	wg.Wait()
+}
 
+func getData(wg *sync.WaitGroup, i int) {
+	defer wg.Done()
+	dur := time.Duration(rand.Intn(3000)) * time.Millisecond
+	time.Sleep(dur)
+	fmt.Printf("time is %v on %v iteration", dur, i)
+	fmt.Println()
 }
