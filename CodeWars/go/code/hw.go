@@ -1,111 +1,103 @@
 package main
 
 import (
-	"fmt"
-	"math/rand"
+	"context"
+	"log"
+	"sync"
 	"time"
 )
 
-type IProducer interface {
-	Generate(chan string)
+type Wrapper struct {
+	timeout int
 }
 
-type IConsumer interface {
-	Consume(string)
-}
+func (w *Wrapper) Run(fn func(ctx context.Context)) error {
+	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(w.timeout)*time.Second)
+	defer cancel()
+	wg := &sync.WaitGroup{}
+	doneChan := make(chan struct{})
 
-type PubSub struct {
-	channel   chan string
-	producers []IProducer
-	consumers []IConsumer
-	exit      chan struct{}
-}
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		fn(ctx)
+	}()
 
-func NewPubSub() *PubSub {
-	ret := &PubSub{
-		make(chan string, 100),
-		make([]IProducer, 0),
-		make([]IConsumer, 0),
-		make(chan struct{}),
+	go func() {
+		wg.Wait()
+		close(doneChan)
+	}()
+
+	select {
+	case <-doneChan:
+		log.Println("fn completed successfully")
+		return nil
+	case <-ctx.Done():
+		log.Println("fn timed out")
+		return nil
 	}
-	// producer ticker: periodically ask producers to generate
+}
+
+func main() {
+	w1 := Wrapper{timeout: 3}
+	go w1.Run(Wait1)
+
+	w2 := Wrapper{timeout: 3}
+	go w2.Run(Wait5)
+
+	time.Sleep(time.Second * 4)
+}
+
+func Wait5(ctx context.Context) {
+	log.Println("wait5 start")
+
+	wg := &sync.WaitGroup{}
+	doneChan := make(chan struct{})
+
+	wg.Add(1)
 	go func() {
-		ticker := time.NewTicker(time.Second)
-		defer ticker.Stop()
-		for {
-			select {
-			case <-ticker.C:
-				for _, producer := range ret.producers {
-					go producer.Generate(ret.channel)
-				}
-			case <-ret.exit:
-				return
-			}
-		}
+		defer wg.Done()
+		time.Sleep(5 * time.Second)
+		log.Println("wait5 stop")
 	}()
-	// consumer loop: fan out each message to all consumers
+
 	go func() {
-		for msg := range ret.channel {
-			for _, consumer := range ret.consumers { // fans out each one to every consumer
-				consumer.Consume(msg)
-			}
-		}
+		wg.Wait()
+		close(doneChan)
 	}()
-	return ret
-}
 
-func (p *PubSub) Close() {
-	p.exit <- struct{}{}
-	close(p.channel)
-}
-
-func (p *PubSub) AddProducer(producer IProducer) {
-	p.producers = append(p.producers, producer)
-}
-
-func (p *PubSub) AddConsumer(consumer IConsumer) {
-	p.consumers = append(p.consumers, consumer)
-}
-
-type Consumer struct {
-	name string
-}
-
-func NewConsumer(name string) *Consumer {
-	return &Consumer{name}
-}
-func (c *Consumer) Consume(msg string) {
-	fmt.Printf("consume %s | name %v at time %v\n", msg, c.name, time.Now())
-}
-
-type Producer struct {
-	name string
-}
-
-func NewProducer(name string) *Producer {
-	return &Producer{name}
-}
-func (p *Producer) Generate(channel chan string) {
-	r := rand.Intn(100)
-	if r < 50 {
+	select {
+	case <-doneChan:
+		return
+	case <-ctx.Done():
 		return
 	}
-	if r < 90 {
-		channel <- fmt.Sprintf("producer %v generated number %v", p.name, r)
-	}
-	time.Sleep(time.Duration(r) * time.Millisecond * 100)
-	channel <- fmt.Sprintf("producer %v slept and generated number %v", p.name, r)
+
 }
-func main() {
-	pub := NewPubSub()
-	for i := 0; i < 10; i++ {
-		producer := NewProducer(fmt.Sprintf("producer %v", i))
-		pub.AddProducer(producer)
-		if i%2 == 0 {
-			consumer := NewConsumer(fmt.Sprintf("consumer %v", i))
-			pub.AddConsumer(consumer)
-		}
+
+func Wait1(ctx context.Context) {
+	log.Println("wait1start")
+
+	wg := &sync.WaitGroup{}
+	doneChan := make(chan struct{})
+
+	wg.Add(1)
+	go func() {
+		defer wg.Done()
+		time.Sleep(1 * time.Second)
+		log.Println("wait1 stop")
+	}()
+
+	go func() {
+		wg.Wait()
+		close(doneChan)
+	}()
+
+	select {
+	case <-doneChan:
+		return
+	case <-ctx.Done():
+		return
 	}
-	time.Sleep(time.Second * 20)
-	pub.Close()
+
 }
