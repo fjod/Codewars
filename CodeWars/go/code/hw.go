@@ -1,103 +1,157 @@
 package main
 
 import (
-	"context"
-	"log"
+	"errors"
+	"fmt"
+	"math/rand"
 	"sync"
 	"time"
 )
 
-type Wrapper struct {
-	timeout int
+type CircuitBreakerState int
+
+// Declare constants with iota
+const (
+	Closed CircuitBreakerState = iota
+	Open
+	HalfOpen
+)
+
+type WebFunc func() (t any, e error)
+
+var (
+	ErrOpen = errors.New("cb is Open")
+)
+
+type CircuitBreaker struct {
+	state          CircuitBreakerState
+	errAmount      int
+	errPropagation chan struct{}
+	closeChan      chan struct{}
+	mu             sync.RWMutex
 }
 
-func (w *Wrapper) Run(fn func(ctx context.Context)) error {
-	ctx, cancel := context.WithTimeout(context.Background(), time.Duration(w.timeout)*time.Second)
-	defer cancel()
-	wg := &sync.WaitGroup{}
-	doneChan := make(chan struct{})
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		fn(ctx)
-	}()
-
-	go func() {
-		wg.Wait()
-		close(doneChan)
-	}()
-
-	select {
-	case <-doneChan:
-		log.Println("fn completed successfully")
-		return nil
-	case <-ctx.Done():
-		log.Println("fn timed out")
-		return nil
+func NewCircuitBreaker() *CircuitBreaker {
+	cb := &CircuitBreaker{
+		state:          Closed,
+		errAmount:      0,
+		errPropagation: make(chan struct{}, 5),
+		closeChan:      make(chan struct{}),
+		mu:             sync.RWMutex{},
 	}
+	go func() {
+		for {
+			select {
+			case <-cb.closeChan:
+				return
+			case <-cb.errPropagation:
+				cb.mu.Lock()
+				cb.errAmount++
+				if cb.state == HalfOpen {
+					fmt.Printf("error on half-open, switching to open\n")
+					cb.errAmount = 0
+					cb.state = Open
+					cb.mu.Unlock()
+					go func() {
+						time.Sleep(5 * time.Second)
+						cb.mu.Lock()
+						cb.state = HalfOpen
+						cb.mu.Unlock()
+						fmt.Printf("slept for 5 sec, switching to half open\n")
+					}()
+				} else if cb.errAmount >= 5 && cb.state == Closed {
+					fmt.Printf("too much errors in closed state, switching to open\n")
+					cb.errAmount = 0
+					cb.state = Open
+					cb.mu.Unlock()
+					go func() {
+						time.Sleep(5 * time.Second)
+						cb.mu.Lock()
+						cb.state = HalfOpen
+						cb.mu.Unlock()
+						fmt.Printf("slept for 5 sec, switching to half open\n")
+					}()
+				} else {
+					cb.mu.Unlock()
+				}
+			}
+		}
+	}()
+	return cb
+}
+
+func (cb *CircuitBreaker) Close() {
+	cb.closeChan <- struct{}{}
+}
+
+func (cb *CircuitBreaker) Launch(f WebFunc) (t any, e error) {
+	cb.mu.RLock()
+	if cb.state == Open {
+		fmt.Printf("CB is open, return :( \n")
+		cb.mu.RUnlock()
+		return nil, ErrOpen
+	}
+	if cb.state == HalfOpen {
+		cb.mu.RUnlock()
+		fmt.Printf("Launch half-open\n")
+		if cb.mu.TryLock() {
+			// allow one attempt
+			ret, e := f()
+			if e != nil {
+				fmt.Printf("Error on half-open\n")
+				cb.errPropagation <- struct{}{}
+				cb.mu.Unlock()
+				return nil, e
+			}
+			fmt.Printf("Success on half-open\n")
+			cb.state = Closed
+			cb.mu.Unlock()
+			return ret, nil
+		}
+
+		fmt.Printf("CB is closed, probing in another thread\n")
+		return nil, ErrOpen
+	}
+
+	cb.mu.RUnlock()
+	ret, e := f()
+	if e != nil {
+		fmt.Printf("Error on calling func\n")
+		cb.errPropagation <- struct{}{}
+		return nil, e
+	}
+	fmt.Printf("No error\n")
+	return ret, nil
 }
 
 func main() {
-	w1 := Wrapper{timeout: 3}
-	go w1.Run(Wait1)
+	cb := NewCircuitBreaker()
+	stop := make(chan struct{})
 
-	w2 := Wrapper{timeout: 3}
-	go w2.Run(Wait5)
-
-	time.Sleep(time.Second * 4)
-}
-
-func Wait5(ctx context.Context) {
-	log.Println("wait5 start")
-
-	wg := &sync.WaitGroup{}
-	doneChan := make(chan struct{})
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		time.Sleep(5 * time.Second)
-		log.Println("wait5 stop")
-	}()
-
-	go func() {
-		wg.Wait()
-		close(doneChan)
-	}()
-
-	select {
-	case <-doneChan:
-		return
-	case <-ctx.Done():
-		return
+	for i := 0; i < 10; i++ {
+		go func() {
+			for {
+				select {
+				case <-stop:
+					return
+				default:
+					cb.Launch(Test)
+					time.Sleep(200 * time.Millisecond)
+				}
+			}
+		}()
 	}
 
+	time.Sleep(time.Second * 60)
+	close(stop)
 }
 
-func Wait1(ctx context.Context) {
-	log.Println("wait1start")
-
-	wg := &sync.WaitGroup{}
-	doneChan := make(chan struct{})
-
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		time.Sleep(1 * time.Second)
-		log.Println("wait1 stop")
-	}()
-
-	go func() {
-		wg.Wait()
-		close(doneChan)
-	}()
-
-	select {
-	case <-doneChan:
-		return
-	case <-ctx.Done():
-		return
+func Test() (any, error) {
+	s := rand.Int31n(100)
+	time.Sleep(time.Duration(s) * time.Millisecond * 100)
+	if s < 70 {
+		return s, nil
 	}
-
+	fmt.Printf("generated error\n")
+	return 0, errors.New("random number overflow")
 }
