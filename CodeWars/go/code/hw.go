@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"math/rand"
 	"sync"
+	"sync/atomic"
 	"time"
 )
 
@@ -24,20 +25,20 @@ var (
 )
 
 type CircuitBreaker struct {
-	state          CircuitBreakerState
+	state          atomic.Int32
 	errAmount      int
 	errPropagation chan struct{}
 	closeChan      chan struct{}
-	mu             sync.RWMutex
+	mu             sync.Mutex
 }
 
 func NewCircuitBreaker() *CircuitBreaker {
 	cb := &CircuitBreaker{
-		state:          Closed,
+		// state:          Closed, 0 by default
 		errAmount:      0,
 		errPropagation: make(chan struct{}, 5),
 		closeChan:      make(chan struct{}),
-		mu:             sync.RWMutex{},
+		mu:             sync.Mutex{},
 	}
 	go func() {
 		for {
@@ -45,34 +46,25 @@ func NewCircuitBreaker() *CircuitBreaker {
 			case <-cb.closeChan:
 				return
 			case <-cb.errPropagation:
-				cb.mu.Lock()
 				cb.errAmount++
-				if cb.state == HalfOpen {
+				if cb.state.Load() == int32(HalfOpen) {
 					fmt.Printf("error on half-open, switching to open\n")
 					cb.errAmount = 0
-					cb.state = Open
-					cb.mu.Unlock()
+					cb.state.CompareAndSwap(int32(HalfOpen), int32(Open))
 					go func() {
 						time.Sleep(5 * time.Second)
-						cb.mu.Lock()
-						cb.state = HalfOpen
-						cb.mu.Unlock()
+						cb.state.CompareAndSwap(int32(Open), int32(HalfOpen))
 						fmt.Printf("slept for 5 sec, switching to half open\n")
 					}()
-				} else if cb.errAmount >= 5 && cb.state == Closed {
+				} else if cb.errAmount >= 5 && cb.state.Load() == int32(Closed) {
 					fmt.Printf("too much errors in closed state, switching to open\n")
 					cb.errAmount = 0
-					cb.state = Open
-					cb.mu.Unlock()
+					cb.state.CompareAndSwap(int32(Closed), int32(Open))
 					go func() {
 						time.Sleep(5 * time.Second)
-						cb.mu.Lock()
-						cb.state = HalfOpen
-						cb.mu.Unlock()
+						cb.state.CompareAndSwap(int32(Open), int32(HalfOpen))
 						fmt.Printf("slept for 5 sec, switching to half open\n")
 					}()
-				} else {
-					cb.mu.Unlock()
 				}
 			}
 		}
@@ -85,39 +77,41 @@ func (cb *CircuitBreaker) Close() {
 }
 
 func (cb *CircuitBreaker) Launch(f WebFunc) (t any, e error) {
-	cb.mu.RLock()
-	if cb.state == Open {
+	if cb.state.Load() == int32(Open) {
 		fmt.Printf("CB is open, return :( \n")
-		cb.mu.RUnlock()
 		return nil, ErrOpen
 	}
-	if cb.state == HalfOpen {
-		cb.mu.RUnlock()
+	if cb.state.Load() == int32(HalfOpen) {
 		fmt.Printf("Launch half-open\n")
 		if cb.mu.TryLock() {
 			// allow one attempt
 			ret, e := f()
 			if e != nil {
 				fmt.Printf("Error on half-open\n")
-				cb.errPropagation <- struct{}{}
+				select {
+				case cb.errPropagation <- struct{}{}:
+				default:
+				}
 				cb.mu.Unlock()
 				return nil, e
 			}
 			fmt.Printf("Success on half-open\n")
-			cb.state = Closed
+			cb.state.CompareAndSwap(int32(HalfOpen), int32(Closed))
 			cb.mu.Unlock()
 			return ret, nil
 		}
 
-		fmt.Printf("CB is closed, probing in another thread\n")
+		fmt.Printf("CB is half-open, probing in another thread\n")
 		return nil, ErrOpen
 	}
 
-	cb.mu.RUnlock()
 	ret, e := f()
 	if e != nil {
 		fmt.Printf("Error on calling func\n")
-		cb.errPropagation <- struct{}{}
+		select {
+		case cb.errPropagation <- struct{}{}:
+		default:
+		}
 		return nil, e
 	}
 	fmt.Printf("No error\n")
