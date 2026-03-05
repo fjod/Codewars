@@ -1,84 +1,62 @@
 package main
 
 import (
-	"errors"
+	"context"
 	"fmt"
-	"math/rand"
-	"sync"
+	"io"
+	"net/http"
 	"time"
 )
 
-type WebFunc func() (t any, e error)
-
-var (
-	ErrRejected = errors.New("rejected")
-)
-
-type TokenBucket struct {
-	lastRefill  time.Time
-	rate        float64
-	tokenAmount float64
-	tokenLimit  float64
-	mutex       sync.Mutex
+type HttpRequester struct {
+	timeout time.Duration
 }
 
-func NewTokenBucket(rate float64) *TokenBucket {
-	return &TokenBucket{
-		lastRefill:  time.Now(),
-		rate:        rate,
-		tokenAmount: 10,
-		tokenLimit:  10,
-		mutex:       sync.Mutex{},
-	}
+type HttpResponse struct {
+	Body string
+	Err  error
 }
 
-func (tb *TokenBucket) Launch(f WebFunc) (any, error) {
-	tb.mutex.Lock()
-	timeDif := time.Since(tb.lastRefill)
-	tokenAddition := (float64(timeDif.Milliseconds()) / 1000) * tb.rate
-	fmt.Println("add", tokenAddition)
-	tb.lastRefill = time.Now()
-	tb.tokenAmount = min(tb.tokenAmount+tokenAddition, tb.tokenLimit) // add and clamp ony any refills
+func (r HttpRequester) Fetch(addr string) {
+	ctx, cancel := context.WithTimeout(context.Background(), r.timeout)
+	defer cancel()
+	respChan := make(chan HttpResponse, 1)
 
-	if tb.tokenAmount < 1 {
-		fmt.Println("not enough tokens", tb.tokenAmount)
-		tb.mutex.Unlock()
-		return nil, ErrRejected
+	go func() {
+		req, err := http.NewRequestWithContext(ctx, http.MethodGet, addr, nil)
+
+		if err != nil {
+			fmt.Println("Error:", err)
+			respChan <- HttpResponse{Err: err}
+			return
+		}
+
+		body, err := io.ReadAll(req.Body)
+		if err != nil {
+			fmt.Println("Error reading response:", err)
+			respChan <- HttpResponse{Err: err}
+			return
+		}
+		defer req.Body.Close()
+
+		respChan <- HttpResponse{Body: string(body)}
+	}()
+
+	select {
+	case resp := <-respChan:
+		{
+			fmt.Println("Response:", resp.Body)
+			return
+		}
+	case <-ctx.Done():
+		{
+			fmt.Println("Timeout")
+			return
+		}
 	}
-
-	tb.lastRefill = time.Now()
-	tb.tokenAmount -= 1
-	fmt.Println("token amount", tb.tokenAmount)
-	tb.mutex.Unlock()
-	return f()
 }
 
 func main() {
-
-	stop := make(chan struct{})
-	tb := NewTokenBucket(15)
-	for i := 0; i < 10; i++ {
-		go func() {
-			ticker := time.NewTicker(time.Second)
-			for {
-				select {
-				case <-ticker.C:
-					time.Sleep(time.Duration(i) * time.Millisecond * 100)
-					go tb.Launch(Test)
-				case <-stop:
-					ticker.Stop()
-					return
-				}
-			}
-		}()
-	}
-
-	time.Sleep(time.Second * 60)
-	close(stop)
-}
-
-func Test() (any, error) {
-	s := rand.Int31n(100)
-	time.Sleep(time.Duration(s) * time.Millisecond * 100)
-	return s, nil
+	r := HttpRequester{timeout: 400 * time.Millisecond}
+	r.Fetch("http://www.google.com")
 }
