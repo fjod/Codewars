@@ -2,61 +2,105 @@ package main
 
 import (
 	"context"
-	"fmt"
-	"io"
-	"net/http"
+	"errors"
+	"sync"
 	"time"
 )
 
-type HttpRequester struct {
-	timeout time.Duration
+type Job struct {
+	fn     Handler
+	result chan Result
 }
 
-type HttpResponse struct {
-	Body string
-	Err  error
+type Result struct {
+	Value any
+	Err   error
 }
 
-func (r HttpRequester) Fetch(addr string) {
-	ctx, cancel := context.WithTimeout(context.Background(), r.timeout)
+type Handler func(ctx context.Context) (any, error)
+
+type ClassicPool struct {
+	main   chan Job
+	ctx    context.Context
+	cancel context.CancelFunc
+	wg     sync.WaitGroup
+}
+
+func NewClassicPool(workersNum int) *ClassicPool {
+	ctx, cancel := context.WithCancel(context.Background())
+
+	pool := &ClassicPool{
+		main:   make(chan Job, workersNum),
+		ctx:    ctx,
+		cancel: cancel,
+		wg:     sync.WaitGroup{},
+	}
+
+	for i := 0; i < workersNum; i++ {
+		pool.wg.Add(1)
+		go pool.worker()
+	}
+
+	return pool
+}
+
+func (c *ClassicPool) Cancel() {
+	c.cancel() // cancel context which goes inside workers
+	defer c.drainLeftOvers()
+	timeout, cancel := context.WithTimeout(context.Background(), time.Second)
 	defer cancel()
-	respChan := make(chan HttpResponse, 1)
-
+	wgReadyChan := make(chan struct{})
 	go func() {
-		req, err := http.NewRequestWithContext(ctx, http.MethodGet, addr, nil)
-
-		if err != nil {
-			fmt.Println("Error:", err)
-			respChan <- HttpResponse{Err: err}
-			return
-		}
-
-		body, err := io.ReadAll(req.Body)
-		if err != nil {
-			fmt.Println("Error reading response:", err)
-			respChan <- HttpResponse{Err: err}
-			return
-		}
-		defer req.Body.Close()
-
-		respChan <- HttpResponse{Body: string(body)}
+		c.wg.Wait()
+		close(wgReadyChan)
 	}()
-
 	select {
-	case resp := <-respChan:
-		{
-			fmt.Println("Response:", resp.Body)
-			return
+	case <-timeout.Done():
+		println("timeout")
+		return
+	case <-wgReadyChan:
+		println("done")
+		return
+	}
+}
+
+func (c *ClassicPool) drainLeftOvers() {
+	for {
+		select {
+		case job := <-c.main:
+			job.result <- Result{Err: context.Canceled}
+		default:
+			return // channel empty, stop draining
 		}
-	case <-ctx.Done():
-		{
-			fmt.Println("Timeout")
+	}
+}
+
+func (c *ClassicPool) worker() {
+	defer c.wg.Done()
+	for {
+		select {
+		case job := <-c.main:
+			val, err := job.fn(c.ctx)
+			job.result <- Result{val, err}
+
+		case <-c.ctx.Done():
 			return
 		}
 	}
 }
 
+func (c *ClassicPool) Do(fn Handler) (<-chan Result, error) {
+	job := Job{fn: fn, result: make(chan Result, 1)}
+	select {
+	case c.main <- job: // pool is alive, job accepted
+		return job.result, nil
+	case <-c.ctx.Done():
+		return nil, c.ctx.Err()
+	default:
+		return nil, errors.New("pool is full") // caller decides: retry, drop, wait
+	}
+}
+
 func main() {
-	r := HttpRequester{timeout: 400 * time.Millisecond}
-	r.Fetch("http://www.google.com")
+
 }
