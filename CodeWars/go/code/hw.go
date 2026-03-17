@@ -1,106 +1,52 @@
 package main
 
-import (
-	"context"
-	"errors"
-	"sync"
-	"time"
-)
+import "fmt"
 
-type Job struct {
-	fn     Handler
-	result chan Result
-}
-
-type Result struct {
-	Value any
-	Err   error
-}
-
-type Handler func(ctx context.Context) (any, error)
-
-type ClassicPool struct {
-	main   chan Job
-	ctx    context.Context
-	cancel context.CancelFunc
-	wg     sync.WaitGroup
-}
-
-func NewClassicPool(workersNum int) *ClassicPool {
-	ctx, cancel := context.WithCancel(context.Background())
-
-	pool := &ClassicPool{
-		main:   make(chan Job, workersNum),
-		ctx:    ctx,
-		cancel: cancel,
-		wg:     sync.WaitGroup{},
+func append_to_slice(slice []int, value int, times int) []int {
+	for i := 0; i < times; i++ {
+		slice = append(slice, value)
 	}
-
-	for i := 0; i < workersNum; i++ {
-		pool.wg.Add(1)
-		go pool.worker()
-	}
-
-	return pool
+	return slice
 }
 
-func (c *ClassicPool) Cancel() {
-	c.cancel() // cancel context which goes inside workers
-	defer c.drainLeftOvers()
-	timeout, cancel := context.WithTimeout(context.Background(), time.Second)
-	defer cancel()
-	wgReadyChan := make(chan struct{})
-	go func() {
-		c.wg.Wait()
-		close(wgReadyChan)
-	}()
-	select {
-	case <-timeout.Done():
-		println("timeout")
-		return
-	case <-wgReadyChan:
-		println("done")
-		return
+func bad_append(slice []int, val int, times int) {
+	for i := 0; i < times; i++ {
+		slice = append(slice, val) // realloc happens inside for a copy, caller sees nothing
 	}
 }
 
-func (c *ClassicPool) drainLeftOvers() {
-	for {
-		select {
-		case job := <-c.main:
-			job.result <- Result{Err: context.Canceled}
-		default:
-			return // channel empty, stop draining
-		}
-	}
-}
-
-func (c *ClassicPool) worker() {
-	defer c.wg.Done()
-	for {
-		select {
-		case job := <-c.main:
-			val, err := job.fn(c.ctx)
-			job.result <- Result{val, err}
-
-		case <-c.ctx.Done():
-			return
-		}
-	}
-}
-
-func (c *ClassicPool) Do(fn Handler) (<-chan Result, error) {
-	job := Job{fn: fn, result: make(chan Result, 1)}
-	select {
-	case c.main <- job: // pool is alive, job accepted
-		return job.result, nil
-	case <-c.ctx.Done():
-		return nil, c.ctx.Err()
-	default:
-		return nil, errors.New("pool is full") // caller decides: retry, drop, wait
+func pointer_append(slice *[]int, val int, times int) {
+	for i := 0; i < times; i++ {
+		*slice = append(*slice, val) // realloc happens inside for a copy, caller sees nothing
 	}
 }
 
 func main() {
 
+	slice := make([]int, 5, 8)
+	fmt.Println("before", slice)
+	slice2 := append_to_slice(slice, 99, 2)
+	fmt.Println("after, starting slice", slice)
+	fmt.Println("after, returned slice", slice2)
+
+	slice3 := append_to_slice(slice, 199, 5)
+	fmt.Println("after2, starting slice", slice)
+	fmt.Println("after2, starting slice2", slice2)
+	fmt.Println("after2, returned slice3", slice3)
+
+	slice_realloc := make([]int, 5, 6)
+	fmt.Println("before", slice_realloc)
+	slice_realloc_2 := append_to_slice(slice_realloc, 9, 10)
+	fmt.Println("after, starting slice", slice_realloc)
+	fmt.Println("after, returned slice", slice_realloc_2)
+
+	slice_bad_realloc := make([]int, 5, 6)
+	fmt.Println("before", slice_bad_realloc)
+	bad_append(slice_bad_realloc, 8, 10) // struct is copied inside
+	fmt.Println("after, starting slice", slice_bad_realloc)
+
+	slice_good_realloc := make([]int, 5, 6)
+	fmt.Println("before", slice_good_realloc)
+	pointer_append(&slice_good_realloc, 8, 10) // using pointer, so reallocated slice is seen outside
+	fmt.Println("after, starting slice", slice_good_realloc)
 }
