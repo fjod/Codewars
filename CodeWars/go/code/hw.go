@@ -1,32 +1,32 @@
 package main
 
 import (
-	"context"
-	"errors"
-	"time"
+	"fmt"
+	"sync"
 )
 
+var sharedMap = make(map[string]string)
+var mutex = sync.Mutex{}
+
 func main() {
+	var wg sync.WaitGroup
 
-}
-
-func doWork(ch <-chan string) (string, error) {
-	select {
-	case result := <-ch:
-		return result, nil
-	case <-time.After(2 * time.Second):
-		return "", errors.New("timeout")
+	for i := 0; i < 10; i++ {
+		wg.Add(2)
+		go func(n int) {
+			defer wg.Done()
+			mutex.Lock() // run with go run -race main.go  in WSL and without mutex
+			sharedMap[fmt.Sprintf("key%d", n)] = "value"
+			mutex.Unlock()
+		}(i)
+		go func(n int) {
+			defer wg.Done()
+			mutex.Lock()
+			_ = sharedMap[fmt.Sprintf("key%d", n)]
+			mutex.Unlock()
+		}(i)
 	}
-}
 
-func doWork2(ctx context.Context, ch <-chan string) (string, error) {
-	ctx, cancel := context.WithTimeout(ctx, 2*time.Second)
-	defer cancel() // always call cancel to free resources
-
-	select {
-	case result := <-ch:
-		return result, nil
-	case <-ctx.Done():
-		return "", ctx.Err() // context.DeadlineExceeded
-	}
+	wg.Wait()
+	fmt.Println("done, map length:", len(sharedMap))
 }
