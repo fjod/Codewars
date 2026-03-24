@@ -2,48 +2,56 @@ package main
 
 import (
 	"context"
-	"fmt"
+	"math/rand"
 	"time"
 )
 
 func main() {
 
-	ch := make(chan int)
-	ctx, cancel := context.WithCancel(context.Background())
-	go ping(ch, ctx)
-	go pong(ch, ctx)
-	ch <- 0
-	time.Sleep(1 * time.Second)
-	cancel()
+	ch_gen := make(chan int)
+	ch_print := make(chan int)
+	ctx, cancel := context.WithTimeout(context.Background(), time.Second)
+	defer cancel()
+	go generate(ch_gen, ctx)
+	go printer(ch_print, ctx)
+	go square(ch_gen, ch_print, ctx)
+	time.Sleep(2 * time.Second)
 }
 
-func ping(ch chan int, ctx context.Context) {
+func generate(ch chan int, ctx context.Context) {
+	for {
+		i := rand.Intn(590)
+		select {
+		case ch <- i:
+			println("sent ", i)
+		case <-ctx.Done():
+			println("cancelled")
+			return
+		}
+		time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
+	}
+}
+
+func square(ch chan int, chp chan int, ctx context.Context) {
 	for {
 		select {
-		case v := <-ch:
-			if v > 10 {
-				fmt.Println("exit")
-				return
-			}
-			fmt.Println("ping", v)
-			ch <- v + 1
+		case i := <-ch:
+			chp <- i * i
+			println("squared ", i*i)
 		case <-ctx.Done():
+			println("cancelled")
 			return
 		}
 	}
 }
 
-func pong(ch chan int, ctx context.Context) {
+func printer(chp chan int, ctx context.Context) {
 	for {
 		select {
-		case v := <-ch:
-			if v > 10 {
-				fmt.Println("exit")
-				return
-			}
-			fmt.Println("pong", v)
-			ch <- v + 1
+		case i := <-chp:
+			println("printer ", i)
 		case <-ctx.Done():
+			println("cancelled")
 			return
 		}
 	}
