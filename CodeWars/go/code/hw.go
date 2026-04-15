@@ -1,42 +1,42 @@
 package main
 
-import "sync"
+import (
+	"context"
+	"time"
+)
 
-var s sync.Once
+// mock func to get response time
+func textSearcher(ctx context.Context, name string) (time.Duration, error) {
+	return 10 * time.Second, nil
+}
+
+func getFastestTextSearcher(ctx context.Context, searchers []string) (name string, respTime time.Duration, err error) {
+	c, cancel := context.WithCancel(ctx)
+	defer cancel()
+	type searchResult struct {
+		name     string
+		respTime time.Duration
+		err      error
+	}
+	var retE error
+	ch := make(chan searchResult, len(searchers)) // buffered channel
+	for _, n := range searchers {
+		go func(n string) {
+			dur, e := textSearcher(c, n)
+			ch <- searchResult{name, dur, e}
+		}(n)
+	}
+
+	for range searchers {
+		r := <-ch
+		if r.err != nil {
+			cancel()
+			return r.name, r.respTime, nil
+		}
+	}
+	return "", 0, retE
+}
 
 func main() {
 
-	println(isValid("(])"))
-}
-
-func isValid(s string) bool {
-	brackets := make([]byte, 0)
-	if len(s) == 0 {
-		return true
-	}
-	if len(s) == 1 {
-		return false
-	}
-
-	brackets = append(brackets, s[0]) // add first
-	for i := 1; i < len(s); i++ {
-		cur := s[i]
-		if cur == '(' || cur == '[' || cur == '{' { // add any open bracket
-			brackets = append(brackets, cur)
-			continue
-		}
-		if len(brackets) == 0 { // closing bracket on empty array
-			return false
-		}
-		prev := brackets[len(brackets)-1]
-		if (cur == ')' && prev == '(') || (cur == '}' && prev == '{') || (cur == ']' && prev == '[') {
-			// remove prev bracket from slice
-			brackets = brackets[:len(brackets)-1]
-			continue
-		}
-
-		return false // prev bracket cant be removed, so we are stuck with wrong pair forever
-	}
-
-	return len(brackets) == 0
 }
